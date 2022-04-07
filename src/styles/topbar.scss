@@ -1,0 +1,42 @@
+.topbar {
+  position: fixed;
+  right: 0;
+  left: 0;
+  
+  height: 50px;
+  padding: 0 20px;
+
+  z-index: 999;
+  background-color: #070118;
+  margin-bottom: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .topbarRight {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      color: #fff;
+      margin-left: 10px;
+    }
+  }
+
+  .topbarLeft {
+    padding: 0 12px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  .img-avatar {
+    cursor: pointer;
+    object-fit: cover;
+  }
+}

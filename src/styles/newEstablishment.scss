@@ -1,0 +1,54 @@
+.newEstablishment{
+margin-top: 60px;
+  
+  .establishmentTitle{
+    margin-bottom: 20px;
+  }
+  
+  .establishment-description{
+    display: flex;
+    justify-content: space-between;
+
+    .establishmentLeft > div {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .establishmentLeft > div > label{
+      font-size: 24px;
+    }
+    
+    .establishmentLeft > div > input{
+      border: none;
+      background-color: transparent;
+      border-bottom: 1px solid #555;
+      font-size: 18px;
+      outline: none;
+      color: #070118;
+    }
+
+    .establishmentUpload{
+      display: flex;
+      align-items: center;
+    }
+    
+    .establishmentUploadImg{
+      width: 100px!important;
+      height: 100px!important;
+    }
+  }
+ 
+  .button{
+    margin-top: 5px;
+  }
+
+  select{
+    padding: 8px;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    border: 1px solid #070118;
+  }
+}

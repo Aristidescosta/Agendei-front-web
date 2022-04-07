@@ -1,0 +1,103 @@
+.establishment {
+  margin-top: 60px;
+
+  /* =============================
+    Estilo dos estabelecimentos
+  =============================*/
+
+  .establishment-title {
+    padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 36px;
+
+    .establishment-sub {
+      margin-left: 5px;
+      color: #555;
+    }
+  }
+
+  .alert-info {
+    background-color: #d9edf7;
+    color: #31708f;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #bce8f1;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.42857143;
+
+    > button {
+      border: 0;
+      color: #000;
+      cursor: pointer;
+      float: right;
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1;
+      opacity: 0.2;
+    }
+
+    > span {
+      display: flex;
+      align-items: center;
+    }
+
+    > span > svg,
+    > span > strong {
+      margin-right: 5px;
+    }
+  }
+
+  .featureMoneyContainer {
+    align-items: center;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .establismentAdd {
+    text-align: center;
+    display: flex;
+    align-items: center !important;
+    justify-content: center;
+    font-size: 54px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card {
+    .establishmentAdd {
+      font-size: 6.7rem;
+      text-align: center;
+    }
+  }
+
+  /* =============================
+    Estilo dos serviços
+  =============================*/
+  .button {
+    width: 100%;
+    flex-direction: column !important;
+    margin-right: 5px;
+    margin-top: 8px;
+    height: 30px;
+    padding: 0 21px;
+  }
+
+  img {
+    margin-right: 20px;
+    height: 48px !important;
+    width: 48px !important;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.show {
+  display: block;
+}

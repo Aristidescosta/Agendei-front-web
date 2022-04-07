@@ -1,0 +1,34 @@
+
+.card-body {
+  display: block!important;
+}
+
+.featureMoneyContainer {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 2rem;
+}
+
+.featuredMoneyRate {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  font-size: 12px;
+}
+
+.featured-icon {
+  font-size: 14px !important;
+  margin-left: 5px;
+  color: green !important;
+}
+
+.featured-icon.negative {
+  color: red !important;
+}
+
+.featuredSub {
+  font-size: 15px;
+  color: grey;
+}

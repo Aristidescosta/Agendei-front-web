@@ -1,0 +1,17 @@
+.dashboard {
+  margin-top: 60px;
+
+  .row {
+    flex-direction: column;
+  }
+
+  .card-body{
+    padding: 0 20px 20px 20px!important;
+  }
+
+  .feature {
+    .row {
+      flex-direction: row;
+    }
+  }
+}
