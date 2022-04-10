@@ -7,11 +7,12 @@ import { NewEstablishment } from "../establishment/NewEstablishment";
 import { Services } from "../../components/Services";
 import { Profile } from "../profile/Profile";
 import { Edit } from "../../components/Edit";
-import { useState } from "react";
+import {useState} from "react";
 import { services, establishmentRows } from "../../data";
 
 export default function Home() {
   const [ data, setData ] = useState(services);
+
   const [ dataEstablishment, setDataEstablishment ] = useState(establishmentRows);
 
   return (
@@ -21,7 +22,7 @@ export default function Home() {
         <Sidebar />
         <Routes>
           <Route index element={<Dashboard/>}/>
-          <Route path="/establishments" element={<Establishments dataEstablishment={dataEstablishment} setDataEstablishment={setDataEstablishment}/>} />
+          <Route path="/establishments" element={<Establishments />} />
           <Route path="/establishments/new" element={<NewEstablishment isEstablishment={true} data={dataEstablishment} setData={setDataEstablishment}/>} />
           <Route path="/establishment/service/new" element={<NewEstablishment isEstablishment={false} data={data} setData={setData} />} />
           <Route path="/establishment/service/:id" element={<Services dataEstablishment={dataEstablishment} data={data} setData={setData}/>} />

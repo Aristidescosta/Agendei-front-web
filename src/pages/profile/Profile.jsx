@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/profile.scss";
 import avatar from "../../components/assets/img/user.jpg";
 import { Avatar } from "@material-ui/core";
 import { Button } from "../../components/Button";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 export const Profile = () => {
+  const auth = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(true);
   console.log(show);
@@ -40,8 +42,8 @@ export const Profile = () => {
         <div className="col-lg-4">
           <div className="card">
             <div className="card-body">
-              <Avatar src={avatar} />
-              <h2>Aristides Costa</h2>
+              <Avatar />
+              <h2>{auth.user.username}</h2>
             </div>
           </div>
         </div>
@@ -78,7 +80,7 @@ export const Profile = () => {
                       Imagem do perfil
                     </label>
                     <div className="col-md-8 col-lg-9">
-                      <img src={avatar} alt="Imagem do usuário" />
+                      <img alt="Imagem do usuário" />
                       <div>
                         <a
                           href="#"
@@ -111,7 +113,7 @@ export const Profile = () => {
                         type="text"
                         className="form-control"
                         id="fullName"
-                        value="Aristides Costa"
+                        value={auth.user.username}
                       />
                     </div>
                   </div>
@@ -141,7 +143,7 @@ export const Profile = () => {
                         type="email"
                         className="form-control"
                         id="Email"
-                        value="aristidiscosta200@gmail.com"
+                        value={auth.user.email}
                       />
                     </div>
                   </div>

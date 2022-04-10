@@ -1,50 +1,42 @@
-.newEstablishment{
-margin-top: 60px;
-  
-  .establishmentTitle{
+.newEstablishment {
+  margin-top: 60px;
+
+  .establishmentTitle {
     margin-bottom: 20px;
   }
-  
-  .establishment-description{
-    display: flex;
-    justify-content: space-between;
 
-    .establishmentLeft > div {
-      display: flex;
-      flex-direction: column;
-      row-gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .establishmentLeft > div > label{
-      font-size: 24px;
-    }
-    
-    .establishmentLeft > div > input{
-      border: none;
-      background-color: transparent;
-      border-bottom: 1px solid #555;
-      font-size: 18px;
-      outline: none;
-      color: #070118;
-    }
-
-    .establishmentUpload{
-      display: flex;
-      align-items: center;
-    }
-    
-    .establishmentUploadImg{
-      width: 100px!important;
-      height: 100px!important;
+  div > input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    border: none;
+    background-color: transparent;
+    border-bottom: 1px solid #555;
+    font-size: 18px;
+    outline: none;
+    color: #070118;
+    border-radius: 0;
+    &:focus{
+      box-shadow: none;
     }
   }
- 
-  .button{
+
+  .button {
     margin-top: 5px;
   }
 
-  select{
+  input[type="checkbox"]{
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+  }
+
+  label{
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  select {
     padding: 8px;
     border-radius: 8px;
     outline: none;

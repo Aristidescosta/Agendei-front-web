@@ -1,15 +1,29 @@
 import "../../styles/establishment.scss";
 import { Close, InfoSharp } from "@material-ui/icons";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { EstablishmentList } from "../../components/EstablishmentList";
+import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useApi } from "../../hooks/useApi";
 
-export const Establishments = ({ dataEstablishment, setDataEstablishment }) => {
+export const Establishments = () => {
+  const api = useApi();
+  const [ dataEstablishment, setDataEstablishment] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleClick = () => {
     setShowAlert(false);
   };
+
+  const auth = useContext(AuthContext);
+
+  useEffect(() =>{
+    const getEstablishment = async() =>{ 
+      const response = await api.getEstablishment(auth.user._id)
+      setDataEstablishment(response);
+    }
+    getEstablishment();
+  }, []);
 
   const deletedEstablishment = (id) => {
     /* Primeiro deverá ser disparado uma mensagem de confirmação */
@@ -22,16 +36,22 @@ export const Establishments = ({ dataEstablishment, setDataEstablishment }) => {
 
   const establishmentList = dataEstablishment.map((datas) => (
     <EstablishmentList
-      id={datas.id}
-      img={datas.img}
-      name={datas.establishmentName}
-      services={datas.services}
-      category={datas.categoryValue}
-      location={datas.location}
-      deletedEstablishment={deletedEstablishment}
-      key={datas.id}
+      id={datas._id}
+      img={ "https://teste-api-api.herokuapp.com/" +datas.img}
+      name={datas.name}
+      nif={datas.nif}
+      address={datas.address}
+      key={datas._id}
     />
   ));
+
+    if(
+      dataEstablishment.length === 0
+    ){
+      return <h1>Processando</h1>
+    }
+
+  console.log(dataEstablishment.length === 0);
 
   return (
     <section className="establishment">

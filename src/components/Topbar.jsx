@@ -1,7 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
 import { Avatar, Menu, MenuItem } from "@material-ui/core";
-import avatar from "./assets/img/user.jpg";
 import logo from "./assets/img/logo.png";
 import { AuthContext } from "../contexts/auth/AuthContext";
 import "../styles/topbar.scss";
@@ -36,9 +35,9 @@ export const Topbar = () => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <Avatar src={avatar} className="img-avatar" />
+        <Avatar className="img-avatar" />
 
-        <span>Aristides Costa</span>
+        <span>{auth.user.username}</span>
 
         <Menu
           id="simple-menu"

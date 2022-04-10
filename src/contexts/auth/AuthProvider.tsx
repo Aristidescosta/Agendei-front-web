@@ -1,5 +1,5 @@
 import { AuthContext } from "./AuthContext";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { User } from "../../types/User";
 import { useApi } from "../../hooks/useApi";
 
@@ -8,40 +8,64 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const api = useApi();
 
   useEffect(() => {
-    const validateToken = async () =>{
+    const validateToken = async () => {
       const storageDate = localStorage.getItem("authToken");
-      if(storageDate){
-        const data = await api.validateToken(storageDate);
-        if(data.user){
-          setUser(data.user);
+      if (storageDate) {
+        const response = await api.validateToken(storageDate);
+        if (response.token) {
+          setUser(response.dataUser);
+          setToken(response.token);
         }
       }
-    }
+    };
     validateToken();
   }, []);
 
   const signin = async (email: string, password: string) => {
-    const data = await api.signin(email, password);
-    if (data.data.data) {
-      setUser(data.data.data);
-      setToken(data.token);
+    const response = await api.signin(email, password);
+    if (response.data && response.token) {
+      setUser(response.data);
+      setToken(response.token);
       return true;
     }
     return false;
   };
 
-  const setToken = (token: string) =>{
+  const setToken = (token: string) => {
     localStorage.setItem("authToken", token);
-  }
+  };
 
   const signout = async () => {
     await api.logout();
     setUser(null);
     localStorage.clear();
   };
- 
+
+  const getEstablishment = async (id: number) => {
+    if (user?._id) {
+      const response = await api.getEstablishment(id);
+      return true;
+    }
+    return false;
+  };
+
+  const getCategory = async () => {
+    await api.getCategory();
+  };
+
+  const setEstablishment = async (name:string,nif:string,categoryId:string,userId:string,address:object,phone_number:number,open_to:object) => {
+    if(user?._id) {
+      await api.setEstablishment(name, nif, categoryId, userId, address, phone_number, open_to);
+      return true
+    }
+    console.log(user?._id);
+    return false
+  };
+
   return (
-    <AuthContext.Provider value={{ user, signin, signout }}>
+    <AuthContext.Provider
+      value={{ user, signin, signout, getEstablishment, getCategory, setEstablishment }}
+    >
       {children}
     </AuthContext.Provider>
   );
