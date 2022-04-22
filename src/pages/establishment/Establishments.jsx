@@ -8,7 +8,7 @@ import { useApi } from "../../hooks/useApi";
 
 export const Establishments = () => {
   const api = useApi();
-  const [ dataEstablishment, setDataEstablishment] = useState([]);
+  const [dataEstablishment, setDataEstablishment] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
 
   const handleClick = () => {
@@ -17,13 +17,13 @@ export const Establishments = () => {
 
   const auth = useContext(AuthContext);
 
-  useEffect(() =>{
-    const getEstablishment = async() =>{ 
+  useEffect(() => {
+    const getEstablishment = async () => {
       const response = await api.getEstablishment(auth.user._id)
       setDataEstablishment(response);
     }
     getEstablishment();
-  }, []);
+  }, [api]);
 
   const deletedEstablishment = (id) => {
     /* Primeiro deverá ser disparado uma mensagem de confirmação */
@@ -37,21 +37,13 @@ export const Establishments = () => {
   const establishmentList = dataEstablishment.map((datas) => (
     <EstablishmentList
       id={datas._id}
-      img={ "https://teste-api-api.herokuapp.com/" +datas.img}
+      img={"https://teste-api-api.herokuapp.com/" + datas.img}
       name={datas.name}
       nif={datas.nif}
       address={datas.address}
       key={datas._id}
     />
   ));
-
-    if(
-      dataEstablishment.length === 0
-    ){
-      return <h1>Processando</h1>
-    }
-
-  console.log(dataEstablishment.length === 0);
 
   return (
     <section className="establishment">

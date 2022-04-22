@@ -6,7 +6,6 @@ import { useApi } from "../../hooks/useApi";
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<User | null>(null);
   const api = useApi();
-
   useEffect(() => {
     const validateToken = async () => {
       const storageDate = localStorage.getItem("authToken");
@@ -19,16 +18,17 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       }
     };
     validateToken();
-  }, []);
+  }, [api]);
 
   const signin = async (email: string, password: string) => {
     const response = await api.signin(email, password);
-    if (response.data && response.token) {
-      setUser(response.data);
-      setToken(response.token);
-      return true;
+    if (typeof response === "string") {
+      return false;
+    } else {
+      setUser(response.data.data);
+      setToken(response.data.token);
     }
-    return false;
+    return true;
   };
 
   const setToken = (token: string) => {
@@ -41,9 +41,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     localStorage.clear();
   };
 
+  const signup = async (username: string, email: string, password: string) => {
+    await api.signup(username, email, password);
+    return false;
+  };
+
   const getEstablishment = async (id: number) => {
     if (user?._id) {
-      const response = await api.getEstablishment(id);
+      await api.getEstablishment(id);
       return true;
     }
     return false;
@@ -53,18 +58,42 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     await api.getCategory();
   };
 
-  const setEstablishment = async (name:string,nif:string,categoryId:string,userId:string,address:object,phone_number:number,open_to:object) => {
-    if(user?._id) {
-      await api.setEstablishment(name, nif, categoryId, userId, address, phone_number, open_to);
-      return true
+  const setEstablishment = async (
+    name: string,
+    nif: string,
+    categoryId: string,
+    userId: string,
+    address: object,
+    phone_number: number,
+    open_to: object
+  ) => {
+    if (user?._id) {
+      await api.setEstablishment(
+        name,
+        nif,
+        categoryId,
+        userId,
+        address,
+        phone_number,
+        open_to
+      );
+      return true;
     }
     console.log(user?._id);
-    return false
+    return false;
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, signin, signout, getEstablishment, getCategory, setEstablishment }}
+      value={{
+        user,
+        signin,
+        signout,
+        getEstablishment,
+        getCategory,
+        setEstablishment,
+        signup,
+      }}
     >
       {children}
     </AuthContext.Provider>

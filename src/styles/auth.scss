@@ -1,9 +1,69 @@
-#page-auth{
+#page-auth {
   display: flex;
   align-items: stretch;
   height: 100vh;
 
-  aside{
+  .error_connected{
+    background-color: red;
+    &::before {
+      content: "⚠ ";
+      color: #fff;
+    }
+
+    span{
+      &::after{
+        content: "X";
+        top: 16px;
+        margin-left: 10px;
+        background-color: transparent;
+      }
+    }
+  }
+
+  .connected{
+    background-color: rgba(23, 254, 23, 0.682);
+    span{
+      &::after{
+        content: "";
+        top: 16px;
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+        background-color: transparent;
+        border: 3px solid #fff;
+        border-top-color: rgb(4, 145, 4);;
+        border-radius: 50%;
+        animation: isRouting 1s infinite;
+      }
+    }
+  }
+
+  .connected,
+  .error_connected {
+    position: absolute;
+    right: 0;
+    display: flex;
+    height: 50px;
+    border-radius: 5px;
+    align-items: center;
+    top: 4px;
+
+    span {
+      padding: 5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+    }
+
+    @keyframes isRouting {
+      to{
+        transform: rotate(1turn);
+      }
+    }
+  }
+
+
+  aside {
     flex: 7;
 
     background: #070118;
@@ -15,17 +75,17 @@
 
     padding: 128px 88px;
 
-    img{
+    img {
       max-width: 320px;
     }
 
-    strong{
+    strong {
       font: 700 36px "Poppins", sans-serif;
       line-height: 42px;
       margin-top: 16px;
     }
 
-    p{
+    p {
       font-size: 16px;
       line-height: 32px;
       margin-top: 16px;
@@ -33,7 +93,24 @@
     }
   }
 
-  main{
+  .error_msg {
+    color: red;
+    float: left;
+    margin-top: -1rem;
+    margin-bottom: 15px;
+
+    &::before {
+      content: "⚠ ";
+    }
+  }
+
+  
+
+  .hiden {
+    display: none;
+  }
+
+  main {
     flex: 8;
 
     padding: 0 32px;
@@ -43,28 +120,28 @@
     justify-content: center;
   }
 
-  .main-content{
+  .main-content {
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 320px;
     align-items: stretch;
     text-align: center;
-    
-    > img{
+
+    > img {
       align-self: center;
       width: 80px;
       height: 80px;
     }
 
-    h2{
+    h2 {
       font-size: 24px;
       margin: 42px 0 24px;
       font-family: "Poppins", sans-serif;
     }
 
-    form{
-      input{
+    form {
+      input {
         height: 50px;
         border-radius: 8px;
         padding: 0 16px;
@@ -73,31 +150,32 @@
         outline: none;
         border: 1px solid #a8a8b3;
 
-        &:focus{
+        &:focus {
           border: 1px solid #070118;
         }
       }
 
-      button{
+      button {
         margin-top: 16px;
       }
 
-      button, input{
+      button,
+      input {
         width: 100%;
-      } 
+      }
     }
 
-    p{
+    p {
       font-size: 14px;
       color: #757588;
       margin-top: 16px;
 
-      a{
+      a {
         color: #070118;
       }
     }
 
-    .create-rom{
+    .create-rom {
       margin-top: 64px;
       height: 50px;
       border-radius: 8px;
@@ -113,31 +191,30 @@
       border: 0;
       transition: filter 0.2s;
 
-      img{
+      img {
         margin-right: 8px;
       }
 
-
-      &:hover{
+      &:hover {
         filter: brightness(0.9);
       }
     }
 
-    .separator{
+    .separator {
       font-size: 14px;
       color: #a8a8b3;
       margin: 32px 0;
-      
-      &::before{
-        content: '';
+
+      &::before {
+        content: "";
         flex: 1;
         height: 1px;
         background: #a8a8b3;
         margin-right: 16px;
       }
 
-      &::after{
-        content: '';
+      &::after {
+        content: "";
         flex: 1;
         height: 1px;
         background: #a8a8b3;

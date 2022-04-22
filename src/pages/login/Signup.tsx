@@ -1,10 +1,11 @@
 import schedule from "../../components/assets/img/schedule.svg";
 import logo from "../../components/assets/img/logo.png";
 import "../../styles/auth.scss";
-import { Link } from "react-router-dom";
-import { FormSign } from "../../components/form/FormSign";
+import { Link} from "react-router-dom";
+import { FormSignup } from "../../components/form/FormSignup";
 
-export function Login() {
+export function Signup() {
+
   return (
     <div className="page-absolute">
       <div id="page-auth">
@@ -13,10 +14,10 @@ export function Login() {
             src={schedule}
             alt="Ilustração simbolizando uma pessoa, uma agenda e um relógio"
           />
-          <strong>Crie seus estabelecimentos</strong>
+          <strong>Faça agora a sua inscrição na nossa Startup</strong>
           <p>
-            Dê a si mesmo o poder e a facilidade de obtenção de clientes nos
-            mais diversos estabelecimentos
+            Se inscreva agora mesmo e leve o seu negócio em outro nível, seja a
+            escolha número 1 dos clientes.
           </p>
         </aside>
 
@@ -24,12 +25,12 @@ export function Login() {
           <div className="main-content">
             <img src={logo} alt="Logotipo do Agendei" />
 
-            <h2>Fazer login</h2>
+            <h2>Inscrever-se</h2>
 
-            <FormSign />
+            <FormSignup/>
 
             <p>
-              Ainda não sou inscrito! <Link to="/signup">Clique aqui</Link>
+              Ainda não sou inscrito! <Link to="/logup">Clique aqui</Link>
             </p>
           </div>
         </main>

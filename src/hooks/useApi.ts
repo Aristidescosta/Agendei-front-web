@@ -11,9 +11,22 @@ export const useApi = () => ({
   },
 
   signin: async (email: string, password: string) => {
-    const response = await api.post("/users/auth/login", { email, password });
-    console.log(response.data);
-    return response.data;
+    try {
+      const response = await api.post("/users/auth/login", { email, password });
+      return response;
+    } catch (error) {
+      var texto = "erro: " + error
+      return texto;
+    }
+  },
+
+  signup: async (username: string, email: string, password: string) => {
+    const response = await api.post("/users/signup", {
+      username,
+      email,
+      password,
+    });
+    return response.statusText;
   },
 
   logout: async () => {
@@ -31,8 +44,24 @@ export const useApi = () => ({
     const response = await api.get("/category");
     return response.data;
   },
-  setEstablishment: async (name:string,nif:string,categoryId:string,userId:string,address:object,phone_number:number,open_to:object) => {
-    const response = await api.post("/est/post", { name, nif, categoryId, userId, address, phone_number, open_to })
+  setEstablishment: async (
+    name: string,
+    nif: string,
+    categoryId: string,
+    userId: string,
+    address: object,
+    phone_number: number,
+    open_to: object
+  ) => {
+    const response = await api.post("/est/post", {
+      name,
+      nif,
+      categoryId,
+      userId,
+      address,
+      phone_number,
+      open_to,
+    });
     return response.data;
-  }
+  },
 });
