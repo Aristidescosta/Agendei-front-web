@@ -7,15 +7,14 @@ import "../styles/topbar.scss";
 import { Link } from "react-router-dom";
 
 export const Topbar = () => {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const auth = useContext(AuthContext);
 
   const handleLogout = async () => {
     await auth.signout();
-    window.location.href = window.location.href;
   };
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -37,7 +36,7 @@ export const Topbar = () => {
       >
         <Avatar className="img-avatar" />
 
-        <span>{auth.user.username}</span>
+        <span>{auth.user?.username}</span>
 
         <Menu
           id="simple-menu"
@@ -46,8 +45,8 @@ export const Topbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>
-            <Link to="/user/profile">Perfil</Link>
+          <MenuItem>
+            <Link onClick={handleClose} to="/user/profile">Perfil</Link>
           </MenuItem>
           <MenuItem onClick={handleLogout}>Sair</MenuItem>
         </Menu>

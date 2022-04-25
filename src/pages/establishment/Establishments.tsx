@@ -1,47 +1,53 @@
 import "../../styles/establishment.scss";
-import { Close, InfoSharp } from "@material-ui/icons";
+import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
 import { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { EstablishmentList } from "../../components/EstablishmentList";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { useApi } from "../../hooks/useApi";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom"
+
+type MeusDados = {
+  _id: string;
+  categoryId: string;
+  name: string;
+  nif: number;
+  img: string;
+  address: {
+    bairro: string;
+    rua: number;
+  };
+};
 
 export const Establishments = () => {
   const api = useApi();
-  const [dataEstablishment, setDataEstablishment] = useState([]);
-  const [showAlert, setShowAlert] = useState(false);
+  const auth = useContext(AuthContext);
+
+  const [dataEstablishment, setDataEstablishment] = useState<[]>([]);
+  const [showAlert, setShowAlert] = useState(true);
 
   const handleClick = () => {
     setShowAlert(false);
   };
 
-  const auth = useContext(AuthContext);
-
   useEffect(() => {
     const getEstablishment = async () => {
-      const response = await api.getEstablishment(auth.user._id)
-      setDataEstablishment(response);
-    }
+      if (auth.user) {
+        const response = await api.getEstablishment(auth.user._id);
+        setDataEstablishment(response);
+      }
+    };
+
     getEstablishment();
-  }, [api]);
+  });
 
-  const deletedEstablishment = (id) => {
-    /* Primeiro deverá ser disparado uma mensagem de confirmação */
-    alert("Este estabelecimento será eliminado!");
-    const remainingEstablishment = dataEstablishment.filter(
-      (establishment) => id !== establishment.id
-    );
-    setDataEstablishment(remainingEstablishment);
-  };
-
-  const establishmentList = dataEstablishment.map((datas) => (
+  const establishmentList = dataEstablishment.map((datas: MeusDados) => (
     <EstablishmentList
       id={datas._id}
       img={"https://teste-api-api.herokuapp.com/" + datas.img}
       name={datas.name}
       nif={datas.nif}
       address={datas.address}
-      key={datas._id}
     />
   ));
 
@@ -62,17 +68,18 @@ export const Establishments = () => {
           sucesso.
         </span>
       </div>
-      <div className="row">
-        <div className="col-lg-3 col-md-6">
-          <div className="card">
-            <Link to="/establishments/new" className="card-body establishmentAdd">
-              <h1>+</h1>
-            </Link>
-          </div>
-        </div>
 
-        {establishmentList}
-      </div>
+      <Link to="new">
+        <Button
+          variant="outlined"
+          color="primary"
+          endIcon={<AddShoppingCart />}
+        >
+          Adicionar novo estabelecimento
+        </Button>
+      </Link>
+
+      <div className="row">{establishmentList}</div>
     </section>
   );
 };

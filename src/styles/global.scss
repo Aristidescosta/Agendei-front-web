@@ -17,14 +17,6 @@
   border-radius: 10px;
 }
 
-.page-absolute {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-}
-
 ::-webkit-scrollbar-thumb:hover {
   background: #3f5d7d;
 }
@@ -33,16 +25,56 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
-  &::before,
-  &::after {
-    box-sizing: border-box;
-  }
 }
 
 body {
   background: #f8f8f8;
   color: #292929;
+}
+#box1{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  svg.deleteIcon{
+    font-size: 6rem;
+    color: red;
+  }
+}
+
+#modal-modal-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#modal-modal-description{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 .75rem;
+  margin: 8px 0;
+}
+
+a{
+  text-decoration: none;
+}
+
+.MuiCardActions-root {
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 body,
@@ -139,11 +171,11 @@ button {
   box-shadow: -1px 3px 14px 3px #a5a5a5de;
 
   .card-body {
-    flex: 1 1 auto;
+    flex: 1;
+    flex-wrap: wrap;
     padding: 1rem 1rem;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .card-title {
@@ -207,8 +239,8 @@ button {
   }
 }
 
-#root {
-  padding-left: 255px;
+section{
+  margin-left: 255px;
 }
 
 .col-form-label {

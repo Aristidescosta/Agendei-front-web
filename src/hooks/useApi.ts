@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://teste-api-api.herokuapp.com",
+  baseURL:"https://teste-api-api.herokuapp.com",
 });
 
 export const useApi = () => ({
@@ -31,8 +31,6 @@ export const useApi = () => ({
 
   logout: async () => {
     return { status: true };
-    const response = await api.post("/logout");
-    return response.data;
   },
 
   getEstablishment: async (id: number) => {
@@ -44,24 +42,8 @@ export const useApi = () => ({
     const response = await api.get("/category");
     return response.data;
   },
-  setEstablishment: async (
-    name: string,
-    nif: string,
-    categoryId: string,
-    userId: string,
-    address: object,
-    phone_number: number,
-    open_to: object
-  ) => {
-    const response = await api.post("/est/post", {
-      name,
-      nif,
-      categoryId,
-      userId,
-      address,
-      phone_number,
-      open_to,
-    });
+  setEstablishment: async (formData: FormData) => {
+    const response = await api.post("/est/post", {formData});
     return response.data;
   },
 });

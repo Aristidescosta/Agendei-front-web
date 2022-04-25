@@ -12,13 +12,9 @@ export const FormSign = () => {
   const onSubmit = async (data) => {
     setLogged(true)
     try {
+      const response = await auth.signin(data.email, data.password);
       setClassConnect("connected");
       setTexto("Conectando");
-      const response = await auth.signin(data.email, data.password);
-      if (!response) {
-        setTexto("Você não está conectado a internet.");
-        setClassConnect("error_connected");
-      }
     } catch (error) {
       console.log(error);
     }

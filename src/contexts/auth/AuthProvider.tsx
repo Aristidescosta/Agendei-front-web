@@ -18,14 +18,14 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       }
     };
     validateToken();
-  }, [api]);
+  }, []);
 
   const signin = async (email: string, password: string) => {
     const response = await api.signin(email, password);
     if (typeof response === "string") {
       return false;
     } else {
-      setUser(response.data.data);
+      setUser(response.data.user);
       setToken(response.data.token);
     }
     return true;
@@ -58,25 +58,9 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     await api.getCategory();
   };
 
-  const setEstablishment = async (
-    name: string,
-    nif: string,
-    categoryId: string,
-    userId: string,
-    address: object,
-    phone_number: number,
-    open_to: object
-  ) => {
+  const setEstablishment = async (formData: FormData) => {
     if (user?._id) {
-      await api.setEstablishment(
-        name,
-        nif,
-        categoryId,
-        userId,
-        address,
-        phone_number,
-        open_to
-      );
+      await api.setEstablishment(formData);
       return true;
     }
     console.log(user?._id);
@@ -87,6 +71,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         signin,
         signout,
         getEstablishment,
