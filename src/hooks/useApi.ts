@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosPromise, AxiosResponse } from "axios";
 
 const api = axios.create({
-  baseURL:"https://teste-api-api.herokuapp.com",
+  baseURL: "http://192.168.43.227:3005",
 });
 
 export const useApi = () => ({
@@ -11,22 +11,25 @@ export const useApi = () => ({
   },
 
   signin: async (email: string, password: string) => {
-    try {
-      const response = await api.post("/users/auth/login", { email, password });
-      return response;
-    } catch (error) {
-      var texto = "erro: " + error
-      return texto;
-    }
+    const response = await api
+      .post("/users/auth/login", { email, password })
+      .catch((error: AxiosError) => {
+        return error.response;
+      });
+    return response;
   },
 
   signup: async (username: string, email: string, password: string) => {
-    const response = await api.post("/users/signup", {
-      username,
-      email,
-      password,
-    });
-    return response.statusText;
+    const response = await api
+      .post("/users/signup", {
+        username,
+        email,
+        password,
+      })
+      .catch((error: AxiosError) => {
+        return error.response;
+      });
+    return response;
   },
 
   logout: async () => {
@@ -38,12 +41,17 @@ export const useApi = () => ({
     return response.data;
   },
 
+  confirmCode: async (email: string, code: number) => {
+    const response = await api.post("/users/auth/confirmcode", { email, code });
+    return response;
+  },
+
   getCategory: async () => {
     const response = await api.get("/category");
     return response.data;
   },
   setEstablishment: async (formData: FormData) => {
-    const response = await api.post("/est/post", {formData});
-    return response.data;
+    const response = await api.post("/est/post", { formData });
+    return response
   },
 });

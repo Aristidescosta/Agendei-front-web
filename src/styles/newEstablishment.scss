@@ -4,7 +4,18 @@
   .establishmentTitle {
     margin-bottom: 20px;
   }
-  
+
+  textarea {
+    width: 100%;
+    border: 0;
+    padding: 16px;
+    background: #fefefe;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    resize: none;
+    min-height: 80px;
+    outline: none;
+  }
+
   .button {
     margin-top: 5px;
   }

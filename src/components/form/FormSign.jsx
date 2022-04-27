@@ -1,29 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { AuthContext } from "../../contexts/auth/AuthContext"
+import toast, { Toaster } from "react-hot-toast";
 
 export const FormSign = () => {
   const auth = useContext(AuthContext)
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [logged, setLogged] = useState(false);
-  const [texto, setTexto] = useState("Conectando");
-  const [classConnect, setClassConnect] = useState("connected");
+
   const onSubmit = async (data) => {
-    setLogged(true)
-    try {
-      const response = await auth.signin(data.email, data.password);
-      setClassConnect("connected");
-      setTexto("Conectando");
-    } catch (error) {
-      console.log(error);
-    }
+    toast.loading("Carregando...")
+    await auth.signin(data.email, data.password);
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={logged ? classConnect : "hiden"}>
-        <span>{texto} </span>
+      <div>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+        />
       </div>
 
       <input

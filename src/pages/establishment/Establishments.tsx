@@ -11,7 +11,7 @@ type MeusDados = {
   _id: string;
   categoryId: string;
   name: string;
-  nif: number;
+  nif: number; 
   img: string;
   address: {
     bairro: string;
@@ -39,16 +39,16 @@ export const Establishments = () => {
     };
 
     getEstablishment();
-  });
+  }, []);
 
   const establishmentList = dataEstablishment.map((datas: MeusDados) => (
     <EstablishmentList
       id={datas._id}
-      img={"https://teste-api-api.herokuapp.com/" + datas.img}
+      img={"http://192.168.43.227:3005/" + datas.img}
       name={datas.name}
       nif={datas.nif}
       address={datas.address}
-    />
+    /> 
   ));
 
   return (
