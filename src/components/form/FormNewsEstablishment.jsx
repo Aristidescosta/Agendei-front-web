@@ -5,9 +5,11 @@ import Select from "@material-ui/core/Select";
 import { useForm, Controller } from "react-hook-form";
 //Importações do Material UI
 
-import { AuthContext } from "../../contexts/auth/AuthContext"
-import { Input } from "@material-ui/core";
+import axios from "axios";
 
+import { AuthContext } from "../../contexts/auth/AuthContext"
+import { Input, IconButton } from "@material-ui/core";
+import { PhotoCamera } from "@material-ui/icons";
 
 
 export const FormNewsEstablishment = () => {
@@ -48,15 +50,28 @@ export const FormNewsEstablishment = () => {
   const onSubmit = async data => {
     console.log(data)
     let formData = new FormData();
-    formData.append("name", JSON.stringify(data.name));
-    formData.append("nif", JSON.stringify(data.nif));
-    formData.append("categoryId", JSON.stringify(categoryId));
-    formData.append("userId", JSON.stringify(auth.user._id));
-    formData.append("number1", JSON.stringify(data.number));
-    formData.append("number2", JSON.stringify(data.number2));
-    formData.append("address", JSON.stringify(data.address));
-    formData.append("description", JSON.stringify(textarea));
+    formData.append("name", data.name);
+    formData.append("nif", data.nif);
+    formData.append("categoryId", categoryId);
+    formData.append("userId", auth.user._id);
+    formData.append("number1", data.number);
+    formData.append("number2", data.number2);
+    formData.append("address", data.address);
+    formData.append("description", textarea);
     formData.append("file", picture);
+
+    axios({
+      method: "post",
+      url: "http://192.168.43.227:3005/est/post",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then(function (response) {
+        //handle success
+        console.log(response);
+      }).catch(function (response) {
+        //handle error
+        console.log(response);
+      });
     
     /* fetch("http://192.168.43.227:3005/est/post", {
       method: "POST",
@@ -68,9 +83,11 @@ export const FormNewsEstablishment = () => {
 
         return response.text();
       })
-      .then((data) => alert(data)); */
+      .then((data) => alert(data));
+ */
+    /* await auth.setEstablishment(formData); */
 
-    await auth.setEstablishment(formData);
+
 
   };
 
@@ -131,16 +148,13 @@ export const FormNewsEstablishment = () => {
           <textarea name="description" onChange={(event) => setTextarea(event.target.value)}></textarea>
         </div>
       </div>
-      <Controller
-        name="select"
-        control={control}
-        render={({ field }) => <Select 
-          {...field} 
-          {...list} 
-        />}
-      />
 
-      <input type="file" accept="image/*" onChange={(event) => setPicture(event.target.files[0])} />
+      <label htmlFor="icon-button-file">
+      <Input accept="image/*" id="icon-button-file" type="file" onChange={(event) => setPicture(event.target.files[0])}/>
+        <IconButton color="primary" aria-label="Atualizar a fotografia" component="span">
+          <PhotoCamera/>
+        </IconButton>
+      </label>  
       <select onChange={(event) => onChangeCategory(event)} name="" id="">
         {list}
       </select>
