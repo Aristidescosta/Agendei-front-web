@@ -2,69 +2,9 @@
   display: flex;
   align-items: stretch;
   height: 100vh;
-
-  .error_connected{
-    background-color: red;
-    &::before {
-      content: "⚠ ";
-      color: #fff;
-    }
-
-    span{
-      &::after{
-        content: "X";
-        top: 16px;
-        margin-left: 10px;
-        background-color: transparent;
-      }
-    }
-  }
-
-  .connected{
-    background-color: rgba(23, 254, 23, 0.682);
-    span{
-      &::after{
-        content: "";
-        top: 16px;
-        width: 20px;
-        height: 20px;
-        margin-left: 10px;
-        background-color: transparent;
-        border: 3px solid #fff;
-        border-top-color: rgb(4, 145, 4);;
-        border-radius: 50%;
-        animation: isRouting 1s infinite;
-      }
-    }
-  }
-
-  .connected,
-  .error_connected {
-    position: absolute;
-    right: 0;
-    display: flex;
-    height: 50px;
-    border-radius: 5px;
-    align-items: center;
-    top: 4px;
-
-    span {
-      padding: 5px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-    }
-
-    @keyframes isRouting {
-      to{
-        transform: rotate(1turn);
-      }
-    }
-  }
-
-
+  
   aside {
-    flex: 7;
+    flex: 1;
 
     background: #070118;
     color: #fff;
@@ -111,7 +51,7 @@
   }
 
   main {
-    flex: 8;
+    flex: 2;
 
     padding: 0 32px;
 
@@ -221,5 +161,25 @@
         margin-left: 16px;
       }
     }
+  }
+}
+
+
+/* =============================
+  Tablet
+============================= */
+
+
+@media (max-width: 576px) {
+  #page-auth {
+    flex-direction: column!important;
+  }
+
+  #page-auth aside{
+    flex: 1;
+  }
+
+  #page-auth main{
+    flex: 1;
   }
 }

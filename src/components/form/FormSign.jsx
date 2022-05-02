@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { AuthContext } from "../../contexts/auth/AuthContext"
@@ -9,8 +9,8 @@ export const FormSign = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
-    toast.loading("Carregando...")
-    await auth.signin(data.email, data.password);
+    const response = await auth.signin(data.email, data.password);
+    console.log(response)
   }
 
   return (

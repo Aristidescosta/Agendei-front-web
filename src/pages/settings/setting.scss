@@ -1,0 +1,83 @@
+.setting {
+  .buttons {
+    display: flex;
+    gap: 20px;
+
+    > div {
+      input {
+        display: none;
+      }
+    }
+  }
+
+  .information {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+    > div {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+
+      div {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  #removePicture {
+    border-radius: 50%;
+    height: 60px;
+    span span {
+      border-radius: 50%;
+    }
+  }
+
+  .MuiAvatar-root {
+    border-radius: 0;
+    max-width: 320px;
+    width: 320px;
+    height: 320px;
+  }
+
+  form {
+    div {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 320px;
+
+      span {
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+      }
+    }
+  }
+
+  #scrollable-auto-tabpanel-1{
+    .MuiBox-root{
+      display: flex;
+      align-items: flex-end;
+      gap: 50px;
+
+
+      .MuiButton-sizeLarge{
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      section{
+        form{
+          h1{
+            text-align: center;
+          }
+          div{
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+  }
+}

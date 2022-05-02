@@ -1,20 +1,22 @@
 import { Routes, Route } from "react-router-dom";
-import { Sidebar } from "../../components/Sidebar";
 import { Topbar } from "../../components/Topbar";
+import Account from "../account/Account";
 import { Establishments } from "../establishment/Establishments";
 import { NewEstablishment } from "../establishment/NewEstablishment";
-import { Profile } from "../profile/Profile";
+import { Service } from "../services/Service";
+import Setting from "../settings/Setting";
 
 export default function Home() {
   return (
     <>
       <Topbar />
-      <main className="container">
-        <Sidebar />
+      <main >
         <Routes>
           <Route index element={<Establishments/>}/>
           <Route path="new" element={<NewEstablishment />} />
-          <Route path="/user/profile" element={<Profile />} />
+          <Route path="user/setting" element={<Setting />} />
+          <Route path="user/account" element={<Account />} />
+          <Route path="establishment/service/:id1/:id" element={<Service/>}/>
         </Routes>
       </main>
     </>

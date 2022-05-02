@@ -8,7 +8,7 @@ export type AuthContextType = {
   email: Email | string | undefined;
   setEmail: React.Dispatch<React.SetStateAction<Email | string | undefined>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  signin: (email: string, password: string) => void;
+  signin: (email: string, password: string) => Promise<boolean>;
   signup: (
     username: string,
     email: string,
@@ -17,7 +17,7 @@ export type AuthContextType = {
   signout: () => void;
   getEstablishment: (id: number) => Promise<boolean>;
   getCategory: () => void;
-  confirmCode: (email: string, code: number) => Promise<AxiosResponse>;
+  confirmCode: (email: string, code: number) => Promise<AxiosResponse | undefined>;
   setEstablishment: (formData: FormData) => Promise<boolean>;
 };
 

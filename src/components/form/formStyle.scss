@@ -1,0 +1,73 @@
+.formNewsEstablishment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .w-100 > div {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .add-est {
+    position: relative;
+
+    width: 180px;
+
+    > div {
+      div {
+        width: 180px;
+        height: 180px;
+      }
+
+      svg {
+        width: 100%;
+        height: 100%;
+        color: #070118;
+      }
+    }
+
+    > label {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-radius: 50%;
+      background-color: #070118;
+
+      svg {
+        height: 30px;
+        width: 30px;
+        color: #fff;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  .describe {
+    margin-top: 20px;
+    textarea {
+      margin-top: 10px;
+      width: 100%;
+      border: 0;
+      padding: 16px;
+      background: #fefefe;
+      -webkit-box-shadow: -1px 3px 14px 3px #a5a5a5de;
+      box-shadow: -1px 3px 14px 3px #a5a5a5de;
+      resize: none;
+      min-height: 80px;
+      outline: none;
+      border-radius: 5px;
+    }
+  }
+
+  button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #070118;
+    color: #fff;
+  }
+}

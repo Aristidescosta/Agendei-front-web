@@ -5,19 +5,20 @@ import { Button } from "../../components/Button";
 import { Label } from "@material-ui/icons";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { Toaster } from "react-hot-toast"
 
 export const Index = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const auth = useContext(AuthContext);
   
   const onSubmit = async data => {
-    const response = await auth.confirmCode(auth.email, (data.confirmationCode).toString());
-    auth.setUser(response.data.user);
-    localStorage.setItem("authToken", response.data.token);
+    const response = await auth.confirmCode(auth.email, data.confirmationCode);
+    console.log(response) 
   }
 
   return (
     <div className="container-code">
+      <div><Toaster></Toaster></div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <p>Verifique o seu email</p>
         <br />

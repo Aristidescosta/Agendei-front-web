@@ -1,22 +1,20 @@
-import "../../styles/establishment.scss";
+import "./establishment.scss";
 import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
 import { useState, useContext, useEffect } from "react";
-import { EstablishmentList } from "../../components/EstablishmentList";
+import { EstablishmentList } from "./EstablishmentList";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { useApi } from "../../hooks/useApi";
 import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import { establishmentRows } from "../../data";
 
 type MeusDados = {
-  _id: string;
+  id: string;
   categoryId: string;
   name: string;
-  nif: number; 
+  nif: number;
   img: string;
-  address: {
-    bairro: string;
-    rua: number;
-  };
+  location: string;
 };
 
 export const Establishments = () => {
@@ -41,18 +39,21 @@ export const Establishments = () => {
     getEstablishment();
   }, []);
 
-  const establishmentList = dataEstablishment.map((datas: MeusDados) => (
-    <EstablishmentList
-      id={datas._id}
-      img={"http://192.168.43.227:3005/" + datas.img}
-      name={datas.name}
-      nif={datas.nif}
-      address={datas.address}
-    /> 
+  const establishmentList = establishmentRows.map((datas: MeusDados) => (
+    <div className="col-lg-4 col-sm-6">
+      <EstablishmentList
+        id={datas.id}
+        name={datas.name}
+        nif={datas.nif}
+        img={datas.img}
+        location={datas.location}
+        key={datas.id}
+      />
+    </div>
   ));
 
   return (
-    <section className="establishment">
+    <section className="container establishment">
       <h1 className="establishment-title">
         Nº total de estabelecimentos:
         <small className="establishment-sub">{dataEstablishment.length}</small>

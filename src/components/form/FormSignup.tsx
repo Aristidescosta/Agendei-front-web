@@ -1,21 +1,18 @@
-import React, { FormEventHandler, useContext } from "react";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "../Button";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import toast, { Toaster } from "react-hot-toast";
-import { useApi } from "../../hooks/useApi";
 import { useNavigate } from "react-router-dom";
-import { string } from "yup";
 
 interface IFormInput {
   email: string;
   password: string;
   password2: string;
-  username: string;
+  name: string;
 }
 
 export const FormSignup = () => {
-  const api = useApi();
   const auth = useContext(AuthContext);
 
   const navigate = useNavigate();
@@ -27,9 +24,10 @@ export const FormSignup = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     if (data.password2 === data.password) {
-      toast.loading("Carregando");
       auth.setEmail(data.email);
-      const response = await auth.signup(data.username, data.email, data.password)
+      const response = await auth.signup(data.name, data.email, data.password)
+      console.log(response);
+      console.log(data.email);
       if(response){
         navigate("/confirmCode");
       }
@@ -45,11 +43,11 @@ export const FormSignup = () => {
         <Toaster position="top-right" reverseOrder={false} />
       </div>
       <input
-        {...register("username", { required: true, maxLength: 20 })}
+        {...register("name", { required: true, maxLength: 20 })}
         placeholder="Admin"
       />
-      {errors.username && <span className="error_msg">Nome muito longo</span>}
-
+      {errors.name && <span className="error_msg">Nome muito longo</span>}
+ 
       <input
         {...register("email", { pattern: /\S+@\S+\.\S+/ })}
         type="email"
@@ -58,21 +56,21 @@ export const FormSignup = () => {
       {errors.email && <span className="error_msg">Email inválido</span>}
 
       <input
-        {...register("password", { required: true })}
+        {...register("password", { required: true, minLength: 8, maxLength: 20 })}
         type="password"
         placeholder="*********"
       />
       {errors.password && (
-        <span className="error_msg">Este campo é obrigatório</span>
+        <span className="error_msg">No mínimo 8 caracteres e máximo 20</span>
       )}
 
       <input
-        {...register("password2", { required: true })}
+        {...register("password2", { required: true, minLength: 8, maxLength: 20 })}
         type="password"
         placeholder="*********"
       />
       {errors.password2 && (
-        <span className="error_msg">Este campo é obrigatório</span>
+        <span className="error_msg">No mínimo 8 caracteres e máximo 20</span>
       )}
 
       <Button type="submit">Entrar</Button>

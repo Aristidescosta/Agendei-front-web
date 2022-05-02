@@ -166,59 +166,39 @@ export const clientsRows = [
 
 export const establishmentRows = [
   {
-    id: 1,
-    establishmentName: "Barbearia",
-    img: AvatarEstablishment,
-    services: 4,
-    nif: "12345",
-    nif: "",
-    email: "aristidiscosta200@gmail.com",
-    categoryValue: "barbearia",
-    location: "Rua da Paz"
+    id: "1qw1",
+    categoryId: "qwertyuiop",
+    name: "Pastelaria Aristides",
+    nif: 12345,
+    img: "caminho1",
+    location: "Rua do Imaus",
   },
 
   {
-    id: 2,
-    establishmentName: "Restaurante",
-    img: AvatarEstablishment,
-    services: 4,
-    nif: "12345",
-    email: "aristidiscosta200@gmail.com",
-    categoryValue: "restaurante",
-    location: "Rua da Pracinha"
+    id: "1qw2",
+    categoryId: "qwertyuiop",
+    name: "Hopital Geral",
+    nif: 12345,
+    img: "caminho1",
+    location: "Rua do camama",
   },
 
   {
-    id: 3,
-    establishmentName: "Hotel",
-    img: AvatarEstablishment,
-    services: 4,
-    nif: "12345",
-    email: "aristidiscosta200@gmail.com",
-    categoryValue: "hotel",
-    location: "Rua do Fontenário"
+    id: "1qw3",
+    categoryId: "qwertyuiop",
+    name: "Restaurante bom amigo",
+    nif: 12345,
+    img: "caminho1",
+    location: "Rua sem Nome",
   },
 
   {
-    id: 4,
-    establishmentName: "Oficina",
-    img: AvatarEstablishment,
-    services: 4,
-    nif: "12345",
-    email: "aristidiscosta200@gmail.com",
-    categoryValue: "oficina",
-    location: "Rua do Bom Deus"
-  },
-
-  {
-    id: 5,
-    establishmentName: "Veterinária",
-    img: AvatarEstablishment,
-    services: 4,
-    nif: "12345",
-    email: "aristidiscosta200@gmail.com",
-    categoryValue: "oficina",
-    location: "Rua da Paz"
+    id: "1qw4",
+    categoryId: "qwertyuiop",
+    name: "Hospedaria amiginhos",
+    nif: 12345,
+    img: "caminho1",
+    location: "Rua das PT",
   },
 ];
 
