@@ -17,10 +17,6 @@ type MeusDados = {
   location: string;
 };
 
-type paramsIdType <id1: number, id: string> = {
-  id1:number;
-  id: number;
-}
 
 export const Service = () => {
   const api = useApi();
@@ -29,7 +25,6 @@ export const Service = () => {
   const [dataEstablishment, setDataEstablishment] = useState<[]>([]);
   const [showAlert, setShowAlert] = useState(true);
 
-  const { id1, id } = useParams<paramsIdType>();
   
   const handleClick = () => {
     setShowAlert(false);
@@ -58,10 +53,6 @@ export const Service = () => {
       />
     </div>
   ));
-
-  if (typeof id1 === "number") {
-    console.log(establishmentRows[id1]) 
-  }
 
   return (
     <section className="container establishment">
