@@ -33,23 +33,6 @@
     }
   }
 
-  .error_msg {
-    color: red;
-    float: left;
-    margin-top: -1rem;
-    margin-bottom: 15px;
-
-    &::before {
-      content: "⚠ ";
-    }
-  }
-
-  
-
-  .hiden {
-    display: none;
-  }
-
   main {
     flex: 2;
 
@@ -85,7 +68,7 @@
         height: 50px;
         border-radius: 8px;
         padding: 0 16px;
-        margin: 0 0 24px;
+        margin: 0 0 8px;
         background: #fff;
         outline: none;
         border: 1px solid #a8a8b3;
@@ -97,6 +80,8 @@
 
       button {
         margin-top: 16px;
+        background-color: #070118;
+        color: #FFF;
       }
 
       button,

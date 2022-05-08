@@ -164,6 +164,30 @@ export const clientsRows = [
   },
 ];
 
+export const schedules = [
+  {
+    id: 1,
+    clientName: "Aristides",
+    service: "Corte francês",
+    date: "24/10",
+    schedule: "10:30"
+  },
+  {
+    id: 2,
+    clientName: "Ruben André",
+    service: "Corte careca",
+    date: "24/10",
+    schedule: "22:45"
+  },
+  {
+    id: 3,
+    clientName: "Domingos da Costa",
+    service: "Corte escovinha",
+    date: "04/08",
+    schedule: "12:00"
+  }
+]
+
 export const establishmentRows = [
   {
     id: "1qw1",

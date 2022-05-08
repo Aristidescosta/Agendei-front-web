@@ -1,19 +1,13 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { Avatar, Menu, MenuItem } from "@material-ui/core";
 import logo from "./assets/img/logo.png";
-import { AuthContext } from "../contexts/auth/AuthContext";
 import "../styles/topbar.scss";
 import { Link } from "react-router-dom";
 import { AccountBox, ExitToApp, Settings } from "@material-ui/icons";
 
 export const Topbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const auth = useContext(AuthContext);
-
-  const handleLogout = async () => {
-    await auth.signout();
-  };
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +56,7 @@ export const Topbar = () => {
 
           <MenuItem>
           <ExitToApp />
-            <Link to="#logout" onClick={handleLogout}>
+            <Link to="#logout">
             Sair
             </Link>
           </MenuItem>

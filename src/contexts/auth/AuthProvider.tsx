@@ -1,101 +1,83 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { User } from "../../types/User";
-import { Email } from "../../types/Email";
 import { useApi } from "../../hooks/useApi";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
+import { AxiosError } from "axios";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [email, setEmail] = useState<Email | string>();
+  const [email, setEmail] = useState<string>();
   const [user, setUser] = useState<User | null>(null);
   const api = useApi();
+
   useEffect(() => {
     const validateToken = async () => {
-      const storageDate = localStorage.getItem("authToken");
-      if (storageDate) {
-        const response = await api.validateToken(storageDate);
-        if (response.token) {
-          setUser(response.user);
-          setToken(response.token);
-        }
+      const storageData = localStorage.getItem("agendeiToken");
+      if(storageData){
+        const response = await api.validateToken(storageData)
+        console.log(response.data.user)
+        if(response.data.user)        
+          setUser(response.data.user); 
       }
-    };
+    }
     validateToken();
   }, []);
-  
 
-  const signin = async (email: string, password: string) => {
-    const response = await api.signin(email, password);
-    if(response.user && response.token){
-      setUser(response.user);
-      setToken(response.token);
-    }
-    
-    /* if (response?.status === 200) {
-      
-      return true;
-    }
-    if (response?.status === 422) {
-      toast.error(response.data.message);
-      return false;
-    } */
-    return false;
-  };
-
-  const setToken = (token: string) => {
-    localStorage.setItem("authToken", token);
-  };
-
-  const signout = async () => {
-    await api.logout();
-    setUser(null);
-    localStorage.clear();
-  };
-
-  const signup = async (username: string, email: string, password: string) => {
-    const response = await api.signup(username, email, password);
-  
-    
-    if (response?.status === 422) {
-      console.log(response);
-      toast.error(response.data.message.toUpperCase());
-    }
-    if(response?.status === 302){
-      toast.success(response.data.message.toUpperCase());    
-      return true;  
-    }
-  };
-
-  const getEstablishment = async (id: number) => {
-    if (user?._id) {
-      await api.getEstablishment(id);
-      return true;
-    }
-    return false;
-  };
-
-  const getCategory = async () => {
-    await api.getCategory();
-  };
-
-  const setEstablishment = async (formData: FormData) => {
+  async function signUp(username: string, email: string, password: string) {
     await api
-      .setEstablishment(formData)
+      .signUp(username, email, password)
       .then((response) => {
-        if (!response.data.ok)
-          throw new Error("não foi possível completar cadastro");
-
-        return response.data.text();
+        window.location.href = "/confirmCode";
+        toast.success("EMAIL CADASTRADO COM SUCESSO!");
+        localStorage.setItem("agendeiEmail", email);
       })
-      .then((data) => alert(data));
-    return false;
-  };
+      .catch((error: AxiosError) => {
+        toast.error(error.response?.data.message);
+      });
+  }
 
-  const confirmCode = async (email: string, confirmCode: number) => {
-    const response = await api.confirmCode(email, confirmCode)
-    console.log(response)
-    return response
-  };
+  async function confirmCode(email: string, confirmationCode: string) {
+    let retorno = false;
+
+    await api
+      .confirmCode(email, confirmationCode)
+      .then((response) => {
+        toast.success(response.data.message);
+        if (response.status === 201) {
+          setUser(response.data.data.user);
+          console.log(user);
+          setToken(response.data.data.token);
+        }
+        retorno = true;
+      })
+      .catch((error: AxiosError) => {
+        toast.error(error.response?.data.message);
+        return false;
+      });
+    return retorno;
+  }
+
+  async function reConfirmCode(email: string) {
+    await api.reConfirmCode(email).then((response) => {
+      toast.success(response.data.message);
+    });
+  }
+
+  async function login(email: string, password: string) {
+    await api
+      .login(email, password)
+      .then((response) => {
+        setUser(response.data.data);
+        setToken(response.data.token);
+      })
+      .catch((error: AxiosError) => {
+        toast.error(error.response?.data.message);
+      });
+  }
+
+  function setToken(token: string) {
+    localStorage.setItem("agendeiToken", token);
+  }
 
   return (
     <AuthContext.Provider
@@ -104,13 +86,10 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         email,
         setUser,
         setEmail,
-        signin,
-        signout,
+        signUp,
         confirmCode,
-        getEstablishment,
-        getCategory,
-        setEstablishment,
-        signup,
+        reConfirmCode,
+        login,
       }}
     >
       {children}

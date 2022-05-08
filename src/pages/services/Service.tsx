@@ -1,11 +1,9 @@
 import "../establishment/establishment.scss";
 import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { ServiceList } from "./ServiceList";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import { useApi } from "../../hooks/useApi";
 import { Button } from "@material-ui/core";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { establishmentRows } from "../../data";
 
 type MeusDados = {
@@ -19,27 +17,11 @@ type MeusDados = {
 
 
 export const Service = () => {
-  const api = useApi();
-  const auth = useContext(AuthContext);
-
-  const [dataEstablishment, setDataEstablishment] = useState<[]>([]);
-  const [showAlert, setShowAlert] = useState(true);
-
+    const [showAlert, setShowAlert] = useState(true);
   
   const handleClick = () => {
     setShowAlert(false);
   };
-
-  useEffect(() => {
-    const getEstablishment = async () => {
-      if (auth.user) {
-        const response = await api.getEstablishment(auth.user._id);
-        setDataEstablishment(response);
-      }
-    };
-
-    getEstablishment();
-  }, []);
 
   const establishmentList = establishmentRows.map((datas: MeusDados) => (
     <div className="col-lg-4 col-sm-6">
@@ -58,7 +40,7 @@ export const Service = () => {
     <section className="container establishment">
       <h1 className="establishment-title">
         Nº de  : 
-        <small className="establishment-sub">{dataEstablishment.length}</small>
+        <small className="establishment-sub">{establishmentRows.length}</small>
       </h1>
 
       <div className={showAlert ? "alert-info show" : "alert-info hidden"}>
@@ -72,13 +54,23 @@ export const Service = () => {
         </span>
       </div>
 
-      <Link to="new">
+      <Link to={`new`}>
         <Button
           variant="outlined"
           color="primary"
           endIcon={<AddShoppingCart />}
         >
-          Adicionar novo estabelecimento
+          Adicionar novo serviço
+        </Button>
+      </Link>
+
+      <Link to={`new`}>
+        <Button
+          variant="outlined"
+          color="primary"
+          endIcon={<AddShoppingCart />}
+        >
+          Adicionar novo serviço
         </Button>
       </Link>
 

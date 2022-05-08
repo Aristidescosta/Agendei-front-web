@@ -15,11 +15,12 @@ import {
   VisibilityOff,
 } from "@material-ui/icons";
 import { IconButton, Input } from "@material-ui/core";
-import React, { ChangeEvent, createContext, useState } from "react";
+import React, { ChangeEvent, createContext, useContext, useState } from "react";
 import logo from "../../components/assets/img/change-password-icon.jpg";
 import avatar from "../../components/assets/img/profile.png";
 import "./setting.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -29,7 +30,7 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
+  
   return (
     <div
       role="tabpanel"
@@ -105,7 +106,9 @@ function Setting() {
     setValue(newValue);
   };
 
+  const auth = useContext(AuthContext)
   return (
+  
     <section className="setting">
       <AppBar position="static" color="default">
         <Tabs
@@ -160,17 +163,12 @@ function Setting() {
         <div className="information">
           <div>
             <label>Nome: </label>
-            <Input type="text" placeholder="Nome" />
-          </div>
-
-          <div>
-            <label>Telefone: </label>
-            <Input type="number" />
+            <Input type="text" value={auth.user?.username} placeholder="Nome" />
           </div>
 
           <div>
             <label>Email: </label>
-            <Input type="email" placeholder="Nome" />
+            <Input type="email" value={auth.user?.email} placeholder="Nome" />
           </div>
 
           <Button

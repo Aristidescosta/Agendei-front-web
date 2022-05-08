@@ -1,28 +1,78 @@
-.container-code {
+.background-fit {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+
+  svg {
+    position: relative;
+    display: block;
+    width: calc(243% + 1.3px);
+    height: 500px;
+
+    path {
+      fill: #070118;
+    }
+  }
+}
+
+/** Para despositivos mobile **/
+@media (max-width: 767px) {
+  .background-fit svg {
+    width: calc(203% + 1.3px);
+    height: 500px;
+  }
+}
+
+.confirm-container {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  form {
-    min-width: 320px;
+  .content-confirm {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    gap: 30px;
 
-    .confirm-text {
+    z-index: 1030;
+    background: #070118;
+    padding: 30px;
+    box-shadow: -1px 0px 3px #fff;
+    color: #fff;
+    border-radius: 15px;
+
+    form {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      gap: 30px;
+      input {
+        width: 50px;
+        height: 50px;
+
+        outline: none;
+        text-align: center;
+        font-size: 2rem;
+        color: #070118;
+
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+        }
+      }
+    }
+    
+    .reset-password{
+      align-self: flex-start;
+      cursor: pointer;
     }
 
-    button {
+    .MuiButton-containedPrimary{
       width: 100%;
     }
+
   }
 }

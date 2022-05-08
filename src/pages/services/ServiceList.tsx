@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -9,10 +8,12 @@ import {
   CardMedia,
   Typography,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import ModalDeleted from "../../components/modal/ModalDeleted";
 import { ModalEdit } from "../../components/modal/ModalEdit";
+import { Schedule } from "@material-ui/icons";
 
 type PropsType = {
   id: string;
@@ -74,12 +75,6 @@ export const ServiceList = (props: PropsType) => {
             Atualizar
           </Button>
 
-          <Link to={`/establishment/service/${1}/${props.id}`}>
-            <Button type="button" variant="outlined" color="primary">
-              Serviços
-            </Button>
-          </Link>
-
           <Button
             type="button"
             variant="outlined"
@@ -89,6 +84,13 @@ export const ServiceList = (props: PropsType) => {
           >
             Eliminar
           </Button>
+
+          <Link to={`${props.id}/schedules`}
+          >
+            Agendamentos
+
+            <Schedule />
+          </Link>
         </CardActions>
       </Card>
     </>

@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { RequireAuth } from "./contexts/auth/RequireAuth";
-import { Index } from "./pages/confirmCode/Index";
+import { ConfirmCode } from "./pages/confirmCode/Index";
 import Home from "./pages/home/Home";
 import { Signup } from "./pages/login/Signup";
 
@@ -16,7 +16,7 @@ function App() {
         }
       />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/confirmCode" element={<Index />} />
+      <Route path="/confirmCode" element={<ConfirmCode />} />
     </Routes>
   );
 }

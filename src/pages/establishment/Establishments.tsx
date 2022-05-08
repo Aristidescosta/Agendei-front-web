@@ -1,12 +1,11 @@
 import "./establishment.scss";
 import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
-import { useState, useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { EstablishmentList } from "./EstablishmentList";
-import { AuthContext } from "../../contexts/auth/AuthContext";
-import { useApi } from "../../hooks/useApi";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { establishmentRows } from "../../data";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type MeusDados = {
   id: string;
@@ -18,26 +17,12 @@ type MeusDados = {
 };
 
 export const Establishments = () => {
-  const api = useApi();
-  const auth = useContext(AuthContext);
-
-  const [dataEstablishment, setDataEstablishment] = useState<[]>([]);
   const [showAlert, setShowAlert] = useState(true);
-
+  const auth = useContext(AuthContext);
   const handleClick = () => {
     setShowAlert(false);
   };
 
-  useEffect(() => {
-    const getEstablishment = async () => {
-      if (auth.user) {
-        const response = await api.getEstablishment(auth.user._id);
-        setDataEstablishment(response);
-      }
-    };
-
-    getEstablishment();
-  }, []);
 
   const establishmentList = establishmentRows.map((datas: MeusDados) => (
     <div className="col-lg-4 col-sm-6">
@@ -52,11 +37,13 @@ export const Establishments = () => {
     </div>
   ));
 
+
+
   return (
     <section className="container establishment">
       <h1 className="establishment-title">
         Nº total de estabelecimentos:
-        <small className="establishment-sub">{dataEstablishment.length}</small>
+        <small className="establishment-sub">{establishmentRows.length}</small>
       </h1>
 
       <div className={showAlert ? "alert-info show" : "alert-info hidden"}>

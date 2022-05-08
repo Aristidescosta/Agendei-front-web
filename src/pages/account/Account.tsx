@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./account.scss";
 import user from "../../components/assets/img/profile1.png";
+import { AuthContext } from "../../contexts/auth/AuthContext";
+
 
 function Account() {
+  const auth = useContext(AuthContext)
+  
   return (
     <section className="account">
       <div>
@@ -13,12 +17,12 @@ function Account() {
         <section>
           <div>
             <span>Nome do usuário</span>
-            <h3>Aristides da Costa</h3>
+            <h3>{ auth.user?.username }</h3>
           </div>
 
           <div>
             <span>Email</span>
-            <h3>aristidescosta200@gmail.com</h3>
+            <h3>{ auth.user?.email }</h3>
           </div>
 
           <div>
