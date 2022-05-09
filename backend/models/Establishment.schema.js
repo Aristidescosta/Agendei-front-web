@@ -5,88 +5,71 @@ const establishmentSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-
     nif: {
-      type: String,
+      type: Number,
       require: true,
     },
-
     category: {
-      name: {
-        type: String,
-        require: true,
-      },
+      type: Object,
+      require: true,
     },
-
     img: {
       type: String,
       require: true,
     },
-
-    imagens: [],
-
-    phones_number: [{type: Number}],
-
+    images: {
+      type: Array,
+      default: [],
+    },
+    phones_number: {
+      type: Array,
+    },
     description: {
       type: String,
+      require: true,
     },
-
+    address: {
+      type: String,
+      require: true,
+    },
     open_to: {
-      dia: {
-        type: String
-      },
-      open: {
-        type: String
-      },
-      close: {
-        type: String
-      }
+      type: Array,
+      default: [],
+    },
+    rates: {
+      type: Object,
+      default: {},
+    },
+    user: {
+      type: Object,
+      require: true,
+    },
+    services: {
+      type: Array,
+      default: [],
+    },
+    appointments: {
+      type: Array,
+      default: [],
     },
 
     rating: {
-      type: Number
+      type: Number,
+      default: 0,
     },
-
-    user: {
-      name: {
-        type: String,
-        require: true
-      }
+    ratingmedia: {
+      type: Number,
+      default: 0,
     },
-
-    services: [{
-      name: {
-        type: String
-      },
-      est: {
-        name: {
-          type: String,
-          require: true
-        }
-      },
-      preco: {
-        type: Number
-      },
-      horarios: [{
-        type: String
-      }]
-    }],
-
-    appointments: [{
-      type: Number
-    }],
-
-    ratingMedia: {
-      type: Number
-    },
-
     open: {
-      type: Boolean
-    }
+      type: Boolean,
+      default: false,
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
-
 
 const establishment = mongoose.model("ests", establishmentSchema);
 module.exports = establishment;
