@@ -34,7 +34,6 @@ const f = schedules.map((d) => (
       <Button>Aprovar</Button>
     </ButtonGroup>)
 ))
-console.log(f)
 
 export const Schedules = () => {
   const [searchValue, setSearchValue] = useState("");

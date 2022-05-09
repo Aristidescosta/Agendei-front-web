@@ -1,6 +1,6 @@
 import "./establishment.scss";
 import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { EstablishmentList } from "./EstablishmentList";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -18,32 +18,27 @@ type MeusDados = {
 
 export const Establishments = () => {
   const [showAlert, setShowAlert] = useState(true);
+  const [establishment, setEstablishment] = useState<object | void>();
+  
   const auth = useContext(AuthContext);
   const handleClick = () => {
     setShowAlert(false);
   };
-
-
-  const establishmentList = establishmentRows.map((datas: MeusDados) => (
-    <div className="col-lg-4 col-sm-6">
-      <EstablishmentList
-        id={datas.id}
-        name={datas.name}
-        nif={datas.nif}
-        img={datas.img}
-        location={datas.location}
-        key={datas.id}
-      />
-    </div>
-  ));
-
+ 
+  useEffect(() => {
+    const getEstablishment = async () =>{
+      const response = await auth.getEstablishment();
+      setEstablishment(response)
+    }
+    getEstablishment()
+  }, []) 
 
 
   return (
     <section className="container establishment">
       <h1 className="establishment-title">
         Nº total de estabelecimentos:
-        <small className="establishment-sub">{establishmentRows.length}</small>
+        <small className="establishment-sub">{establishment && Object(establishment).length}</small>
       </h1>
 
       <div className={showAlert ? "alert-info show" : "alert-info hidden"}>
@@ -67,7 +62,20 @@ export const Establishments = () => {
         </Button>
       </Link>
 
-      <div className="row">{establishmentList}</div>
+      <div className="row">{
+        establishment && Object(establishment).map((datas: MeusDados) => (
+          <div className="col-lg-4 col-sm-6">
+            <EstablishmentList
+              id={datas.id}
+              name={datas.name}
+              nif={datas.nif}
+              img={datas.img}
+              location={datas.location}
+              key={datas.id}
+            />
+          </div>
+        ))
+      }</div>
     </section>
   );
 };

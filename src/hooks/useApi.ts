@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://192.168.42.250:8081",
+  baseURL: "http://192.168.42.145:8081",
   headers: {
     "Content-type": "application/json"
   }
@@ -26,5 +26,9 @@ export const useApi = () => ({
 
   validateToken: async (token: string) => {
     return await api.post("/validateToken", { token });
+  },
+
+  getEstablishment: async () => {
+    return await api.get("/user/establishment");
   }
 });

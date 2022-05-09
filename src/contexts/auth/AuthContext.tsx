@@ -10,6 +10,7 @@ export type AuthContextType = {
   confirmCode: (email: string, confirmationCode: string) => Promise<boolean> 
   reConfirmCode: (email: string) => Promise<void>
   login: (email: string, password: string) => Promise<void>
+  getEstablishment: () => Promise<Array<object> | void>
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);

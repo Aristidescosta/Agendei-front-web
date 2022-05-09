@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       const storageData = localStorage.getItem("agendeiToken");
       if(storageData){
         const response = await api.validateToken(storageData)
-        console.log(response.data.user)
         if(response.data.user)        
           setUser(response.data.user); 
       }
@@ -45,7 +44,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         toast.success(response.data.message);
         if (response.status === 201) {
           setUser(response.data.data.user);
-          console.log(user);
           setToken(response.data.data.token);
         }
         retorno = true;
@@ -75,6 +73,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       });
   }
 
+  async function getEstablishment(){
+    const response = await api.getEstablishment()
+    return response.data
+  }
+
   function setToken(token: string) {
     localStorage.setItem("agendeiToken", token);
   }
@@ -90,6 +93,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         confirmCode,
         reConfirmCode,
         login,
+        getEstablishment
       }}
     >
       {children}

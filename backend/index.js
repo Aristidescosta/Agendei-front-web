@@ -10,6 +10,7 @@ const dbpass = "l03p5D9gBLR2V4xk";
 const Users = require("./models/Users.schema");
 const nodemailer = require("./config/Nodemailer");
 const bcrypt = require("bcrypt");
+const Establishment = require("./models/Establishment.schema");
 
 app.use(cors());
 app.use(express.json());
@@ -74,19 +75,21 @@ app.post("/users/confirmCode", async (req, res) => {
       { email, confirmCode: confirmationCode },
       { status: "Active" }
     );
- 
+
     if (userExist) {
       const token = jwt.sign(
         {
-          id: userExist._id
+          id: userExist._id,
         },
         segredo
-      )
+      );
       const data = {
         token,
-        user: userExist
-      }
-      return res.status(201).send({ data, message: "Conta activada com sucesso" })
+        user: userExist,
+      };
+      return res
+        .status(201)
+        .send({ data, message: "Conta activada com sucesso" });
     } else {
       res.status(404).send({ message: "Código errado, tente novamente" });
     }
@@ -98,90 +101,97 @@ app.post("/users/confirmCode", async (req, res) => {
 app.post("/users/confirmCode/reset", async (req, res) => {
   try {
     const email = req.body.email;
-  const characters = "0123456789";
-  let confirmationCode = "";
-  for (let i = 0; i < 4; i++) {
-    confirmationCode +=
-      characters[Math.floor(Math.random() * characters.length)];
-  }
-  const confirmCode = Number(confirmationCode);
-  const user = await Users.findOneAndUpdate(
-    { email },
-    { confirmCode: confirmCode }
-  );
-  nodemailer.sendConfirmationEmail(
-    user.username,
-    email,
-    confirmCode
-  )
-  res.status(200).send({ message: "Código reenviado com sucesso" })
+    const characters = "0123456789";
+    let confirmationCode = "";
+    for (let i = 0; i < 4; i++) {
+      confirmationCode +=
+        characters[Math.floor(Math.random() * characters.length)];
+    }
+    const confirmCode = Number(confirmationCode);
+    const user = await Users.findOneAndUpdate(
+      { email },
+      { confirmCode: confirmCode }
+    );
+    nodemailer.sendConfirmationEmail(user.username, email, confirmCode);
+    res.status(200).send({ message: "Código reenviado com sucesso" });
   } catch (error) {
-    res.status(500).send({ message: "Falha ao reenviar código" })
+    res.status(500).send({ message: "Falha ao reenviar código" });
   }
 });
 
-app.post("/users/login", async (req, res) =>{
+app.post("/users/login", async (req, res) => {
   try {
-    const { email, password } = req.body
-    const user = await Users.findOne({ email: email })
+    const { email, password } = req.body;
+    const user = await Users.findOne({ email: email });
     if (!user) {
-      return res.status(422).send({ message: 'Usuario não encontrado' })
+      return res.status(422).send({ message: "Usuario não encontrado" });
     }
-    if(user.status === "Pending"){
-      return res.status(422).send({message:'Falha na autenticação'})
+    if (user.status === "Pending") {
+      return res.status(422).send({ message: "Falha na autenticação" });
     }
-    
-    const checkPassword = await bcrypt.compare(password, user.password)
-    
+
+    const checkPassword = await bcrypt.compare(password, user.password);
+
     if (!checkPassword) {
-      return res.status(401).send({ message: 'Falha na autenticação' })
+      return res.status(401).send({ message: "Falha na autenticação" });
     }
-    
+
     const token = jwt.sign(
       {
-        id: user._id
+        id: user._id,
       },
       segredo
-    )
+    );
     const data = {
       token,
-      data: user
-    }
-    return res.status(200).send(data)
+      data: user,
+    };
+    return res.status(200).send(data);
   } catch (error) {
-    console.log(error.message)
-    return res.status(500).send({ message: 'Falha na autenticação' })
+    console.log(error.message);
+    return res.status(500).send({ message: "Falha na autenticação" });
   }
-})
+});
 
-app.post("/validateToken", async (req, res) =>{
+app.post("/validateToken", async (req, res) => {
   try {
-    const token = req.body.token
-    let id = ''
+    const token = req.body.token;
+    let id = "";
     const verify = jwt.verify(token, segredo, (err, user) => {
-      if (err) 
-        return res.status(403).send({ message: 'token expirado' })
-      id = user.id
-    })
+      if (err) return res.status(403).send({ message: "token expirado" });
+      id = user.id;
+    });
     // console.log(err)
-    const data = await Users.findOne({ _id: id })
+    const data = await Users.findOne({ _id: id });
     const newToken = jwt.sign(
       {
-        id: id
+        id: id,
       },
       segredo
-    )
+    );
     const response = {
-      token:newToken,
-      user: data
-    }
-  //  console.log(response)
-    return res.status(200).send(response)
-  }catch (error) {
-    console.log(error.message)
-    return res.status(500).send({ error: error })
+      token: newToken,
+      user: data,
+    };
+    //  console.log(response)
+    return res.status(200).send(response);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).send({ error: error });
   }
-})
+});
+
+app.get("/user/establishment", async (req, res) => {
+  try {
+    const establishment = await Establishment.find({
+      open: false
+    });
+    console.log(establishment);
+    res.send(establishment)
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 app.use((req, res, next) => {
   const erro = new Error("Pagina não encontrada");
