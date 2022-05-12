@@ -18,6 +18,7 @@ export function Login() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          limit={1}
         />
         {/* Same as */}
         <ToastContainer />

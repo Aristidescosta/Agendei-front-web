@@ -21,6 +21,10 @@
   background: #3f5d7d;
 }
 
+
+/*=============================
+  #Css global
+=============================== */
 * {
   margin: 0;
   padding: 0;
@@ -31,6 +35,10 @@ body {
   background: #f8f8f8;
   color: #292929;
 }
+
+/*=============================
+  #Css do barra de rolagem
+=============================== */
 #box1 {
   position: absolute;
   top: 50%;
@@ -317,14 +325,6 @@ button {
     box-shadow: -1px 1px 7px 1px #212529;
   }
 }
-#root > main {
-  height: 100vh;
-  width: 100vw;
-}
-
-section {
-  margin-top: 120px;
-}
 
 #topbar-menu {
   li {
@@ -386,6 +386,10 @@ section {
     max-width: 66.666667%;
   }
 
+  .col-md-8 {
+    max-width: 75%;
+  }
+
   .col-md-10 {
     max-width: 83.33333333%;
   }
@@ -420,12 +424,20 @@ section {
     max-width: 16.666667%;
   }
 
+  .col-lg-3{
+    max-width: 25%;
+  }
+
   .col-lg-4 {
     max-width: 33.33333333%;
   }
 
   .col-lg-8 {
     max-width: 66.66666667%;
+  }
+
+  .col-lg-9 {
+    max-width: 75%;
   }
 
   .col-lg-10 {

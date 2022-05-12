@@ -8,7 +8,7 @@ import { InputError } from "../InputErrors";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import "react-toastify/dist/ReactToastify.min.css";
-
+ 
 interface IFormInput {
   email: string;
   password: string;

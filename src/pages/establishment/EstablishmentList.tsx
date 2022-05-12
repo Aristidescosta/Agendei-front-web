@@ -19,7 +19,7 @@ type PropsType = {
   img: string;
   name: string;
   nif: number;
-  location: string;
+  address: string;
 };
 
 export const EstablishmentList = (props: PropsType) => {
@@ -56,9 +56,7 @@ export const EstablishmentList = (props: PropsType) => {
         />
         <CardContent>
           <Typography variant="body2">
-            Localizção
-            <br />
-            Bairro: {props.location}
+            Localização: {props.address}
             <br />
             Nº de NIF: {props.nif}
           </Typography>

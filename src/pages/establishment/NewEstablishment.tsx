@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import { FormNewsEstablishment } from "../../components/form/FormNewsEstablishment";
 import "./establishment.scss";
+import avatar from "../../components/assets/img/add.svg"
+
 
 export const NewEstablishment = () => {
   const newEstablishmentTemplate = (
@@ -16,7 +18,10 @@ export const NewEstablishment = () => {
         </ol>
       </div>
       
-      <FormNewsEstablishment />
+      <div className="addEstablishment">
+        <FormNewsEstablishment />
+        <img src={avatar} alt="imagem ilustrando uma página de adição" />
+      </div>
     </>
   );
 

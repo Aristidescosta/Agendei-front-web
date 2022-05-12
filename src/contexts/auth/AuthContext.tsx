@@ -1,5 +1,7 @@
 import React, { createContext } from "react";
 import { User} from "../../types/User";
+import { AxiosResponse } from "axios";
+
 
 export type AuthContextType = {
   user: User | null;
@@ -10,7 +12,9 @@ export type AuthContextType = {
   confirmCode: (email: string, confirmationCode: string) => Promise<boolean> 
   reConfirmCode: (email: string) => Promise<void>
   login: (email: string, password: string) => Promise<void>
-  getEstablishment: () => Promise<Array<object> | void>
+  getEstablishment: (userId: string) => Promise<Array<object> | void>
+  getCategory: () => Promise<Array<object> | any>
+  setEstablishment: (formData: FormData) => Promise<AxiosResponse<any, any>>
 };
 
 export const AuthContext = createContext<AuthContextType>(null!);

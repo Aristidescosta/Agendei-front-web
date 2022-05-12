@@ -73,9 +73,19 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       });
   }
 
-  async function getEstablishment(){
-    const response = await api.getEstablishment()
+  async function getEstablishment(userId: string){
+    const response = await api.getEstablishment(userId)
     return response.data
+  }
+
+  async function getCategory(){
+    const response = await api.getCategory();
+    return response.data;
+  }
+
+  async function setEstablishment(formData: FormData){
+    const response = await api.setEstablishment(formData)
+    return response;
   }
 
   function setToken(token: string) {
@@ -93,7 +103,9 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         confirmCode,
         reConfirmCode,
         login,
-        getEstablishment
+        getEstablishment,
+        getCategory,
+        setEstablishment
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://10.254.124.41:8081",
+  baseURL: "http://192.168.1.5:3005",
   headers: {
     "Content-type": "application/json"
   }
@@ -25,10 +25,18 @@ export const useApi = () => ({
   },
 
   validateToken: async (token: string) => {
-    return await api.post("/validateToken", { token });
+    return await api.post("/users/validateToken", { token });
   },
 
-  getEstablishment: async () => {
-    return await api.get("/user/establishment");
+  getEstablishment: async (userId: string) => {
+    return await api.get(`/users/establishment/${userId}`);
+  },
+
+  getCategory: async () => {
+    return await api.get("/category");
+  },
+
+  setEstablishment: async (formData: FormData) => {
+    return await api.post("/est/post", { formData })
   }
 });

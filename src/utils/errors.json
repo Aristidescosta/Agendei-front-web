@@ -4,10 +4,42 @@
     "min":"Nome do usuário muito curto",
     "max":"Nome do usuário muito longo"
   },
+
+  "nif": {
+    "required": "Nif é um campo obrigatório",
+    "min":"Nome do usuário muito curto",
+    "max":"Nome do usuário muito longo"
+  },
+
+  "description": {
+    "required": "Descrição é um campo obrigatório",
+    "min":"Nome do usuário muito curto",
+    "max":"Nome do usuário muito longo"
+  },
+
+  "address": {
+    "required": "Localização é um campo obrigatório",
+    "min":"Nome do usuário muito curto",
+    "max":"Nome do usuário muito longo"
+  },
+
+  "number1": {
+    "required": "Numero de telefone é um campo obrigatório",
+    "min":"Nome do usuário muito curto",
+    "max":"Nome do usuário muito longo"
+  },
+
+  "number2": {
+    "required": "Numero de telefone é um campo obrigatório",
+    "min":"Nome do usuário muito curto",
+    "max":"Nome do usuário muito longo"
+  },
+
   "email":{
     "required":"Email é um campo obrigatório",
     "matches": "Email informado é inválido"
   },
+
   "password":{
     "required": "Palavra passe é um campo obrigatório",
     "min": "No mínimo 8 caracteres",

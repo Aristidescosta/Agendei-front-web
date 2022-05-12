@@ -6,6 +6,7 @@ import { NewEstablishment } from "../establishment/NewEstablishment";
 import { Schedules } from "../schedules/Schedules";
 import { Service } from "../services/Service";
 import Setting from "../settings/Setting";
+import "./home.scss";
 
 export default function Home() {
   return (
