@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal } from "@material-ui/core";
-import { FormNewsEstablishment } from "../form/FormNewsEstablishment";
+import { FormEdit } from "../form/FormEdit";
 
 type propsType = {
   handleOpenModalEdit: () => void;
@@ -11,6 +11,7 @@ type propsType = {
 export const ModalEdit = (props: propsType) => {
   const handleCloseModalEdit = () => props.setOpenModalEdit(false);
 
+
   return (
     <Modal
       id="modal-edit"
@@ -19,7 +20,7 @@ export const ModalEdit = (props: propsType) => {
       aria-labelledby="modal-edit-title"
       aria-describedby="modal-modal-description"
     >
-      <FormNewsEstablishment/> 
+      <FormEdit />
     </Modal>
   );
 };

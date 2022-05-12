@@ -4,12 +4,14 @@ import { User } from "../../types/User";
 import { useApi } from "../../hooks/useApi";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
+import { Establishment } from "../../types/Establishment";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string>(); 
+  const [establishment, setEst] = useState<Establishment |any>();
   const [user, setUser] = useState<User | null>(null);
   const api = useApi();
-
+ 
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem("agendeiToken");
@@ -88,6 +90,15 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     return response;
   }
 
+  
+
+  async function getOneEstablishment(id: string){
+    const response = await api.getOneEstablishment(id);
+    if(response)
+      setEst(response.data)
+    console.log(establishment) 
+  }
+
   function setToken(token: string) {
     localStorage.setItem("agendeiToken", token);
   }
@@ -105,8 +116,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         login,
         getEstablishment,
         getCategory,
-        setEstablishment
-      }}
+        setEstablishment,
+        getOneEstablishment,
+        establishment,
+        setEst
+      }} 
     >
       {children}
     </AuthContext.Provider>

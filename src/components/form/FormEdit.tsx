@@ -50,15 +50,16 @@ const myYupResolver = yup
   })
   .required();
 
-export const FormNewsEstablishment = () => {
+
+export const FormEdit = () => {
   const [data, setData] = useState<[]>([]);
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [picture, setPicture] = useState("");
-  const [picture2, setPicture2] = useState<File>();
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [picture, setPicture] = useState("http://10.254.124.62:3005/" + auth.establishment?.img);
+  const [picture2, setPicture2] = useState<File>();
+  console.log(picture2)
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       setPicture2(event.currentTarget.files[0]);
@@ -91,8 +92,6 @@ export const FormNewsEstablishment = () => {
     setCategoryName(event.target.selectedOptions[0].text);
     setCategoryId(event.target.value);
   }
-
-  console.log(picture);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data, categoryId, categoryName);
@@ -132,14 +131,16 @@ export const FormNewsEstablishment = () => {
   };
 
   return (
-    <form className="formNewsEstablishment">
+    <form className="formNewsEstablishment" onSubmit={handleSubmit(onSubmit)}>
       <div className="row">
         <div className="col-lg-9 col-md-9">
           <div className="row">
             <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input {...register("name")} placeholder="Nome" type="text" />
-              {errors.name?.message && (
-                <InputError type={errors.name.type} field="name" />
+              <Input {...register("name")} defaultValue={auth.establishment?.name} placeholder="Nome" type="text" />
+              {errors.name?.message && ( 
+                <div>
+                  <InputError type={errors.name.type} field="name" />
+                </div>
               )}
             </div>
 
@@ -148,9 +149,12 @@ export const FormNewsEstablishment = () => {
                 {...register("nif")}
                 placeholder="Número de nif"
                 type="number"
+                defaultValue={auth.establishment?.nif}
               />
               {errors.nif?.message && (
-                <InputError type={errors.nif.type} field="nif" />
+                <div>
+                  <InputError type={errors.nif.type} field="nif" />
+                </div>
               )}
             </div>
           </div>
@@ -161,9 +165,12 @@ export const FormNewsEstablishment = () => {
                 {...register("number1")}
                 placeholder="Number1"
                 type="number"
+                defaultValue={auth.establishment?.phones_number[0]}
               />
               {errors.number1?.message && (
-                <InputError type={errors.number1.type} field="number1" />
+                <div>
+                  <InputError type={errors.number1.type} field="number1" />
+                </div>
               )}
             </div>
 
@@ -172,9 +179,10 @@ export const FormNewsEstablishment = () => {
                 {...register("number2")}
                 placeholder="Number2"
                 type="number2"
+                defaultValue={auth.establishment?.phones_number[1]}
               />
               {errors.number2?.message && (
-                <InputError type={errors.number2.type} field="number2" />
+                <div><InputError type={errors.number2.type} field="number2" /></div>
               )}
             </div>
           </div>
@@ -185,14 +193,15 @@ export const FormNewsEstablishment = () => {
                 {...register("address")}
                 placeholder="Localização"
                 type="text"
+                defaultValue={auth.establishment?.address}
               />
               {errors.address?.message && (
-                <InputError type={errors.address.type} field="address" />
+                <div><InputError type={errors.address.type} field="address" /></div>
               )}
             </div>
             <div className="col-md-6 col-sm-6 col-xm-12">
               <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
-                <select id="id" className="MuiInputBase-input MuiInput-input" onChange={handle}>
+                <select id="id"  className="MuiInputBase-input MuiInput-input" onChange={handle}>
                   {list}
                 </select>
               </div>
@@ -200,9 +209,9 @@ export const FormNewsEstablishment = () => {
           </div>
           <div className="describe .col-sm-12">
             <label>Faça uma descrição</label>
-            <textarea {...register("description")}></textarea>
+            <textarea defaultValue={auth.establishment?.description} {...register("description")}></textarea>
             {errors.description?.message && (
-              <InputError type={errors.description.type} field="description" />
+              <div><InputError type={errors.description.type} field="description" /></div>
             )}
           </div>
         </div>
@@ -217,6 +226,7 @@ export const FormNewsEstablishment = () => {
               <input
                 accept="image/*"
                 id="icon-button-file"
+                src={auth.establishment?.img}
                 type="file"
                 onChange={handleSetImage}
               />
@@ -241,4 +251,4 @@ export const FormNewsEstablishment = () => {
       </Button>
     </form>
   );
-};
+}

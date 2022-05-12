@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -13,9 +13,10 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import ModalDeleted from "../../components/modal/ModalDeleted";
 import { ModalEdit } from "../../components/modal/ModalEdit";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type PropsType = {
-  id: string;
+  _id: string;
   img: string;
   name: string;
   nif: number;
@@ -25,10 +26,14 @@ type PropsType = {
 export const EstablishmentList = (props: PropsType) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-
   const handleOpenModalDelete = () => setOpenModalDelete(true);
-
+  const auth = useContext(AuthContext);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
+  const setIdEstablishment = async () => {
+    await auth.getOneEstablishment(props._id);
+    console.log(auth.establishment)
+    handleOpenModalEdit();
+  }
 
   return (
     <>
@@ -66,13 +71,13 @@ export const EstablishmentList = (props: PropsType) => {
             type="button"
             variant="outlined"
             color="primary"
-            onClick={handleOpenModalEdit}
+            onClick={setIdEstablishment}
             startIcon={<CloudUploadIcon />}
-          >
+          > 
             Atualizar
           </Button>
 
-          <Link to={"/establishment/service/" + props.id}>
+          <Link to={"/establishment/service/" + props._id}>
             <Button type="button" variant="outlined" color="primary">
               Serviços
             </Button>

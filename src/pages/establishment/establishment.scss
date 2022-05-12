@@ -67,7 +67,12 @@
 }
 
 .newEstablishment {
+  height: 100vh;
   padding: 0 .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   .MuiInput-root{
     width: 100%;
   }

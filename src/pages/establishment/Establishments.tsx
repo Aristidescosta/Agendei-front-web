@@ -4,11 +4,10 @@ import { useContext, useEffect, useState } from "react";
 import { EstablishmentList } from "./EstablishmentList";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { establishmentRows } from "../../data";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type MeusDados = {
-  id: string;
+  _id: string;
   categoryId: string;
   name: string;
   nif: number;
@@ -72,12 +71,12 @@ export const Establishments = () => {
           Object(establishment).map((datas: MeusDados) => (
             <div className="col-lg-4 col-sm-6">
               <EstablishmentList
-                id={datas.id}
+                _id={datas._id}
                 name={datas.name}
                 nif={datas.nif}
-                img={"http://192.168.1.5:3005/" + datas.img}
+                img={"http://10.254.124.62:3005/" + datas.img}
                 address={datas.address}
-                key={datas.id}
+                key={datas._id}
               />
             </div>
           ))}
