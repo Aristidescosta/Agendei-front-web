@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Topbar } from "../../components/Topbar";
 import Account from "../account/Account";
+import { Edit } from "../establishment/Edit";
 import { Establishments } from "../establishment/Establishments";
 import { NewEstablishment } from "../establishment/NewEstablishment";
 import { Schedules } from "../schedules/Schedules";
@@ -19,7 +20,11 @@ export default function Home() {
           <Route path="user/setting" element={<Setting />} />
           <Route path="user/account" element={<Account />} />
           <Route path="establishment/service/:id" element={<Service />} />
-          <Route path="establishment/service/:id/:schedulesId/schedules" element={<Schedules />} />
+          <Route
+            path="establishment/service/:id/:schedulesId/schedules"
+            element={<Schedules />}
+          />
+          <Route path="establishment/:id/edit" element={<Edit />} />
         </Routes>
       </main>
     </>

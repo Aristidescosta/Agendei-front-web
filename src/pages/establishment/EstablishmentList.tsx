@@ -29,14 +29,9 @@ export const EstablishmentList = (props: PropsType) => {
   const handleOpenModalDelete = async () => {
     setOpenModalDelete(true);
     await auth.getOneEstablishment(props._id);
-  }
+  };
   const auth = useContext(AuthContext);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
-  const setIdEstablishment = async () => {
-    await auth.getOneEstablishment(props._id);
-    console.log(auth.establishment)
-    handleOpenModalEdit();
-  }
 
   return (
     <>
@@ -70,19 +65,20 @@ export const EstablishmentList = (props: PropsType) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button
-            type="button"
-            variant="outlined"
-            color="primary"
-            onClick={setIdEstablishment}
-            startIcon={<CloudUploadIcon />}
-          > 
-            Atualizar
-          </Button>
-
           <Link to={"/establishment/service/" + props._id}>
             <Button type="button" variant="outlined" color="primary">
               Ver mais
+            </Button>
+          </Link>
+
+          <Link to={`establishment/${props._id}/edit`}>
+            <Button
+              type="button"
+              variant="outlined"
+              color="primary"
+              startIcon={<CloudUploadIcon />}
+            >
+              Atualizar
             </Button>
           </Link>
 

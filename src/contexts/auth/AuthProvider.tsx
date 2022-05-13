@@ -96,7 +96,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     const response = await api.getOneEstablishment(id);
     if(response)
       setEst(response.data)
-    console.log(establishment) 
   }
 
   async function deleteEstablishment(id: string){
