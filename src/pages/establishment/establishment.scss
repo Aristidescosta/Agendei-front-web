@@ -22,6 +22,11 @@
     font-size: 14px;
     line-height: 1.42857143;
 
+    img{
+      height: 40px;
+      width: 40px;
+    }
+
     > button {
       border: 0;
       color: #000;
@@ -66,7 +71,7 @@
   }
 }
 
-.newEstablishment {
+/* .newEstablishment {
   height: 100vh;
   padding: 0 .75rem;
   display: flex;
@@ -91,7 +96,7 @@
       width: 24rem;
     }
   }
-}
+} */
 
 /* =============================
     Estilo do formulário

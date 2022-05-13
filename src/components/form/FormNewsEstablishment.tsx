@@ -1,34 +1,24 @@
-//Importações dos hooks
-import { useEffect, useState, useContext, ChangeEvent } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-//Importações do Material UI
-import "./formStyle.scss";
+import {
+  useEffect,
+  useState,
+  useContext,
+  ChangeEvent
+} from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ToastContainer, toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputError } from "../InputErrors";
-import "react-toastify/dist/ReactToastify.min.css";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import {
-  Input,
-  IconButton,
-  Avatar,
-  Button,
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
+import "react-toastify/dist/ReactToastify.min.css";
+import { Input, IconButton, Avatar, Button } from "@material-ui/core";
 import { AddAPhotoOutlined, HouseRounded, Send } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
-
-import { ToastContainer, toast } from "react-toastify";
 
 interface I {
   _id: string;
   name: string;
 }
-
 interface IFormInput {
   name: string;
   nif: string;
@@ -51,6 +41,12 @@ const myYupResolver = yup
   .required();
 
 export const FormNewsEstablishment = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>({ resolver: yupResolver(myYupResolver) });
+
   const [data, setData] = useState<[]>([]);
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -58,7 +54,6 @@ export const FormNewsEstablishment = () => {
   const [picture2, setPicture2] = useState<File>();
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.currentTarget.files) {
       setPicture2(event.currentTarget.files[0]);
@@ -81,18 +76,10 @@ export const FormNewsEstablishment = () => {
     </option>
   ));
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>({ resolver: yupResolver(myYupResolver) });
-
   function handle(event: ChangeEvent<HTMLSelectElement>) {
     setCategoryName(event.target.selectedOptions[0].text);
     setCategoryId(event.target.value);
   }
-
-  console.log(picture);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     console.log(data, categoryId, categoryName);
@@ -112,7 +99,7 @@ export const FormNewsEstablishment = () => {
     /* const response = await auth.setEstablishment(formData)
     console.log(response) */
     try {
-      const request = await fetch("http://10.254.124.62:3005/est/post", {
+      const request = await fetch("http://192.168.1.5:3005/est/post", {
         method: "POST",
         body: formData,
         headers: {
@@ -120,85 +107,127 @@ export const FormNewsEstablishment = () => {
           undefined: "multipart/form-data",
         },
       });
-      const response = await request.json();
-      console.log(response);
+      await request.json();
     } catch (error: any) {
-      console.log(error.message);
+      toast.error(error.message)
     }
-    navigate("/");
     toast.success("Estabelecimento criado com sucesso!");
-    /* const response = await auth.setEstablishment(formData);
-    console.log(response); */
+    navigate("/"); 
   };
 
   return (
-    <form className="formNewsEstablishment">
-      <div className="row">
-        <div className="col-lg-9 col-md-9">
-          <div className="row">
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input {...register("name")} placeholder="Nome" type="text" />
-              {errors.name?.message && (
-                <InputError type={errors.name.type} field="name" />
-              )}
-            </div>
+    <>
+      <div className="separator">
+        <div className="add-est">
+          <Avatar src={picture}>
+            <HouseRounded />
+          </Avatar>
 
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input
-                {...register("nif")}
-                placeholder="Número de nif"
-                type="number"
-              />
-              {errors.nif?.message && (
-                <InputError type={errors.nif.type} field="nif" />
-              )}
+          <label htmlFor="icon-button-file" className="s">
+            <input
+              accept="image/*"
+              id="icon-button-file"
+              type="file"
+              onChange={handleSetImage}
+            />
+            <IconButton
+              color="primary"
+              aria-label="Atualizar a fotografia"
+              component="span"
+            >
+              <AddAPhotoOutlined />
+            </IconButton>
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {/* Same as */}
+        <ToastContainer />
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="row">
+          <div className="col-md-6">
+            <Input {...register("name")} placeholder="Nome" type="text" />
+            {errors.name?.message && (
+              <InputError type={errors.name.type} field="name" />
+            )}
+          </div>
+
+          <div className="col-md-6">
+            <Input
+              {...register("nif")}
+              placeholder="Número de nif"
+              type="number"
+            />
+            {errors.nif?.message && (
+              <InputError type={errors.nif.type} field="nif" />
+            )}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <Input
+              {...register("number1")}
+              placeholder="Primeiro número"
+              type="number"
+            />
+            {errors.number1?.message && (
+              <InputError type={errors.number1.type} field="number1" />
+            )}
+          </div>
+
+          <div className="col-md-6">
+            <Input
+              {...register("number2")}
+              placeholder="Segundo número"
+              type="number"
+            />
+            {errors.number2?.message && (
+              <InputError type={errors.number2.type} field="number2" />
+            )}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-md-6">
+            <Input
+              {...register("address")}
+              placeholder="Localização"
+              type="text"
+            />
+            {errors.address?.message && (
+              <InputError type={errors.address.type} field="address" />
+            )}
+          </div>
+
+          <div className="col-md-6">
+            <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
+              <select
+                id="id"
+                className="MuiInputBase-input MuiInput-input"
+                onChange={handle}
+              >
+                {list}
+                <option value="others">Outros</option>
+              </select>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input
-                {...register("number1")}
-                placeholder="Number1"
-                type="number"
-              />
-              {errors.number1?.message && (
-                <InputError type={errors.number1.type} field="number1" />
-              )}
-            </div>
-
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input
-                {...register("number2")}
-                placeholder="Number2"
-                type="number2"
-              />
-              {errors.number2?.message && (
-                <InputError type={errors.number2.type} field="number2" />
-              )}
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <Input
-                {...register("address")}
-                placeholder="Localização"
-                type="text"
-              />
-              {errors.address?.message && (
-                <InputError type={errors.address.type} field="address" />
-              )}
-            </div>
-            <div className="col-md-6 col-sm-6 col-xm-12">
-              <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
-                <select id="id" className="MuiInputBase-input MuiInput-input" onChange={handle}>
-                  {list}
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="describe .col-sm-12">
+          <div className="describe .col-sm-12 .col-md-12">
             <label>Faça uma descrição</label>
             <textarea {...register("description")}></textarea>
             {errors.description?.message && (
@@ -206,39 +235,15 @@ export const FormNewsEstablishment = () => {
             )}
           </div>
         </div>
-
-        <div className="col-lg-3 col-md-3">
-          <div className="add-est">
-            <Avatar src={picture}>
-              <HouseRounded />
-            </Avatar>
-
-            <label htmlFor="icon-button-file" className="s">
-              <input
-                accept="image/*"
-                id="icon-button-file"
-                type="file"
-                onChange={handleSetImage}
-              />
-              <IconButton
-                color="primary"
-                aria-label="Atualizar a fotografia"
-                component="span"
-              >
-                <AddAPhotoOutlined />
-              </IconButton>
-            </label>
-          </div>
-        </div>
-      </div>
-      <Button
-        variant="contained"
-        className="btn"
-        type="submit"
-        endIcon={<Send />}
-      >
-        Enviar
-      </Button>
-    </form>
+        <Button
+          variant="contained"
+          className="btn"
+          type="submit"
+          endIcon={<Send />}
+        >
+          Enviar
+        </Button>
+      </form>
+    </>
   );
 };

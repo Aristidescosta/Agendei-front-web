@@ -1,13 +1,12 @@
 //Importações dos hooks
 import { Link } from "react-router-dom";
 import { FormNewsEstablishment } from "../../components/form/FormNewsEstablishment";
-import "./establishment.scss";
-
+import "./newsEstablishment.scss";
 
 export const NewEstablishment = () => {
   const newEstablishmentTemplate = (
     <>
-      <div>
+      {/* <div>
         <h1>Adicionar novo estabelecimento</h1>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -15,7 +14,7 @@ export const NewEstablishment = () => {
           </li>
           <li className="breadcrumb-item">Novo</li>
         </ol>
-      </div>
+      </div> */}
       
       <FormNewsEstablishment />
     </>

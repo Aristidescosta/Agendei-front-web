@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://10.254.124.62:3005",
+  baseURL: "http://192.168.1.5:3005",
   headers: {
     "Content-type": "application/json",
   },
@@ -43,4 +43,8 @@ export const useApi = () => ({
   setEstablishment: async (formData: FormData) => {
     return await api.post("/est/post", { formData });
   },
+
+  deleteEstablishment: async (id: string) => {
+    return await api.post("/est/delete", { id })
+  }
 });

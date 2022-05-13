@@ -99,6 +99,19 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     console.log(establishment) 
   }
 
+  async function deleteEstablishment(id: string){
+    let retorno = false;
+    await api.deleteEstablishment(id)
+    .then((response) => {
+      toast.success(response.data.message);
+      retorno = true;
+    })
+    .catch((error: AxiosError) => {
+      toast.error(error.response?.data.message);
+    }); 
+    return retorno;
+  }
+
   function setToken(token: string) {
     localStorage.setItem("agendeiToken", token);
   }
@@ -119,7 +132,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         setEstablishment,
         getOneEstablishment,
         establishment,
-        setEst
+        setEst,
+        deleteEstablishment
       }} 
     >
       {children}

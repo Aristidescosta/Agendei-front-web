@@ -26,7 +26,10 @@ type PropsType = {
 export const EstablishmentList = (props: PropsType) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const handleOpenModalDelete = () => setOpenModalDelete(true);
+  const handleOpenModalDelete = async () => {
+    setOpenModalDelete(true);
+    await auth.getOneEstablishment(props._id);
+  }
   const auth = useContext(AuthContext);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
   const setIdEstablishment = async () => {
@@ -79,7 +82,7 @@ export const EstablishmentList = (props: PropsType) => {
 
           <Link to={"/establishment/service/" + props._id}>
             <Button type="button" variant="outlined" color="primary">
-              Serviços
+              Ver mais
             </Button>
           </Link>
 

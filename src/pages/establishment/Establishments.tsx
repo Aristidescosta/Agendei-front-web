@@ -5,7 +5,8 @@ import { EstablishmentList } from "./EstablishmentList";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-
+import birdInfo from "../../components/assets/img/bird-info.svg";
+ 
 type MeusDados = {
   _id: string;
   categoryId: string;
@@ -50,7 +51,7 @@ export const Establishments = () => {
           <Close />
         </button>
         <span>
-          <InfoSharp />
+          <img src={birdInfo} alt="" />
           <strong>Agendei admin</strong> novo estabelecimento adicionado com
           sucesso.
         </span>
@@ -74,7 +75,7 @@ export const Establishments = () => {
                 _id={datas._id}
                 name={datas.name}
                 nif={datas.nif}
-                img={"http://10.254.124.62:3005/" + datas.img}
+                img={"http://192.168.1.5:3005/" + datas.img}
                 address={datas.address}
                 key={datas._id}
               />

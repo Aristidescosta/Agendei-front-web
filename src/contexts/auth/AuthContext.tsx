@@ -19,6 +19,7 @@ export type AuthContextType = {
   getCategory: () => Promise<Array<object> | any>
   setEstablishment: (formData: FormData) => Promise<AxiosResponse<any, any>>
   getOneEstablishment: (id: string) => Promise<void>
+  deleteEstablishment: (id: string) => Promise<boolean>
 }; 
 
 export const AuthContext = createContext<AuthContextType>(null!);

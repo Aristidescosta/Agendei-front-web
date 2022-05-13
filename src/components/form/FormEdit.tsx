@@ -57,7 +57,7 @@ export const FormEdit = () => {
   const [categoryId, setCategoryId] = useState("");
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-  const [picture, setPicture] = useState("http://10.254.124.62:3005/" + auth.establishment?.img);
+  const [picture, setPicture] = useState("http://192.168.1.9:3005/" + auth.establishment?.img);
   const [picture2, setPicture2] = useState<File>();
   console.log(picture2)
   const handleSetImage = (event: ChangeEvent<HTMLInputElement>) => {

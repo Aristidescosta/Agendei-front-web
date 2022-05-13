@@ -1,4 +1,5 @@
 export type Establishment = {
+  _id: string;
   address: string;
   img: string;
   name: string;

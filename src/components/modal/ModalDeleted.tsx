@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Typography, Modal, Box } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { Cancel, Done } from "@material-ui/icons";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type propsType = {
   handleOpenModalDelete: () => void;
@@ -10,8 +11,20 @@ type propsType = {
 };
 
 const ModalDeleted = (props: propsType) => {
+  const auth = useContext(AuthContext);
   const handleCloseModalDelete = () => props.setOpenModalDelete(false);
-
+  const deleteEstablishment = async () => {
+    console.log("testando...1")
+    console.log(typeof auth.establishment?._id !== "undefined")
+    if (typeof auth.establishment?._id !== "undefined") {
+      console.log("testando...")
+      const response = await auth.deleteEstablishment(auth.establishment._id);
+      console.log(response);
+      if (response) {
+        window.location.reload();
+      }
+    }
+  };
   return (
     <Modal
       open={props.openModalDelete}
@@ -37,7 +50,7 @@ const ModalDeleted = (props: propsType) => {
 
           <Button
             type="button"
-            onClick={handleCloseModalDelete}
+            onClick={deleteEstablishment}
             color="primary"
             variant="outlined"
             startIcon={<Done />}
