@@ -6,7 +6,8 @@ import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import birdInfo from "../../components/assets/img/bird-info.svg";
- 
+import ContentLoader, { List } from "react-content-loader";
+
 type MeusDados = {
   _id: string;
   categoryId: string;
@@ -38,50 +39,56 @@ export const Establishments = () => {
   }, []);
 
   return (
-    <section className="container establishment">
-      <h1 className="establishment-title">
-        Nº total de estabelecimentos:
-        <small className="establishment-sub">
-          {establishment && Object(establishment).length}
-        </small>
-      </h1>
+    <>
+      {!establishment ? (
+        <List />
+      ) : (
+        <section className="container establishment">
+          <h1 className="establishment-title">
+            Nº total de estabelecimentos:
+            <small className="establishment-sub">
+              {establishment && Object(establishment).length}
+            </small>
+          </h1>
 
-      <div className={showAlert ? "alert-info show" : "alert-info hidden"}>
-        <button onClick={handleClick}>
-          <Close />
-        </button>
-        <span>
-          <img src={birdInfo} alt="" />
-          <strong>Agendei admin</strong> novo estabelecimento adicionado com
-          sucesso.
-        </span>
-      </div>
+          <div className={showAlert ? "alert-info show" : "alert-info hidden"}>
+            <button onClick={handleClick}>
+              <Close />
+            </button>
+            <span>
+              <img src={birdInfo} alt="" />
+              <strong>Agendei admin</strong> novo estabelecimento adicionado com
+              sucesso.
+            </span>
+          </div>
 
-      <Link to="new">
-        <Button
-          variant="outlined"
-          color="primary"
-          endIcon={<AddShoppingCart />}
-        >
-          Adicionar novo estabelecimento
-        </Button>
-      </Link>
+          <Link to="new">
+            <Button
+              variant="outlined"
+              color="primary"
+              endIcon={<AddShoppingCart />}
+            >
+              Adicionar novo estabelecimento
+            </Button>
+          </Link>
 
-      <div className="row">
-        {establishment &&
-          Object(establishment).map((datas: MeusDados) => (
-            <div className="col-lg-4 col-sm-6">
-              <EstablishmentList
-                _id={datas._id}
-                name={datas.name}
-                nif={datas.nif}
-                img={"http://192.168.1.5:3005/" + datas.img}
-                address={datas.address}
-                key={datas._id}
-              />
-            </div>
-          ))}
-      </div>
-    </section>
+          <div className="row">
+            {establishment &&
+              Object(establishment).map((datas: MeusDados) => (
+                <div className="col-lg-4 col-sm-6">
+                  <EstablishmentList
+                    _id={datas._id}
+                    name={datas.name}
+                    nif={datas.nif}
+                    img={"http://192.168.1.9:3005/" + datas.img}
+                    address={datas.address}
+                    key={datas._id}
+                  />
+                </div>
+              ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 };

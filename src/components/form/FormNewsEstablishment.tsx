@@ -99,7 +99,7 @@ export const FormNewsEstablishment = () => {
     /* const response = await auth.setEstablishment(formData)
     console.log(response) */
     try {
-      const request = await fetch("http://192.168.1.5:3005/est/post", {
+      const request = await fetch("http://192.168.1.9:3005/est/post", {
         method: "POST",
         body: formData,
         headers: {

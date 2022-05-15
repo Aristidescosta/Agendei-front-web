@@ -3,6 +3,7 @@ import "./formStyle.scss";
 /* Hook Form e Hooks */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
+import ContentLoader, { List } from "react-content-loader";
 
 /* Material UI */
 import {
@@ -33,14 +34,13 @@ import { useContext, useEffect, useState, ChangeEvent } from "react";
 
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { InputError } from "../InputErrors";
-import "./formStyle.scss"; 
+import "./formStyle.scss";
 import img from "../assets/img/agendei/bg.jpg";
 import img1 from "../assets/img/agendei/bg1.jpg";
 import img2 from "../assets/img/agendei/bg2.jpg";
 import img3 from "../assets/img/agendei/bg3.jpg";
 import img4 from "../assets/img/agendei/bg4.jpg";
 import img5 from "../assets/img/agendei/bg5.jpg";
- 
 
 function createClientData(
   day: string,
@@ -56,9 +56,8 @@ const rows = [
   createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
   createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
   createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
-  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>)
-
-]
+  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
+];
 
 /* Types */
 interface I {
@@ -93,11 +92,11 @@ export const FormEdit = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [picture, setPicture] = useState(
-    "http://192.168.1.5:3005/" + auth.establishment?.img
+    "http://192.168.1.9:3005/" + auth.establishment?.img
   );
   const [picture2, setPicture2] = useState<File>();
   const [data, setData] = useState<[]>([]);
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [selectedValue, setSelectedValue] = useState("segunda");
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(event.target.value);
@@ -301,6 +300,7 @@ export const FormEdit = () => {
   useEffect(() => {
     const getCategory = async () => {
       const response = await auth.getCategory();
+      console.log(response);
       setData(response);
     };
     getCategory();
@@ -308,134 +308,173 @@ export const FormEdit = () => {
 
   return (
     <>
-      <div className="separator">
-        <div className="add-est">
-          <Avatar src={picture}>
-            <HouseRounded />
-          </Avatar>
+      {!data ? (
+        <List />
+      ) : (
+        <>
+          <div className="separator">
+            <div className="add-est">
+              <Avatar src={picture}>
+                <HouseRounded />
+              </Avatar>
 
-          <label htmlFor="icon-button-file" className="s">
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              onChange={handleSetImage}
-            />
-            <IconButton
-              color="primary"
-              aria-label="Atualizar a fotografia"
-              component="span"
-            >
-              <AddAPhotoOutlined />
-            </IconButton>
-          </label>
-        </div>
-      </div>
-
-      <form className="editEstablishment">
-        <div className="row">
-          <div className="col-lg-9">
-            <div className="row">
-              <div className="col-md-6">
-                <Input
-                  {...register("name")}
-                  defaultValue={auth.establishment?.name}
-                  placeholder="Nome"
-                  type="text"
+              <label htmlFor="icon-button-file" className="s">
+                <input
+                  accept="image/*"
+                  id="icon-button-file"
+                  type="file"
+                  onChange={handleSetImage}
                 />
-                {errors.name?.message && (
-                  <InputError type={errors.name.type} field="name" />
-                )}
-              </div>
-
-              <div className="col-md-6">
-                <Input
-                  {...register("nif")}
-                  placeholder="Número de nif"
-                  defaultValue={auth.establishment?.nif}
-                  type="number"
-                />
-                {errors.nif?.message && (
-                  <InputError type={errors.nif.type} field="nif" />
-                )}
-              </div>
+                <IconButton
+                  color="primary"
+                  aria-label="Atualizar a fotografia"
+                  component="span"
+                >
+                  <AddAPhotoOutlined />
+                </IconButton>
+              </label>
             </div>
+          </div>
 
+          <form className="editEstablishment">
             <div className="row">
-              <div className="col-md-6">
-                <Input
-                  {...register("number1")}
-                  placeholder="Primeiro número"
-                  defaultValue={auth.establishment?.phones_number[0]}
-                  type="number"
-                />
-                {errors.number1?.message && (
-                  <InputError type={errors.number1.type} field="number1" />
-                )}
-              </div>
-
-              <div className="col-md-6">
-                <Input
-                  {...register("number2")}
-                  placeholder="Segundo número"
-                  defaultValue={auth.establishment?.phones_number[1]}
-                  type="number"
-                />
-                {errors.number2?.message && (
-                  <InputError type={errors.number2.type} field="number2" />
-                )}
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6">
-                <Input
-                  {...register("address")}
-                  placeholder="Localização"
-                  defaultValue={auth.establishment?.address}
-                  type="text"
-                />
-                {errors.address?.message && (
-                  <InputError type={errors.address.type} field="address" />
-                )}
-              </div>
-
-              <div className="col-md-6">
-                <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
-                  <select
-                    id="id"
-                    className="MuiInputBase-input MuiInput-input"
-                    onChange={handle}
-                  >
-                    {list}
-                    <option value="others">Outros</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="describe col-md-6">
-                <label>Faça uma descrição</label>
-                <textarea
-                  {...register("description")}
-                  defaultValue={auth.establishment?.description}
-                ></textarea>
-                {errors.description?.message && (
-                  <InputError
-                    type={errors.description.type}
-                    field="description"
-                  />
-                )}
-              </div>
-
-              <div className="col-md-6">
+              <div className="col-lg-9">
                 <div className="row">
-                  {show ? setTime : setDay}
-                  {/* <div className="col-md-6">
-                    <div className="row"></div>
+                  <div className="col-md-6">
+                    <Input
+                      {...register("name")}
+                      defaultValue={auth.establishment?.name}
+                      placeholder="Nome"
+                      type="text"
+                    />
+                    {errors.name?.message && (
+                      <InputError type={errors.name.type} field="name" />
+                    )}
                   </div>
 
+                  <div className="col-md-6">
+                    <Input
+                      {...register("nif")}
+                      placeholder="Número de nif"
+                      defaultValue={auth.establishment?.nif}
+                      type="number"
+                    />
+                    {errors.nif?.message && (
+                      <InputError type={errors.nif.type} field="nif" />
+                    )}
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <Input
+                      {...register("number1")}
+                      placeholder="Primeiro número"
+                      defaultValue={auth.establishment?.phones_number[0]}
+                      type="number"
+                    />
+                    {errors.number1?.message && (
+                      <InputError type={errors.number1.type} field="number1" />
+                    )}
+                  </div>
+
+                  <div className="col-md-6">
+                    <Input
+                      {...register("number2")}
+                      placeholder="Segundo número"
+                      defaultValue={auth.establishment?.phones_number[1]}
+                      type="number"
+                    />
+                    {errors.number2?.message && (
+                      <InputError type={errors.number2.type} field="number2" />
+                    )}
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-6">
+                    <Input
+                      {...register("address")}
+                      placeholder="Localização"
+                      defaultValue={auth.establishment?.address}
+                      type="text"
+                    />
+                    {errors.address?.message && (
+                      <InputError type={errors.address.type} field="address" />
+                    )}
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
+                      <select
+                        id="id"
+                        className="MuiInputBase-input MuiInput-input"
+                        onChange={handle}
+                      >
+                        {list}
+                        <option value="others">Outros</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="describe col-md-6">
+                    <label>Faça uma descrição</label>
+                    <textarea
+                      {...register("description")}
+                      defaultValue={auth.establishment?.description}
+                    ></textarea>
+                    {errors.description?.message && (
+                      <InputError
+                        type={errors.description.type}
+                        field="description"
+                      />
+                    )}
+                  </div>
+
+                  <div className="col-md-6">
+                    <div className="row">
+                      <div className="col-md-9">
+                        <div className="row">{show ? setTime : setDay}</div>
+                      </div>
+
+                      <div className="col-md-3">
+                        <Button
+                          variant="contained"
+                          className="btn"
+                          type="submit"
+                          endIcon={<Send />}
+                        >
+                          Próximo
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="col-md-12 col-lg-12">
+                    <div className={classes.root}>
+                      <ImageList className={classes.imageList} cols={2.5}>
+                        {itemData.map((item) => (
+                          <ImageListItem key={item.img}>
+                            <img src={item.img} alt={item.title} />
+                            <ImageListItemBar
+                              title={item.title}
+                              classes={{
+                                root: classes.titleBar,
+                                title: classes.title,
+                              }}
+                            />
+                          </ImageListItem>
+                        ))}
+                      </ImageList>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="row">
                   <div className="col-md-6">
                     <Button
                       variant="contained"
@@ -443,86 +482,46 @@ export const FormEdit = () => {
                       type="submit"
                       endIcon={<Send />}
                     >
-                      Adicionar
+                      Enviar
                     </Button>
-                  </div> */}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="row">
-              <div className="col-md-12 col-lg-12">
-                <div className={classes.root}>
-                  <ImageList className={classes.imageList} cols={2.5}>
-                    {itemData.map((item) => (
-                      <ImageListItem key={item.img}>
-                        <img src={item.img} alt={item.title} />
-                        <ImageListItemBar
-                          title={item.title}
-                          classes={{
-                            root: classes.titleBar,
-                            title: classes.title,
-                          }}
-                        />
-                      </ImageListItem>
-                    ))}
-                  </ImageList>
-                </div>
+              <div className="col-lg-3">
+                <TableContainer component={Paper}>
+                  <Table aria-label="Tabela customizada">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Dia</TableCell>
+                        <TableCell>Aberto as</TableCell>
+                        <TableCell>Até as</TableCell>
+                        <TableCell>Opções</TableCell>
+                      </TableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {rows.map((row) => (
+                        <TableRow>
+                          <TableCell component="th" scope="row">
+                            {row.day}
+                          </TableCell>
+
+                          <TableCell align="center">{row.open}</TableCell>
+
+                          <TableCell align="center">{row.t}</TableCell>
+
+                          <TableCell align="center">{row.op}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </div>
             </div>
-
-            <div className="row">
-              <div className="col-md-6">
-                <Button
-                  variant="contained"
-                  className="btn"
-                  type="submit"
-                  endIcon={<Send />}
-                >
-                  Enviar
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-lg-3">
-          <TableContainer component={Paper}>
-        <Table aria-label="Tabela customizada">
-          <TableHead>
-            <TableRow>
-              <TableCell>Dia</TableCell>
-              <TableCell>Aberto as</TableCell>
-              <TableCell>Até as</TableCell>
-              <TableCell>Opções</TableCell>   
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            { rows.map((row) => (
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  {row.day}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.open}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.t}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.op}
-                </TableCell>
-              </TableRow>
-            )) }
-          </TableBody>
-        </Table>
-      </TableContainer>
-          </div>
-        </div>
-      </form>
+          </form>
+        </>
+      )}
     </>
   );
 };
