@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { Topbar } from "../../components/Topbar";
 import Account from "../account/Account";
 import { Edit } from "../establishment/Edit";
+import { EstablishmentDetails } from "../establishment/EstablishmentDetails";
 import { Establishments } from "../establishment/Establishments";
 import { NewEstablishment } from "../establishment/NewEstablishment";
 import { Schedules } from "../schedules/Schedules";
@@ -17,9 +18,10 @@ export default function Home() {
         <Routes>
           <Route index element={<Establishments />} />
           <Route path="new" element={<NewEstablishment />} />
-          <Route path="user/setting" element={<Setting />} />
+          <Route path="user/setting" element={<Setting />} /> 
           <Route path="user/account" element={<Account />} />
-          <Route path="establishment/service/:id" element={<Service />} />
+          <Route path="establishment/:id" element={<EstablishmentDetails />} />
+          <Route path="establishment/:id/services" element={<Service />} />
           <Route
             path="establishment/service/:id/:schedulesId/schedules"
             element={<Schedules />}

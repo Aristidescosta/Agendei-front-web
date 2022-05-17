@@ -41,7 +41,7 @@ import img2 from "../assets/img/agendei/bg2.jpg";
 import img3 from "../assets/img/agendei/bg3.jpg";
 import img4 from "../assets/img/agendei/bg4.jpg";
 import img5 from "../assets/img/agendei/bg5.jpg";
-
+import { dev } from "../../config/config";
 function createClientData(
   day: string,
   open: string,
@@ -92,7 +92,7 @@ export const FormEdit = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [picture, setPicture] = useState(
-    "http://192.168.1.9:3005/" + auth.establishment?.img
+    `${dev.API_URL}/` + auth.establishment?.img
   );
   const [picture2, setPicture2] = useState<File>();
   const [data, setData] = useState<[]>([]);

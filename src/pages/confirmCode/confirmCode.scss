@@ -33,46 +33,183 @@
   align-items: center;
   justify-content: center;
 
-  .content-confirm {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+  form {
+    position: relative;
+    max-width: 500px;
     gap: 30px;
-
+    background-color: #070118;
     z-index: 1030;
-    background: #070118;
-    padding: 30px;
     box-shadow: -1px 0px 3px #fff;
     color: #fff;
-    border-radius: 15px;
+    border-radius: 5px;
+    padding: 0.75rem;
 
-    form {
-      display: flex;
-      gap: 30px;
-      input {
-        width: 50px;
-        height: 50px;
-
-        outline: none;
-        text-align: center;
-        font-size: 2rem;
-        color: #070118;
-
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-        }
-      }
+    h1,
+    p,
+    input,
+    button {
+      margin: 0.75rem 0;
     }
-    
+
+    h1::after {
+      content: "";
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 0;
+      left: 0;
+      height: 1px;
+      background-color: #fff;
+      padding: 0;
+      margin: 0;
+    }
+
+    .inputs{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
     .reset-password{
-      align-self: flex-start;
       cursor: pointer;
     }
+    
+    input {
+      width: 50px;
+      height: 50px;
 
-    .MuiButton-containedPrimary{
-      width: 100%;
+      outline: none;
+      text-align: center;
+      font-size: 2rem;
+      color: #070118;
+
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
     }
+  }
 
+  .buttons{
+    > button{
+      margin-left: 5px;
+    }
   }
 }
+
+#reset {
+  input {
+    width: 90%;
+    height: auto;
+    text-align: left;
+
+    outline: none;
+    font-size: 1.5rem;
+    padding: 0 0.65rem;
+    color: #070118;
+
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+}
+
+.changePassword{
+  .teste{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    >div{
+      display: flex;
+      flex-direction: column;
+    }
+    input{
+      width: 80%;
+    }
+
+    button{
+      height: 50px;
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .confirm-container{
+    form{
+      max-width: 300px;
+    }
+
+    .buttons button{
+      width: 100%;
+    }
+  }
+}
+
+/* .changePassword {
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    div:not(.buttons) {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input {
+      width: 90%;
+      height: auto;
+      text-align: start;
+      padding: 0 0.75rem;
+    }
+
+    button{
+      width: 220px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .changePassword {
+    div {
+      flex-direction: column;
+      align-items: start;
+      width: 96%;
+      input {
+        font-size: 1.5rem;
+      }
+
+      button{
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+ */
+//   .content-confirm {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     flex-direction: column;
+//     gap: 30px;
+
+//     z-index: 1030;
+//     background: #070118;
+//     padding: 30px;
+//     box-shadow: -1px 0px 3px #fff;
+//     color: #fff;
+//     border-radius: 15px;
+
+//     form {
+//       display: flex;
+//       gap: 30px;
+//
+//     }
+
+//     .MuiButton-containedPrimary {
+//       width: 100%;
+//     }
+//   }
+// }

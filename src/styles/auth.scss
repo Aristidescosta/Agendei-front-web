@@ -158,10 +158,26 @@
 @media (max-width: 576px) {
   #page-auth {
     flex-direction: column!important;
+    padding: 0;
   }
+
+
 
   #page-auth aside{
     flex: 1;
+    padding: 0.75rem;
+
+    img{
+      max-width: 240px;
+    }
+
+    strong{
+      font-size: 26px;
+    }
+
+    p{
+      font-size: 14px;
+    }
   }
 
   #page-auth main{

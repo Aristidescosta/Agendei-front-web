@@ -65,7 +65,7 @@ export const EstablishmentList = (props: PropsType) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Link to={"/establishment/service/" + props._id}>
+          <Link to={"/establishment/" + props._id}>
             <Button type="button" variant="outlined" color="primary">
               Ver mais
             </Button>

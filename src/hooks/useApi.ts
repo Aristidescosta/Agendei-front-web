@@ -1,7 +1,7 @@
 import axios from "axios";
-
+import { dev } from "../config/config"
 const api = axios.create({
-  baseURL: "http://192.168.1.9:3005",
+  baseURL: dev.API_URL, 
   headers: {
     "Content-type": "application/json",
   },
@@ -16,8 +16,19 @@ export const useApi = () => ({
     return await api.post("/users/confirmCode", { email, confirmationCode });
   },
 
-  reConfirmCode: async (email: string) => {
+  confirmCodeReset: async (email: string) => {
     return await api.post("/users/confirmCode/reset", { email });
+  },
+
+  reConfirmCode: async (email: string, confirmationCodeReset: string) => {
+    return await api.post("/users/resetPassword/reset", { email, confirmationCodeReset });
+  }, 
+  resetPassword:async (email: string, newPassword: string) => {
+    return await api.post("/users/resetPassword", { email, newPassword })
+  },
+
+  verifyEmail: async (email: string) => {
+    return await api.post("users/verifyEmail", { email });
   },
 
   login: async (email: string, password: string) => {

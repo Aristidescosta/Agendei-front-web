@@ -1,12 +1,8 @@
-import "./confirmCode.scss";
 import { Button } from "@material-ui/core";
-import { Send } from "@material-ui/icons";
-import { ChangeEvent, useState } from "react";
-import { useContext } from "react";
+import React, { ChangeEvent, useState, useContext, FormEventHandler, FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-
 function initialValues() {
   return {
     number1: "",
@@ -16,7 +12,7 @@ function initialValues() {
   };
 }
 
-export const ConfirmCode = () => {
+export const ConfirmCodeReset = () => {
   const [values, setValues] = useState(initialValues);
   const auth = useContext(AuthContext);
   function onChangeValues(event: ChangeEvent<HTMLInputElement>) {
@@ -28,7 +24,8 @@ export const ConfirmCode = () => {
       });
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(event: FormEvent<HTMLElement>) {
+    event.preventDefault();
     if (
       values.number1 === "" ||
       values.number2 === "" ||
@@ -41,23 +38,19 @@ export const ConfirmCode = () => {
         values.number1 + values.number2 + values.number3 + values.number4;
       const userEmail = localStorage.getItem("agendeiEmail");
       if (userEmail) {
-        await auth.confirmCode(userEmail, allValues);
+        await auth.reConfirmCode(userEmail, allValues);
+        console.log(allValues)
       } else {
         toast.error("Erro de comunicação...");
       }
     }
   }
 
-  function handleResetPassword() {
-    const email = localStorage.getItem("agendeiEmail");
-    if (email) auth.confirmCodeReset(email);
-    else toast.error("Falha na comunicação!");
-  }
-
   return (
-    <main>
+    <>
       <ToastContainer
         position="top-right"
+        limit={1}
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -69,6 +62,7 @@ export const ConfirmCode = () => {
       />
       {/* Same as */}
       <ToastContainer />
+
       <div className="background-fit">
         <svg
           data-name="Layer 1"
@@ -84,54 +78,61 @@ export const ConfirmCode = () => {
       </div>
 
       <div className="confirm-container">
-        <form>
-          <h1>Confirmação de conta</h1>
-          <p>Verifique o seu email, enviamos um código de confirmação</p>
+        <form className="changePassword" onSubmit={handleSubmit}>
+          <h1>Inserir código de segurança 1</h1>
+          <p>
+            Procura no teu e-mail uma mensagem com o teu código. Este deve ter 4
+            dígitos.
+          </p>
 
           <div>
             <div className="inputs">
               <input
                 type="number"
                 onChange={onChangeValues}
-                value={values.number1}
                 name="number1"
-                maxLength={1}
-                max={9}
+                value={values.number1}
               />
               <input
                 type="number"
                 onChange={onChangeValues}
-                value={values.number2}
                 name="number2"
+                value={values.number2}
               />
+
               <input
                 type="number"
                 onChange={onChangeValues}
-                value={values.number3}
                 name="number3"
+                value={values.number3}
               />
+
               <input
                 type="number"
                 onChange={onChangeValues}
-                value={values.number4}
                 name="number4"
+                value={values.number4}
               />
             </div>
-
-            <span className="reset-password" onClick={handleResetPassword}>
-              Reenviar código
-            </span>
+            <div>
+              <span>Enviamos o teu código para: </span>
+              <p>{localStorage.getItem("agendeiEmail")}</p>
+            </div>
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            endIcon={<Send />}
-          >
-            Enviar código
-          </Button>
+
+          <div>
+            <Link to="/resetPassword">Não recebeste um código?</Link>
+            <div className="buttons">
+              <Button variant="contained" className="btn">
+                Cancelar
+              </Button>
+              <Button type="submit" variant="contained" className="btn">
+                Enviar
+              </Button>
+            </div>
+          </div>
         </form>
       </div>
-    </main>
+    </>
   );
 };

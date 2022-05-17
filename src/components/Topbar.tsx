@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Avatar, Menu, MenuItem } from "@material-ui/core";
+import { Avatar, Button, Menu, MenuItem } from "@material-ui/core";
 import logo from "./assets/img/logo.png";
 import "../styles/topbar.scss";
 import { Link } from "react-router-dom";
@@ -16,6 +16,11 @@ export const Topbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logout = () =>{
+    localStorage.clear();
+    window.location.reload();
+  }
 
   return (
     <nav className="topbar">
@@ -56,9 +61,9 @@ export const Topbar = () => {
 
           <MenuItem>
           <ExitToApp />
-            <Link to="#logout">
+            <Button onClick={logout}>
             Sair
-            </Link>
+            </Button>
           </MenuItem>
         </Menu>
       </div>

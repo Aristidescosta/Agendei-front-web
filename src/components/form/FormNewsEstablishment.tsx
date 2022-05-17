@@ -1,3 +1,4 @@
+import { dev } from "../../config/config"
 import {
   useEffect,
   useState,
@@ -99,7 +100,7 @@ export const FormNewsEstablishment = () => {
     /* const response = await auth.setEstablishment(formData)
     console.log(response) */
     try {
-      const request = await fetch("http://192.168.1.9:3005/est/post", {
+      const request = await fetch(`${dev.API_URL}/est/post`, {
         method: "POST",
         body: formData,
         headers: {

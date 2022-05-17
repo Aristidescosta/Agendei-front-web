@@ -8,7 +8,7 @@ import { userEmail, userPassword } from "../../utils/validations";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Button } from "@material-ui/core"
 import { toast } from "react-toastify";
-
+import { Link } from "react-router-dom";
 
 interface IFormInput {
   email: string;
@@ -18,7 +18,7 @@ interface IFormInput {
 const myYupResolver = yup
   .object({
     email: yup.string().matches(userEmail).required(),
-    password: yup.string().required().min(8).max(20).matches(userPassword),
+    password: yup.string().required(),
   })
   .required();
 
@@ -32,7 +32,6 @@ export const FormSign = () => {
 
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    toast.loading("Carregando...")
     await auth.login(data.email, data.password)
   };
 
@@ -56,7 +55,7 @@ export const FormSign = () => {
         {errors.password?.message && (
           <InputError type={errors.password.type} field="password" />
         )}
-
+        <Link to="/verifyEmail">Não sabes tua palavra passe?</Link>
         <Button type="submit" color="primary">Entrar</Button>
       </form>
   );

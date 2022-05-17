@@ -44,8 +44,9 @@ export const FormSignup = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      });
+      }); 
     } else { 
+      console.log(data)
       await auth.signUp(data.name, data.email, data.password);
     }
   };

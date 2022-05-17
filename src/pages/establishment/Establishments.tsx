@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import birdInfo from "../../components/assets/img/bird-info.svg";
 import ContentLoader, { List } from "react-content-loader";
+import { dev } from "../../config/config";
 
 type MeusDados = {
   _id: string;
@@ -80,7 +81,7 @@ export const Establishments = () => {
                     _id={datas._id}
                     name={datas.name}
                     nif={datas.nif}
-                    img={"http://192.168.1.9:3005/" + datas.img}
+                    img={`${dev.API_URL}/` + datas.img}
                     address={datas.address}
                     key={datas._id}
                   />
