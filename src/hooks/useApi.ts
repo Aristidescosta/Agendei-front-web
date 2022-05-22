@@ -31,6 +31,10 @@ export const useApi = () => ({
     return await api.post("users/verifyEmail", { email });
   },
 
+  setImages: async(images: Array<object>, id: string) =>{
+    return await api.post(`est/uploadimage/${id}`,{images})
+  },
+
   login: async (email: string, password: string) => {
     return await api.post("/users/login", { email, password });
   },

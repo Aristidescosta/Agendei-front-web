@@ -3,7 +3,7 @@ import "./formStyle.scss";
 /* Hook Form e Hooks */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import ContentLoader, { List } from "react-content-loader";
+import { List } from "react-content-loader";
 
 /* Material UI */
 import {
@@ -11,22 +11,19 @@ import {
   IconButton,
   Avatar,
   Button,
-  Radio,
   makeStyles,
   Theme,
   createStyles,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TableCell,
-  TableBody,
 } from "@material-ui/core";
-import { AddAPhotoOutlined, HouseRounded, Send } from "@material-ui/icons";
+import {
+  AddAPhotoOutlined,
+  HouseRounded,
+  Send,
+  PhotoCamera,
+} from "@material-ui/icons";
 /* Yup */
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,29 +32,10 @@ import { useContext, useEffect, useState, ChangeEvent } from "react";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { InputError } from "../InputErrors";
 import "./formStyle.scss";
-import img from "../assets/img/agendei/bg.jpg";
-import img1 from "../assets/img/agendei/bg1.jpg";
-import img2 from "../assets/img/agendei/bg2.jpg";
-import img3 from "../assets/img/agendei/bg3.jpg";
-import img4 from "../assets/img/agendei/bg4.jpg";
-import img5 from "../assets/img/agendei/bg5.jpg";
 import { dev } from "../../config/config";
-function createClientData(
-  day: string,
-  open: string,
-  t: string,
-  op: JSX.Element
-) {
-  return { day, open, t, op };
-}
+import { ToastContainer, toast } from "react-toastify";
+import { AxiosError } from "axios";
 
-const rows = [
-  createClientData("Segunda", "10:24", "22:30", <Button>Cancelar</Button>),
-  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
-  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
-  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
-  createClientData("Quinta", "08:00", "00:00", <Button>Cancelar</Button>),
-];
 
 /* Types */
 interface I {
@@ -86,108 +64,154 @@ const myYupResolver = yup
   })
   .required();
 
+interface imageType {
+  id: number;
+  img: string;
+}
+
+interface imageTypeFile {
+  id: number;
+  img: File;
+}
+
+
+interface openType {
+  dia: number;
+  open: string;
+  close: string;
+}
 export const FormEdit = () => {
   const auth = useContext(AuthContext);
   const { id } = useParams();
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  
+    const [itemData, setItemData] = useState<Array<imageType>>([]);
+    
+    
+  
   const [picture, setPicture] = useState(
     `${dev.API_URL}/` + auth.establishment?.img
   );
   const [picture2, setPicture2] = useState<File>();
+  const [picture3, setPicture3] = useState<Array<imageTypeFile>>([]);
   const [data, setData] = useState<[]>([]);
-  const [show, setShow] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("segunda");
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+  const validOpen_to: Array<openType> = [];
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    console.log(picture3)
+    let idToast = toast.loading("Carregando...!");
+    handleTime();
+    let formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("address", data.address);
+    formData.append("number1", data.number1.toString());
+    formData.append("number2", data.number2.toString());
+    formData.append("nif", data.nif.toString());
+    formData.append("categoryid", categoryId);
+    formData.append("categoryname", categoryName);
+    formData.append("description", data.description);
+    formData.append("open_to", JSON.stringify(validOpen_to));
+    formData.append("imagesCount", JSON.stringify(picture3.length));
+    for (var i = 0; i < picture3.length; i++) {
+      formData.append("files", picture3[i].img);
+    }
+    if (picture2) formData.append("file", picture2);
+
+    try {
+      const request = await fetch(`${dev.API_URL}/est/update/${id}`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+          undefined: "multipart/form-data",
+        },
+      });
+      await request.json()
+
+    } catch (error: any) {
+      console.log("Aconteceu um erro" + error)
+    }
   };
-  const setDay = (
-    <>
-      <div className="col-md-3">
-        <span>Segunda</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "segunda"}
-          onChange={handleChange}
-          value="segunda"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Segunda" }}
-        />
-      </div>
+  
+  const open_to = [
+    {
+      dia: 0,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 1,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 2,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 3,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 4,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 5,
+      open: "",
+      close: "",
+      checked: false,
+    },
+    {
+      dia: 6,
+      open: "",
+      close: "",
+      checked: false,
+    },
+  ];
 
-      <div className="col-md-3">
-        <span>Terça</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "terça"}
-          onChange={handleChange}
-          value="terça"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Terça" }}
-        />
-      </div>
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    let id = Number(event.currentTarget.getAttribute("id"));
+    if(event.currentTarget.value !== "")
+      open_to[id].open = event.currentTarget.value;
+  }
 
-      <div className="col-md-3">
-        <span>Quarta</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "quarta"}
-          onChange={handleChange}
-          value="quarta"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Quarta" }}
-        />
-      </div>
+  function handleChangeClose(event: ChangeEvent<HTMLInputElement>) {
+    let id = Number(event.currentTarget.getAttribute("id"));
+    if(event.currentTarget.value !== "")
+      open_to[id].close = event.currentTarget.value;
+  }
+ 
+  function handleTime() {
+    for (let i = 0; i < 7; i++) {
+      if (
+        (open_to[i].close === "" && open_to[i].open !== "") ||
+        (open_to[i].close !== "" && open_to[i].open === "")
+      ) {
+        toast.error("Dados do horário, mau definidos");
+      } else if (open_to[i].checked && (open_to[i].close !== "" && open_to[i].open !== "")) {
+        console.log("Teste")
+        validOpen_to.push(open_to[i]);
+      }
+    }
+    console.log(validOpen_to);
+  }
 
-      <div className="col-md-3">
-        <span>Quinta</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "quinta"}
-          onChange={handleChange}
-          value="quinta"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Quinta" }}
-        />
-      </div>
-
-      <div className="col-md-3">
-        <span>Sexta</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "sexta"}
-          onChange={handleChange}
-          value="sexta"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Sexta" }}
-        />
-      </div>
-
-      <div className="col-md-3">
-        <span>Sábado</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "sabado"}
-          onChange={handleChange}
-          value="sabado"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Sábado" }}
-        />
-      </div>
-
-      <div className="col-md-3">
-        <span>Domingo</span>
-        <Radio
-          color="primary"
-          checked={selectedValue === "domingo"}
-          onChange={handleChange}
-          value="domingo"
-          name="radio-button-demo"
-          inputProps={{ "aria-label": "Domingo" }}
-        />
-      </div>
-    </>
-  );
+  function handleChecked(event: ChangeEvent<HTMLInputElement>) {
+    let id = Number(event.currentTarget.getAttribute("id"));
+    console.log(id, event.currentTarget.checked)
+    if(event.currentTarget.checked){
+      open_to[id].checked = event.currentTarget.checked;
+    }
+  }
 
   const {
     register,
@@ -201,6 +225,7 @@ export const FormEdit = () => {
       let url = URL.createObjectURL(event.currentTarget.files[0]);
       setPicture(url);
     }
+    console.log(picture2);
   };
 
   const list = data.map((category: I) => (
@@ -208,19 +233,6 @@ export const FormEdit = () => {
       {category?.name}
     </option>
   ));
-
-  const setTime = (
-    <>
-      <div className="col-md-6">
-        <p>Aberto as</p>
-        <Input type="time" />
-      </div>
-      <div className="col-md-6">
-        <p>Até as </p>
-        <Input type="time" />
-      </div>
-    </>
-  );
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -243,45 +255,36 @@ export const FormEdit = () => {
         background:
           "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
       },
+      input: {
+        display: "none",
+      },
     })
   );
-  const itemData = [
-    {
-      img: img,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
 
-    {
-      img: img1,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
+  function addNewPhoto(event: ChangeEvent<HTMLInputElement>) {
+    if (event.currentTarget.files && auth.establishment) {
+      let url = URL.createObjectURL(event.currentTarget.files[0]);
+      const newItemData = {
+        id: itemData.length,
+        img: url,
+      };
 
-    {
-      img: img2,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
+      const newItemDataFile = {
+        id: itemData.length,
+        img: event.currentTarget.files[0],
+      };
 
-    {
-      img: img3,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
+      setItemData([...itemData, newItemData]);
+      setPicture3([...picture3, newItemDataFile]);
+      
+    }
+    
+  }
 
-    {
-      img: img4,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
-
-    {
-      img: img5,
-      title: "Imagem do estabelecimento",
-      author: "author",
-    },
-  ];
+  function deletePhoto(id: number) {
+    /* const remainingPhoto = itemData.filter((item: imageType) => id !== item.id); */
+    /* setItemData(remainingPhoto); */
+  }
 
   const classes = useStyles();
 
@@ -291,23 +294,35 @@ export const FormEdit = () => {
   }
 
   useEffect(() => {
-    const getEstablishment = async () => {
-      if (typeof id !== "undefined") await auth.getOneEstablishment(id);
-    };
-    getEstablishment();
-  }, []);
-
-  useEffect(() => {
     const getCategory = async () => {
       const response = await auth.getCategory();
       console.log(response);
       setData(response);
     };
+    const getEstablishment = async () => {
+      if (typeof id !== "undefined") await auth.getOneEstablishment(id);
+    };
+    if(auth.establishment)
+    setItemData(auth.establishment?.images)
+    getEstablishment();
     getCategory();
   }, []);
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      {/* Same as */}
+      <ToastContainer />
       {!data ? (
         <List />
       ) : (
@@ -336,9 +351,9 @@ export const FormEdit = () => {
             </div>
           </div>
 
-          <form className="editEstablishment">
+          <form className="editEstablishment" onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
-              <div className="col-lg-9">
+              <div className="col-md-6">
                 <div className="row">
                   <div className="col-md-6">
                     <Input
@@ -419,7 +434,7 @@ export const FormEdit = () => {
                 </div>
 
                 <div className="row">
-                  <div className="describe col-md-6">
+                  <div className="describe col-md-12">
                     <label>Faça uma descrição</label>
                     <textarea
                       {...register("description")}
@@ -433,92 +448,294 @@ export const FormEdit = () => {
                     )}
                   </div>
 
-                  <div className="col-md-6">
+                  <div className="col-md-12">
                     <div className="row">
-                      <div className="col-md-9">
-                        <div className="row">{show ? setTime : setDay}</div>
+                      <div className="col-md-12">
+                        <div className={classes.root}>
+                          {itemData.length === 0 ? (
+                            <h1>Sem imagens</h1>
+                          ) : (
+                            <ImageList className={classes.imageList} cols={2.5}>
+                              {itemData.map((item: imageType) => (
+                                <ImageListItem key={item.id}>
+                                  <img src={item.img.includes("uploads") ? `${dev.API_URL}/${item?.img}` : item.img} alt={"item.title"} />
+                                  <ImageListItemBar
+                                    title={
+                                      <Button
+                                        onClick={() => deletePhoto(item?.id)}
+                                      >
+                                        Eliminar
+                                      </Button>
+                                    }
+                                    classes={{
+                                      root: classes.titleBar,
+                                    }}
+                                  />
+                                </ImageListItem>
+                              ))}
+                            </ImageList>
+                          )}
+                        </div>
                       </div>
-
-                      <div className="col-md-3">
-                        <Button
-                          variant="contained"
-                          className="btn"
-                          type="submit"
-                          endIcon={<Send />}
-                        >
-                          Próximo
-                        </Button>
+                      <div className="col-md-6">
+                        <label htmlFor="icon-button-file1">
+                          <input
+                            accept="image/*"
+                            id="icon-button-file1"
+                            type="file"
+                            className={classes.input}
+                            onChange={addNewPhoto}
+                          />
+                          <IconButton
+                            color="primary"
+                            aria-label="Atualizar a fotografia"
+                            component="span"
+                          >
+                            <AddAPhotoOutlined />
+                          </IconButton>
+                        </label>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
 
+              <div className="col-md-6">
                 <div className="row">
-                  <div className="col-md-12 col-lg-12">
-                    <div className={classes.root}>
-                      <ImageList className={classes.imageList} cols={2.5}>
-                        {itemData.map((item) => (
-                          <ImageListItem key={item.img}>
-                            <img src={item.img} alt={item.title} />
-                            <ImageListItemBar
-                              title={item.title}
-                              classes={{
-                                root: classes.titleBar,
-                                title: classes.title,
-                              }}
+                  {/* <FormListTransfer /> */}
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Dia</th>
+                        <th>Aberto as</th>
+                        <th>Até as</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="0"
+                              type="checkbox"
+                              onChange={handleChecked}
                             />
-                          </ImageListItem>
-                        ))}
-                      </ImageList>
-                    </div>
-                  </div>
-                </div>
+                            <span>Segunda-Feira</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="0"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="0"
+                          />
+                        </td>
+                      </tr>
 
-                <div className="row">
-                  <div className="col-md-6">
-                    <Button
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="1"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Terça-Feira</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="1"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="1"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="2"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Quarta-Feira</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="2"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="2"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="3"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Quinta-Feira</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="3"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="3"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="4"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Sexta-Feira</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="4"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="4"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="5"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Sábado</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="5"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="5"
+                          />
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>
+                          <div>
+                            <input
+                              id="6"
+                              type="checkbox"
+                              onChange={handleChecked}
+                            />
+                            <span>Domingo</span>
+                          </div>
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChange}
+                            className="timers"
+                            id="6"
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="time"
+                            onChange={handleChangeClose}
+                            className="timers"
+                            id="6"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <Button
+                    variant="contained"
+                    className="btn"
+                    type="submit"
+                    endIcon={<Send />}
+                  >
+                    Enviar
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* <Button
                       variant="contained"
                       className="btn"
                       type="submit"
                       endIcon={<Send />}
                     >
                       Enviar
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-3">
-                <TableContainer component={Paper}>
-                  <Table aria-label="Tabela customizada">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>Dia</TableCell>
-                        <TableCell>Aberto as</TableCell>
-                        <TableCell>Até as</TableCell>
-                        <TableCell>Opções</TableCell>
-                      </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                      {rows.map((row) => (
-                        <TableRow>
-                          <TableCell component="th" scope="row">
-                            {row.day}
-                          </TableCell>
-
-                          <TableCell align="center">{row.open}</TableCell>
-
-                          <TableCell align="center">{row.t}</TableCell>
-
-                          <TableCell align="center">{row.op}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            </div>
+                    </Button>*/}
           </form>
         </>
       )}

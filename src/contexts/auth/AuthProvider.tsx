@@ -221,6 +221,28 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     return retorno;
   }
 
+  async function setImages(images: Array<object>, id: string){
+    const idToast = toast.loading("Carregando, por favor aguarde...")
+    await api
+      .setImages(images, id)
+      .then((response) => {
+        toast.update(idToast, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      })
+      .catch((error: AxiosError) => {
+        toast.update(id, {
+          render: error.response?.data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      });
+  }
+
   function setToken(token: string) {
     localStorage.setItem("agendeiToken", token);
   }
@@ -243,7 +265,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         deleteEstablishment,
         reConfirmCode,
         confirmCodeReset,
-        resetPassword
+        resetPassword,
+        setImages
       }}
     >
       {children}

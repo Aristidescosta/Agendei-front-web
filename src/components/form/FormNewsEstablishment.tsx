@@ -96,6 +96,7 @@ export const FormNewsEstablishment = () => {
     if (auth.user) formData.append("userid", auth.user._id);
     formData.append("description", data.description);
     if (picture2) formData.append("file", picture2);
+    console.log(picture2)
 
     /* const response = await auth.setEstablishment(formData)
     console.log(response) */
@@ -113,7 +114,7 @@ export const FormNewsEstablishment = () => {
       toast.error(error.message)
     }
     toast.success("Estabelecimento criado com sucesso!");
-    navigate("/"); 
+    navigate("/");  
   };
 
   return (

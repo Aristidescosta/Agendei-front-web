@@ -22,6 +22,7 @@ export type AuthContextType = {
   setEstablishment: (formData: FormData) => Promise<AxiosResponse<any, any>>
   getOneEstablishment: (id: string) => Promise<void>
   deleteEstablishment: (id: string) => Promise<boolean>
+  setImages: (images: Array<object>, id: string) => Promise<void>
 }; 
 
 export const AuthContext = createContext<AuthContextType>(null!);

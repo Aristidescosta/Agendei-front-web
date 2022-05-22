@@ -1,3 +1,8 @@
+interface imageType {
+  id: number;
+  img: string;
+}
+
 export type Establishment = {
   _id: string;
   address: string;
@@ -13,5 +18,6 @@ export type Establishment = {
   createdAt: Date;
   updatedAt: Date;
   services: Array<object>;
+  images: Array<imageType>;
   ratingmedia: string;
 }

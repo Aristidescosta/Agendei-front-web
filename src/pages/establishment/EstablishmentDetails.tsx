@@ -1,5 +1,5 @@
 import { LocationOnOutlined, StarBorderOutlined } from "@material-ui/icons";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { List } from "react-content-loader";
 import { Link, useParams } from "react-router-dom";
 import { dev } from "../../config/config";
@@ -12,12 +12,6 @@ import {
   ImageListItem,
 } from "@material-ui/core";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import img from "../../components/assets/img/agendei/bg.jpg";
-import img1 from "../../components/assets/img/agendei/bg1.jpg";
-import img2 from "../../components/assets/img/agendei/bg2.jpg";
-import img3 from "../../components/assets/img/agendei/bg3.jpg";
-import img4 from "../../components/assets/img/agendei/bg4.jpg";
-import img5 from "../../components/assets/img/agendei/bg5.jpg";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,29 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface imageType {
+  id: number;
   img: string;
-  title: string;
 }
 
 export const EstablishmentDetails = () => {
   const { id } = useParams();
   const auth = useContext(AuthContext);
-  const [itemData, setItemData] = useState<Array<imageType>>([
-    {
-      img: img,
-      title: "Imagem do estabelecimento",
-    },
-
-    {
-      img: img1,
-      title: "Imagem do estabelecimento",
-    },
-
-    {
-      img: img2,
-      title: "Imagem do estabelecimento",
-    },
-  ]);
   const classes = useStyles();
 
   useEffect(() => {
@@ -140,7 +118,10 @@ export const EstablishmentDetails = () => {
 
               <div>
                 <p>Nº de serviços</p>
-                <span>{auth.establishment.services.length}</span>
+                <span>
+                  {auth.establishment.services &&
+                    auth.establishment.services.length}
+                </span>
               </div>
 
               <div>
@@ -158,14 +139,17 @@ export const EstablishmentDetails = () => {
                 </span>
               </p>
 
-              {itemData.length === 0 ? (
+              {auth.establishment?.images.length === 0 ? (
                 <p className="text-info">Galeria de imagens vazia</p>
               ) : (
                 <div className={classes.root}>
                   <ImageList rowHeight={180} className={classes.imageList}>
-                    {itemData.map((item) => (
-                      <ImageListItem key={item.img}>
-                        <img src={item.img} alt={item.title} />
+                    {auth.establishment?.images.map((item: imageType) => (
+                      <ImageListItem key={item.id}>
+                        <img
+                          src={`${dev.API_URL}/${item.img}`}
+                          alt={"item.title"}
+                        />
                       </ImageListItem>
                     ))}
                   </ImageList>
