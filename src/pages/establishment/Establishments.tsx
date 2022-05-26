@@ -1,12 +1,12 @@
 import "./establishment.scss";
-import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
+import { AddShoppingCart, Close } from "@material-ui/icons";
 import { useContext, useEffect, useState } from "react";
 import { EstablishmentList } from "./EstablishmentList";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import birdInfo from "../../components/assets/img/bird-info.svg";
-import ContentLoader, { List } from "react-content-loader";
+import { List } from "react-content-loader";
 import { dev } from "../../config/config";
 
 type MeusDados = {
@@ -16,13 +16,12 @@ type MeusDados = {
   nif: number;
   img: string;
   address: string;
+  open: boolean;
 };
 
 export const Establishments = () => {
   const [showAlert, setShowAlert] = useState(true);
   const [establishment, setEstablishment] = useState<object | void>();
-  const [category, setCategory] = useState();
-
   const auth = useContext(AuthContext);
   const handleClick = () => {
     setShowAlert(false);
@@ -35,9 +34,10 @@ export const Establishments = () => {
         setEstablishment(response);
       }
     };
-
+    auth.setText(auth.establishment?.open);
     getEstablishment();
-  }, []);
+  }, [auth]);
+  console.log(establishment);
 
   return (
     <>

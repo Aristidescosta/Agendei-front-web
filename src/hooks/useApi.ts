@@ -1,7 +1,7 @@
 import axios from "axios";
-import { dev } from "../config/config"
+import { dev } from "../config/config";
 const api = axios.create({
-  baseURL: dev.API_URL, 
+  baseURL: dev.API_URL,
   headers: {
     "Content-type": "application/json",
   },
@@ -21,18 +21,21 @@ export const useApi = () => ({
   },
 
   reConfirmCode: async (email: string, confirmationCodeReset: string) => {
-    return await api.post("/users/resetPassword/reset", { email, confirmationCodeReset });
-  }, 
-  resetPassword:async (email: string, newPassword: string) => {
-    return await api.post("/users/resetPassword", { email, newPassword })
+    return await api.post("/users/resetPassword/reset", {
+      email,
+      confirmationCodeReset,
+    });
+  },
+  resetPassword: async (email: string, newPassword: string) => {
+    return await api.post("/users/resetPassword", { email, newPassword });
   },
 
   verifyEmail: async (email: string) => {
     return await api.post("users/verifyEmail", { email });
   },
 
-  setImages: async(images: Array<object>, id: string) =>{
-    return await api.post(`est/uploadimage/${id}`,{images})
+  setImages: async (images: Array<object>, id: string) => {
+    return await api.post(`est/uploadimage/${id}`, { images });
   },
 
   login: async (email: string, password: string) => {
@@ -56,10 +59,22 @@ export const useApi = () => ({
   },
 
   setEstablishment: async (formData: FormData) => {
-    return await api.post("/est/post", { formData });
+    return await api.post("/est/post", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 
   deleteEstablishment: async (id: string) => {
-    return await api.post("/est/delete", { id })
-  }
+    return await api.post("/est/delete", { id });
+  },
+
+  openOrCloseEstablishment: async (id: string, open: boolean) => {
+    return await api.post("/est/openClose", { id, open });
+  },
+
+  getServices: async (id: string) => {
+    return await api.get(`services/serv/${id}`);
+  },
 });

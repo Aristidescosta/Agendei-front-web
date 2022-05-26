@@ -51,6 +51,13 @@ export const EstablishmentDetails = () => {
         <List />
       ) : (
         <section className="establishmentDetails">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/">Home</Link>
+            </li>
+            <li className="breadcrumb-item active">{ auth.establishment.name }</li>
+            <li className="breadcrumb-item active">Detalhes</li>
+          </ol>
           <div className="row">
             <div className="col-md-3 col-lg-3">
               <img src={`${dev.API_URL}/${auth.establishment.img}`} alt="" />

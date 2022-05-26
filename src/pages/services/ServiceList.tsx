@@ -1,45 +1,33 @@
 import { useState } from "react";
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Typography,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import ModalDeleted from "../../components/modal/ModalDeleted";
-import { ModalEdit } from "../../components/modal/ModalEdit";
 import { Schedule } from "@material-ui/icons";
+import "./service.scss";
+import { ModalService } from "./ModalService";
+import ModalDeleted from "../../components/modal/ModalDeleted";
 
 type PropsType = {
   id: string;
-  img: string;
   name: string;
-  nif: number;
-  location: string;
+  horarios: Array<string>;
+  preco: number;
+};
+
+type precoType = {
+  horario: string;
 };
 
 export const ServiceList = (props: PropsType) => {
-  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  
   const handleOpenModalDelete = () => setOpenModalDelete(true);
 
-  const handleOpenModalEdit = () => setOpenModalEdit(true);
+  const handleOpenModalCreate = () => setOpenModalCreate(true);
 
   return (
     <>
-      {/* Modal para adicionar um novo estabelecimento */}
-      <ModalEdit
-        handleOpenModalEdit={handleOpenModalEdit}
-        openModalEdit={openModalEdit}
-        setOpenModalEdit={setOpenModalEdit}
-      />
-
       {/* Modal de confirmação para eliminar algo */}
       <ModalDeleted
         handleOpenModalDelete={handleOpenModalDelete}
@@ -47,52 +35,61 @@ export const ServiceList = (props: PropsType) => {
         setOpenModalDelete={setOpenModalDelete}
       />
 
-      <Card>
-        <CardHeader title={props.name} />
-        <CardMedia
-          component="img"
-          height="194"
-          image={props.img}
-          alt={"Imagem de um/a " + props.name}
-        />
-        <CardContent>
-          <Typography variant="body2">
-            Localizção
-            <br />
-            Bairro: {props.location}
-            <br />
-            Nº de NIF: {props.nif}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button
-            type="button"
-            variant="outlined"
-            color="primary"
-            onClick={handleOpenModalEdit}
-            startIcon={<CloudUploadIcon />}
-          >
-            Atualizar
-          </Button>
+      <div className="card">
+        <div className="card-content">
+          <div className="card-title">
+            <h1>{props.name}</h1>
+            <p>&#9733; &#9733; &#9733; &#9733; &#9733;</p>
+          </div>
+          <div className="card-price">
+            <h1>{props.preco}kzs</h1>
+          </div>
+          <div className="card-hour">
+            <h4>Horários</h4>
+            <ul>
+              {props.horarios.map((value) => (
+                <li>
+                  <div>
+                    <span>{value}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <Button
-            type="button"
-            variant="outlined"
-            color="secondary"
-            onClick={handleOpenModalDelete}
-            startIcon={<DeleteIcon />}
-          >
-            Eliminar
-          </Button>
+          <div className="card-buttons">
+            <Button
+              type="button"
+              variant="outlined"
+              color="secondary"
+              onClick={handleOpenModalDelete}
+              startIcon={<DeleteIcon />}
+            >
+              Eliminar
+            </Button>
 
-          <Link to={`${props.id}/schedules`}
-          >
-            Agendamentos
+            <Link to={`${props.id}/schedules`}>
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                startIcon={<Schedule />}
+              >
+                Eliminar
+              </Button>
+            </Link>
 
-            <Schedule />
-          </Link>
-        </CardActions>
-      </Card>
+            <Button
+              type="button"
+              variant="outlined"
+              color="primary"
+              startIcon={<Schedule />}
+            >
+              Atualizar
+            </Button>
+          </div>
+        </div>
+      </div>
     </>
   );
 };

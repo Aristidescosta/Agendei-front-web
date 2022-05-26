@@ -4,10 +4,9 @@ import { AuthContext } from "../../contexts/auth/AuthContext";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputError } from "../InputErrors";
-import { userEmail, userPassword } from "../../utils/validations";
+import { userEmail } from "../../utils/validations";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Button } from "@material-ui/core"
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 interface IFormInput {

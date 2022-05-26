@@ -32,7 +32,13 @@ export const EstablishmentList = (props: PropsType) => {
   };
   const auth = useContext(AuthContext);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
-
+  const handleOpenOrCloseEstablishment = async () => {
+    console.log("Testando")
+    console.log(auth.text)
+    if(typeof auth.text === "boolean")
+    await auth.openOrCloseEstablishment(props._id, auth.text)
+  };
+  
   return (
     <>
       {/* Modal para adicionar um novo estabelecimento */}
@@ -50,6 +56,9 @@ export const EstablishmentList = (props: PropsType) => {
       />
 
       <Card className="m">
+        <div className="open">
+          <span>{auth.text ? "Aberto" : "Fechado"}</span>
+        </div>
         <CardHeader title={props.name} />
         <CardMedia
           component="img"
@@ -90,6 +99,16 @@ export const EstablishmentList = (props: PropsType) => {
             startIcon={<DeleteIcon />}
           >
             Eliminar
+          </Button>
+
+          <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            onClick={handleOpenOrCloseEstablishment}
+            startIcon={<DeleteIcon />}
+          >
+            {auth.text ? "Abrir" : "Fechar"}
           </Button>
         </CardActions>
       </Card>

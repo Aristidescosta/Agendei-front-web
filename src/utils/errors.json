@@ -46,10 +46,27 @@
     "max": "No máximo 20 caracteres",
     "matches": "Pelo menos 1 número, 1 símbolo, e 1 letra maiúscula"
   },
+
   "password2":{
     "required": "Palavra passe é um campo obrigatório",
     "min": "No mínimo 8 caracteres",
     "max": "No máximo 20 caracteres",
     "matches": "Pelo menos 1 número, 1 símbolo, e 1 letra maiúscula"
+  },
+
+  "hourType":{
+    "matches": "Formato da hora incorreto"
+  },
+
+  "serviceName": {
+    "required": "Nome é um campo obrigatório"
+  },
+
+  "servicePreco": {
+    "required": "Nome é um campo obrigatório"
+  },
+
+  "containerHour": {
+    "required": "Nome é um campo obrigatório"
   }
 }

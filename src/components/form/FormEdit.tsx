@@ -2,9 +2,9 @@ import "./formStyle.scss";
 
 /* Hook Form e Hooks */
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { List } from "react-content-loader";
-
+ 
 /* Material UI */
 import {
   Input,
@@ -35,7 +35,6 @@ import "./formStyle.scss";
 import { dev } from "../../config/config";
 import { ToastContainer, toast } from "react-toastify";
 import { AxiosError } from "axios";
-
 
 /* Types */
 interface I {
@@ -74,7 +73,6 @@ interface imageTypeFile {
   img: File;
 }
 
-
 interface openType {
   dia: number;
   open: string;
@@ -83,13 +81,12 @@ interface openType {
 export const FormEdit = () => {
   const auth = useContext(AuthContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  
-    const [itemData, setItemData] = useState<Array<imageType>>([]);
-    
-    
-  
+
+  const [itemData, setItemData] = useState<Array<imageType>>([]);
+
   const [picture, setPicture] = useState(
     `${dev.API_URL}/` + auth.establishment?.img
   );
@@ -98,10 +95,11 @@ export const FormEdit = () => {
   const [data, setData] = useState<[]>([]);
   const validOpen_to: Array<openType> = [];
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(picture3)
+    console.log(picture3);
     let idToast = toast.loading("Carregando...!");
     handleTime();
     let formData = new FormData();
+    let formData1 = new FormData();
     formData.append("name", data.name);
     formData.append("address", data.address);
     formData.append("number1", data.number1.toString());
@@ -112,10 +110,15 @@ export const FormEdit = () => {
     formData.append("description", data.description);
     formData.append("open_to", JSON.stringify(validOpen_to));
     formData.append("imagesCount", JSON.stringify(picture3.length));
-    for (var i = 0; i < picture3.length; i++) {
-      formData.append("files", picture3[i].img);
+    console.log(picture3)
+    if (picture3.length > 0) {
+      for (var i = 0; i < picture3.length; i++) {
+        formData.append("files", picture3[i].img);
+      }
     }
-    if (picture2) formData.append("file", picture2);
+    console.log(picture2)
+    if (picture2) formData1.append("file", picture2);
+    formData1.append("texto", "Aristides");
 
     try {
       const request = await fetch(`${dev.API_URL}/est/update/${id}`, {
@@ -126,13 +129,38 @@ export const FormEdit = () => {
           undefined: "multipart/form-data",
         },
       });
-      await request.json()
-
+      await request.json();
     } catch (error: any) {
-      console.log("Aconteceu um erro" + error)
+      toast.error(error.message);
     }
+    try {
+      const request = await fetch(`${dev.API_URL}/est/uploadimage/${id}`, {
+        method: "POST",
+        body: formData1,
+        headers: {
+          Accept: "application/json",
+          undefined: "multipart/form-data",
+        },
+      });
+      await request.json().then((response) => {
+        toast.update(idToast, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      });
+    } catch (error: any) {
+      toast.update(idToast, {
+        render: error,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    }
+    // navigate("/");
   };
-  
+
   const open_to = [
     {
       dia: 0,
@@ -180,16 +208,16 @@ export const FormEdit = () => {
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     let id = Number(event.currentTarget.getAttribute("id"));
-    if(event.currentTarget.value !== "")
+    if (event.currentTarget.value !== "")
       open_to[id].open = event.currentTarget.value;
   }
 
   function handleChangeClose(event: ChangeEvent<HTMLInputElement>) {
     let id = Number(event.currentTarget.getAttribute("id"));
-    if(event.currentTarget.value !== "")
+    if (event.currentTarget.value !== "")
       open_to[id].close = event.currentTarget.value;
   }
- 
+
   function handleTime() {
     for (let i = 0; i < 7; i++) {
       if (
@@ -197,8 +225,12 @@ export const FormEdit = () => {
         (open_to[i].close !== "" && open_to[i].open === "")
       ) {
         toast.error("Dados do horário, mau definidos");
-      } else if (open_to[i].checked && (open_to[i].close !== "" && open_to[i].open !== "")) {
-        console.log("Teste")
+      } else if (
+        open_to[i].checked &&
+        open_to[i].close !== "" &&
+        open_to[i].open !== ""
+      ) {
+        console.log("Teste");
         validOpen_to.push(open_to[i]);
       }
     }
@@ -207,8 +239,8 @@ export const FormEdit = () => {
 
   function handleChecked(event: ChangeEvent<HTMLInputElement>) {
     let id = Number(event.currentTarget.getAttribute("id"));
-    console.log(id, event.currentTarget.checked)
-    if(event.currentTarget.checked){
+    console.log(id, event.currentTarget.checked);
+    if (event.currentTarget.checked) {
       open_to[id].checked = event.currentTarget.checked;
     }
   }
@@ -276,9 +308,7 @@ export const FormEdit = () => {
 
       setItemData([...itemData, newItemData]);
       setPicture3([...picture3, newItemDataFile]);
-      
     }
-    
   }
 
   function deletePhoto(id: number) {
@@ -302,8 +332,7 @@ export const FormEdit = () => {
     const getEstablishment = async () => {
       if (typeof id !== "undefined") await auth.getOneEstablishment(id);
     };
-    if(auth.establishment)
-    setItemData(auth.establishment?.images)
+    if (auth.establishment) setItemData(auth.establishment?.images);
     getEstablishment();
     getCategory();
   }, []);
@@ -352,6 +381,15 @@ export const FormEdit = () => {
           </div>
 
           <form className="editEstablishment" onSubmit={handleSubmit(onSubmit)}>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item active">
+                {auth.establishment?.name}
+              </li>
+              <li className="breadcrumb-item active">Editar</li>
+            </ol>
             <div className="row">
               <div className="col-md-6">
                 <div className="row">
@@ -458,7 +496,14 @@ export const FormEdit = () => {
                             <ImageList className={classes.imageList} cols={2.5}>
                               {itemData.map((item: imageType) => (
                                 <ImageListItem key={item.id}>
-                                  <img src={item.img.includes("uploads") ? `${dev.API_URL}/${item?.img}` : item.img} alt={"item.title"} />
+                                  <img
+                                    src={
+                                      item.img.includes("uploads")
+                                        ? `${dev.API_URL}/${item?.img}`
+                                        : item.img
+                                    }
+                                    alt={"item.title"}
+                                  />
                                   <ImageListItemBar
                                     title={
                                       <Button

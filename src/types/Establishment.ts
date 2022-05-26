@@ -6,6 +6,7 @@ interface imageType {
 export type Establishment = {
   _id: string;
   address: string;
+  open: boolean;
   img: string;
   name: string;
   nif: string;

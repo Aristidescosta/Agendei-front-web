@@ -1,10 +1,5 @@
-import { dev } from "../../config/config"
-import {
-  useEffect,
-  useState,
-  useContext,
-  ChangeEvent
-} from "react";
+import { dev } from "../../config/config";
+import { useEffect, useState, useContext, ChangeEvent } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import * as yup from "yup";
@@ -14,7 +9,7 @@ import { AuthContext } from "../../contexts/auth/AuthContext";
 import "react-toastify/dist/ReactToastify.min.css";
 import { Input, IconButton, Avatar, Button } from "@material-ui/core";
 import { AddAPhotoOutlined, HouseRounded, Send } from "@material-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 interface I {
   _id: string;
@@ -83,9 +78,9 @@ export const FormNewsEstablishment = () => {
   }
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(data, categoryId, categoryName);
     let formData = new FormData();
-    toast.loading("Carregando...!");
+
+    
     formData.append("name", data.name);
     formData.append("address", data.address);
     formData.append("number1", data.number1.toString());
@@ -94,12 +89,11 @@ export const FormNewsEstablishment = () => {
     formData.append("categoryid", categoryId);
     formData.append("categoryname", categoryName);
     if (auth.user) formData.append("userid", auth.user._id);
+    if (auth.user) formData.append("username", auth.user.username);
     formData.append("description", data.description);
     if (picture2) formData.append("file", picture2);
-    console.log(picture2)
 
-    /* const response = await auth.setEstablishment(formData)
-    console.log(response) */
+    let idToast = toast.loading("Carregando...!");
     try {
       const request = await fetch(`${dev.API_URL}/est/post`, {
         method: "POST",
@@ -109,12 +103,34 @@ export const FormNewsEstablishment = () => {
           undefined: "multipart/form-data",
         },
       });
-      await request.json();
+      await request
+        .json()
+        .then((response) =>
+          toast.update(idToast, {
+            render: response.message,
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          })
+        )
+        .catch((error) =>
+          toast.update(idToast, {
+            render: error.message,
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+          })
+        );
     } catch (error: any) {
-      toast.error(error.message)
+      toast.update(idToast, {
+        render: error.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+      })
     }
-    toast.success("Estabelecimento criado com sucesso!");
-    navigate("/");  
+    /* toast.success("Estabelecimento criado com sucesso!");
+    navigate("/"); */
   };
 
   return (
@@ -154,12 +170,19 @@ export const FormNewsEstablishment = () => {
           pauseOnFocusLoss
           draggable
           pauseOnHover
+          limit={2}
         />
         {/* Same as */}
         <ToastContainer />
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
+            <Link to="/">Home</Link>
+          </li>
+          <li className="breadcrumb-item active">Novo</li>
+        </ol>
         <div className="row">
           <div className="col-md-6">
             <Input {...register("name")} placeholder="Nome" type="text" />

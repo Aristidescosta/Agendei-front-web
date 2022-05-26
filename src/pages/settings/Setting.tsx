@@ -5,7 +5,6 @@ import {
   Button,
   Tab,
   Tabs,
-  Typography,
 } from "@material-ui/core";
 import {
   Autorenew,
@@ -15,13 +14,13 @@ import {
   VisibilityOff,
 } from "@material-ui/icons";
 import { IconButton, Input } from "@material-ui/core";
-import React, { ChangeEvent, createContext, useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import logo from "../../components/assets/img/change-password-icon.jpg";
 import avatar from "../../components/assets/img/profile.png";
 import "./setting.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-
+import { Link } from "react-router-dom";
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
@@ -30,7 +29,7 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-  
+
   return (
     <div
       role="tabpanel"
@@ -106,10 +105,16 @@ function Setting() {
     setValue(newValue);
   };
 
-  const auth = useContext(AuthContext)
+  const auth = useContext(AuthContext);
   return (
-  
     <section className="setting">
+      <ol className="breadcrumb">
+        <li className="breadcrumb-item">
+          <Link to="/">Home</Link>
+        </li>
+        <li className="breadcrumb-item active">Configurações</li>
+      </ol>
+
       <AppBar position="static" color="default">
         <Tabs
           value={value}

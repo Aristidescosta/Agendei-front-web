@@ -340,17 +340,26 @@ button {
   Mobile
 ============================= */
 @media (min-width: 576px) {
-  .col {
-    max-width: 100%;
+  .col-sm-4 {
+    max-width: 33.333333%;
   }
+
+  .col-sm-6 {
+    max-width: 50%;
+  }
+
   .col-sm-8 {
-    max-width: 66.666667%;
+    width: 66.66666667%;
+  }
+
+  .col-sm-12 {
+    width: 100%;
   }
 }
 
-@media (max-width: 425px) {
-  .col-xm-12 {
-    max-width: 100%;
+@media (min-width: 425px) {
+  .col-xl-2 {
+    max-width: 50%;
   }
 }
 
@@ -386,7 +395,7 @@ button {
     max-width: 66.666667%;
   }
 
-  .col-lg-9 {
+  .col-md-9 {
     max-width: 75%;
   }
 
@@ -399,21 +408,7 @@ button {
   Tablet
 ============================= */
 @media (min-width: 425px) {
-  .col-sm-4 {
-    max-width: 33.333333%;
-  }
-
-  .col-sm-6 {
-    max-width: 50%;
-  }
-
-  .col-sm-8 {
-    width: 66.66666667%;
-  }
-
-  .col-sm-12 {
-    width: 100%;
-  }
+  
 }
 
 /* =============================

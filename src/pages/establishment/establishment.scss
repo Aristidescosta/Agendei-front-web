@@ -1,5 +1,52 @@
 .establishment {
+  position: relative;
   margin-top: 20px;
+
+  .MuiTypography-h5{
+    text-align: right;
+  }
+
+  .open{
+    height: 150px;
+    width: 157px;
+    position: absolute;
+    top: -6px;
+    left: 6px;
+    overflow: hidden;
+    &::before,
+    &::after{
+      position: absolute;
+      content: "";
+      display: block;
+      border: 7px solid #84c2e1;
+      border-top-color: transparent;
+      border-left-color: transparent;
+      z-index: -1;
+    }
+
+    &::before{
+      top: 0;
+      right: 22px;
+    }
+
+    &::after{
+      bottom: 15px;
+      left: 0;
+    }
+
+    span{
+      position: absolute;
+      background: #d9edf7;
+      width: 200px;
+      padding: 10px 0;
+      text-align: center;
+      top: 30px;
+      right: 0;
+      transform: rotate(-45deg);
+      text-transform: uppercase;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.12);
+    }
+  }
   .establishment-title {
     padding-bottom: 9px;
     margin: 40px 0 20px;

@@ -9,8 +9,11 @@ import { Establishment } from "../../types/Establishment";
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [establishment, setEst] = useState<Establishment | any>();
   const [user, setUser] = useState<User | null>(null);
-  const api = useApi();
-
+  const [text, setText] = useState<boolean | undefined>();
+  
+    
+  const api = useApi(); 
+ 
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem("agendeiToken");
@@ -222,10 +225,38 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }
 
   async function setImages(images: Array<object>, id: string){
-    const idToast = toast.loading("Carregando, por favor aguarde...")
+    const idToast = toast.loading("Processando seu pedido, por favor aguarde...")
     await api
       .setImages(images, id)
       .then((response) => {
+        toast.update(idToast, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      })
+      .catch((error: AxiosError) => {
+        toast.update(id, {
+          render: error.response?.data.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      });
+  }
+
+  async function getServices(id: string){
+    const response = await api.getServices(id);
+    return response.data;
+  }
+
+  async function openOrCloseEstablishment(id: string, open: boolean){
+    const idToast = toast.loading("Carregando, por favor aguarde...")
+    await api
+      .openOrCloseEstablishment(id, open)
+      .then((response) => {
+        setText(response.data.text)
         toast.update(idToast, {
           render: response.data.message,
           type: "success",
@@ -266,7 +297,11 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         reConfirmCode,
         confirmCodeReset,
         resetPassword,
-        setImages
+        setImages,
+        openOrCloseEstablishment,
+        text,
+        setText,
+        getServices
       }}
     >
       {children}

@@ -170,59 +170,65 @@ export const schedules = [
     clientName: "Aristides",
     service: "Corte francês",
     date: "24/10",
-    schedule: "10:30"
+    schedule: "10:30",
   },
   {
     id: 2,
     clientName: "Ruben André",
     service: "Corte careca",
     date: "24/10",
-    schedule: "22:45"
+    schedule: "22:45",
   },
   {
     id: 3,
     clientName: "Domingos da Costa",
     service: "Corte escovinha",
     date: "04/08",
-    schedule: "12:00"
-  }
-]
+    schedule: "12:00",
+  },
+];
 
 export const establishmentRows = [
   {
     id: "1qw1",
-    categoryId: "qwertyuiop",
-    name: "Pastelaria Aristides",
-    nif: 12345,
-    img: "caminho1",
-    location: "Rua do Imaus",
+    name: "Troca de óleo de motor",
+    horarios: ["08:30", "10:00","08:30","08:30", "11:00", "12:00", "13:00"],
+    preco: 8000,
   },
 
   {
     id: "1qw2",
-    categoryId: "qwertyuiop",
-    name: "Hopital Geral",
-    nif: 12345,
-    img: "caminho1",
-    location: "Rua do camama",
+    name: "Revisão no sistema de arrefecimento",
+    horarios: ["08:30", "10:00", "11:00", "12:00", "13:00"],
+    preco: 10000
   },
 
   {
     id: "1qw3",
-    categoryId: "qwertyuiop",
-    name: "Restaurante bom amigo",
-    nif: 12345,
-    img: "caminho1",
-    location: "Rua sem Nome",
+    name: "H",
+    horarios: ["08:30", "10:00", "11:00", "12:00", "13:00"],
+    preco: 6000
   },
 
   {
     id: "1qw4",
-    categoryId: "qwertyuiop",
-    name: "Hospedaria amiginhos",
-    nif: 12345,
-    img: "caminho1",
-    location: "Rua das PT",
+    name: "Alinhamento e balanceamento",
+    horarios: ["08:30", "10:00", "11:00", "12:00", "13:00"],
+    preco: 7000
+  },
+
+  {
+    id: "1qw5",
+    name: "Pastelaria Aristides",
+    horarios: ["08:30", "10:00", "11:00", "12:00", "13:00"],
+    preco: 0,
+  },
+
+  {
+    id: "1qw6",
+    name: "Pastelaria Aristides",
+    horarios: ["08:30", "10:00", "11:00", "12:00", "13:00"],
+    preco: 0,
   },
 ];
 

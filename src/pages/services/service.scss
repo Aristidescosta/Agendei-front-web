@@ -1,0 +1,283 @@
+.card {
+  position: relative;
+  border-radius: 25px;
+  overflow: hidden;
+  background: linear-gradient(to right, #ebe3e3, #efe7e7, #f7f7f7, #ede5e5);
+  /* 
+  prim-color: background: linear-gradient(to right, #facc14, #ffb60b, #ff9f13, #ff702c);
+  prim-trim-color background: linear-gradient(to right, #ff8820, #ff8820, #ff8820, #ff702c);
+  prim-bn-color background: linear-gradient(to right, #f8fc15, #fcfb0b, #ffac0c, #ff891e, #ff7e27); */
+  &::before,
+  &::after,
+  .card-content::before,
+  .card-content::after,
+  .card-price {
+    background-image: linear-gradient(
+      to right,
+      #12adf9,
+      #0cafff,
+      #14b2ff,
+      #2cb9ff
+    );
+    box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.4);
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    width: 100%;
+    height: 70px;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+    transform: rotate(-45deg) translate(-50px, -80px);
+  }
+
+  &::before {
+    width: 130%;
+    height: 170px;
+    transform: rotate(-45deg) translate(-50px, -125px);
+  }
+
+  .card-content::after,
+  .card-content::before {
+    content: "";
+    width: 155%;
+    height: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transform: rotate(-45deg) translate(-77px, -120px);
+  }
+
+  .card-content::after {
+    height: 396px;
+    width: 100%;
+    z-index: 0;
+    background-image: linear-gradient(
+      to right,
+      #20b5ff,
+      #20b5ff,
+      #21b6ff,
+      #2dbaff
+    );
+    transform: rotate(-45deg) translate(168px, 133px);
+  }
+
+  .card-title {
+    position: absolute;
+    top: 20px;
+    left: 40px;
+    z-index: 3;
+    h1 {
+      margin-top: -60px;
+      font-size: 24px;
+    }
+
+    p {
+      color: #fff;
+    }
+  }
+
+  .card-price {
+    height: 125px;
+    width: 125px;
+    border-radius: 50%;
+    position: absolute;
+    left: 30%;
+    top: 25%;
+    z-index: 5;
+    border: 5px solid rgb(26, 26, 26);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h1 {
+      font-size: 20px;
+      color: #fff;
+    }
+  }
+
+  .card-hour {
+    margin-top: 40vh;
+    padding-top: 13px;
+    text-align: left;
+    padding-left: 15%;
+    ul {
+      list-style: none;
+      color: #fff;
+      text-align: center;
+
+      li {
+        padding-top: 13px;
+        text-align: left;
+        &:last-child {
+          margin-bottom: 15px;
+        }
+
+        span {
+          background: rgb(59, 59, 59);
+          margin-left: 10px;
+          padding: 3px 10px;
+          border-radius: 10px;
+          font-size: 13px;
+        }
+      }
+    }
+  }
+
+  .card-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-left: 15px;
+    gap: 10px;
+    width: 90%;
+    margin-top: 15px;
+
+    button,
+    a {
+      width: 100%;
+    }
+
+    button:last-child {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+@media (max-width: 1129px) {
+}
+
+@media (min-width: 1129px) {
+  .card {
+    &::before,
+    &::after {
+      content: "";
+      width: 100%;
+      height: 70px;
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      transform: rotate(-45deg) translate(-50px, -105px);
+    }
+
+    &::before {
+      width: 130%;
+      height: 170px;
+      transform: rotate(-45deg) translate(-50px, -175px);
+    }
+
+    .card-content::after,
+    .card-content::before {
+      content: "";
+      width: 133%;
+      height: 200px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      transform: rotate(-45deg) translate(-110px, -116px);
+    }
+
+    .card-content::after {
+      height: 730px;
+      width: 100%;
+      z-index: 0;
+      background-image: linear-gradient(
+        to right,
+        #20b5ff,
+        #20b5ff,
+        #21b6ff,
+        #2dbaff
+      );
+      transform: rotate(-45deg) translate(350px, 19px);
+    }
+
+    .card-price {
+      top: 20%;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    &::before {
+      transform: rotate(-45deg) translate(-90px, -177px);
+    }
+
+    .card-content::before {
+      width: 123%;
+      transform: rotate(-45deg) translate(-102px, -120px);
+    }
+
+    .card-content::after {
+      height: 510px;
+      transform: rotate(-45deg) translate(282px, 113px);
+    }
+
+    .card-hour {
+      margin-top: 30vh;
+    }
+
+    .card-price {
+      top: 18%;
+    }
+  }
+
+  #modal-create {
+    width: 100vw;
+    height: 100vh;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    form {
+      background: #fff;
+      padding: 0.75rem;
+
+      .col-md-6,
+      .col-md-12 {
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+
+
+        button {
+          width: 70%;
+        }
+
+        textarea {
+          width: 100%;
+          border: 0;
+          padding: 16px;
+          background: #fefefe;
+          box-shadow: -1px 3px 14px 3px #a5a5a5de;
+          resize: none;
+          min-height: 20px;
+          outline: none;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .card {
+    .card-price {
+      top: 12%;
+    }
+
+    .card-hour {
+      margin-top: 35vh;
+    }
+
+    .card-content::before {
+      width: 155%;
+      transform: rotate(-45deg) translate(-138px, -161px);
+    }
+  }
+}
