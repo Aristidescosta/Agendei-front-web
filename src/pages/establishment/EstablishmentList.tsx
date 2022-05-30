@@ -14,6 +14,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import ModalDeleted from "../../components/modal/ModalDeleted";
 import { ModalEdit } from "../../components/modal/ModalEdit";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { LockOpenOutlined, Lock } from "@material-ui/icons";
 
 type PropsType = {
   _id: string;
@@ -21,23 +22,37 @@ type PropsType = {
   name: string;
   nif: number;
   address: string;
+  open: boolean;
+  establishment: Array<object>
 };
 
 export const EstablishmentList = (props: PropsType) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [test, setTest] = useState(false);
+  const auth = useContext(AuthContext)
+  const handleTest = async() => {
+    await auth.openOrCloseEstablishment(props._id, props.open)
+    setTest(!test);
+    // editOpen(props._id, test);
+  };
+
+  /* function editOpen(id: string, newOpen: boolean){
+    const edit = props.establishment.map((item: type) => {
+      if(id === Object(item)._id){
+        return {...item, open: newOpen}
+      }
+      return item;
+    })
+    auth.setEst(edit);
+  } */ 
+
+
   const handleOpenModalDelete = async () => {
     setOpenModalDelete(true);
     await auth.getOneEstablishment(props._id);
   };
-  const auth = useContext(AuthContext);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
-  const handleOpenOrCloseEstablishment = async () => {
-    console.log("Testando")
-    console.log(auth.text)
-    if(typeof auth.text === "boolean")
-    await auth.openOrCloseEstablishment(props._id, auth.text)
-  };
   
   return (
     <>
@@ -53,11 +68,12 @@ export const EstablishmentList = (props: PropsType) => {
         handleOpenModalDelete={handleOpenModalDelete}
         openModalDelete={openModalDelete}
         setOpenModalDelete={setOpenModalDelete}
+        idDelete={props._id}
       />
 
       <Card className="m">
         <div className="open">
-          <span>{auth.text ? "Aberto" : "Fechado"}</span>
+          <span>{test ? "Aberto" : "Fechado"}</span>
         </div>
         <CardHeader title={props.name} />
         <CardMedia
@@ -104,11 +120,11 @@ export const EstablishmentList = (props: PropsType) => {
           <Button
             type="button"
             variant="outlined"
-            color="secondary"
-            onClick={handleOpenOrCloseEstablishment}
-            startIcon={<DeleteIcon />}
-          >
-            {auth.text ? "Abrir" : "Fechar"}
+            color={test ? "secondary" : "primary"}
+            onClick={handleTest}
+            startIcon={test ? <Lock /> : <LockOpenOutlined />}
+          > 
+            {test ? "Fechar" : "Abrir"}
           </Button>
         </CardActions>
       </Card>

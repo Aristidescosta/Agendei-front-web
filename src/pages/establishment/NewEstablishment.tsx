@@ -3,11 +3,9 @@ import { FormNewsEstablishment } from "../../components/form/FormNewsEstablishme
 import "./newsEstablishment.scss";
 
 export const NewEstablishment = () => {
-  const newEstablishmentTemplate = (
-      <FormNewsEstablishment />
-  );
-
   return (
-    <section className="newEstablishment">{newEstablishmentTemplate}</section>
+    <section className="newEstablishment">
+      <FormNewsEstablishment /> 
+    </section>
   );
 };

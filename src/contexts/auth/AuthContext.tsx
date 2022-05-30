@@ -2,12 +2,13 @@ import React, { createContext } from "react";
 import { User} from "../../types/User";
 import { AxiosResponse } from "axios";
 import { Establishment } from "../../types/Establishment";
-
+import { Service } from "../../types/Service";
 
 export type AuthContextType = {
   text: boolean | undefined;
   user: User | null;
   establishment: Establishment | undefined;
+  service: Service | undefined;
   setText: React.Dispatch<React.SetStateAction<boolean | undefined>>;
   setEst: React.Dispatch<React.SetStateAction<Establishment | undefined>>;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;  
@@ -20,12 +21,14 @@ export type AuthContextType = {
   verifyEmail: (email: string) => Promise<void>
   getEstablishment: (userId: string) => Promise<Array<object> | void>
   getCategory: () => Promise<Array<object> | any>
-  setEstablishment: (formData: FormData) => Promise<AxiosResponse<any, any>>
   getOneEstablishment: (id: string) => Promise<void>
   deleteEstablishment: (id: string) => Promise<boolean>
-  setImages: (images: Array<object>, id: string) => Promise<void>
   openOrCloseEstablishment: (id: string, open: boolean) => Promise<void>
   getServices: (id: string) => Promise<Array<object> | void>
+  getService: (id: string) => Promise<boolean>
+  setServices: (name: string, preco: string, hours: Array<string>, est: object) => Promise<boolean>
+  deletedService: (id: string) => Promise<boolean>
+  getAppointments: (id: string) => Promise<Array<object> | any>
 }; 
 
 export const AuthContext = createContext<AuthContextType>(null!);

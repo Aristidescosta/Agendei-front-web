@@ -5,15 +5,16 @@ import { useApi } from "../../hooks/useApi";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { Establishment } from "../../types/Establishment";
+import { Service } from "../../types/Service";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-  const [establishment, setEst] = useState<Establishment | any>();
+  const [establishment, setEst] = useState<Array<Establishment> | any>();
+  const [service, setService] = useState<Service | any>();
   const [user, setUser] = useState<User | null>(null);
   const [text, setText] = useState<boolean | undefined>();
-  
-    
-  const api = useApi(); 
- 
+
+  const api = useApi();
+
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem("agendeiToken");
@@ -143,7 +144,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     await api
       .resetPassword(email, newPassword)
       .then((response) => {
-        console.log(response.data.token)
+        console.log(response.data.token);
         setUser(response.data.user);
         setToken(response.data.token);
         window.location.href = "/";
@@ -154,7 +155,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
           autoClose: 5000,
         });
         /* localStorage.setItem("agendeiEmail", email);*/
-        window.location.href = "/"; 
+        window.location.href = "/";
       })
       .catch((error: AxiosError) => {
         toast.update(id, {
@@ -167,7 +168,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }
 
   async function login(email: string, password: string) {
-    const id = toast.loading("Carregando, por favor aguarde...")
+    const id = toast.loading("Carregando, por favor aguarde...");
     await api
       .login(email, password)
       .then((response) => {
@@ -200,14 +201,9 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     return response.data;
   }
 
-  async function setEstablishment(formData: FormData) {
-    const response = await api.setEstablishment(formData);
-    return response;
-  }
-
   async function getOneEstablishment(id: string) {
     const response = await api.getOneEstablishment(id);
-    if (response) setEst(response.data);
+    setEst(response.data);
   }
 
   async function deleteEstablishment(id: string) {
@@ -224,10 +220,32 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     return retorno;
   }
 
-  async function setImages(images: Array<object>, id: string){
-    const idToast = toast.loading("Processando seu pedido, por favor aguarde...")
+  async function deletedService(id: string) {
+    let retorno = false;
     await api
-      .setImages(images, id)
+      .deletedService(id)
+      .then((response) => {
+        toast.success(response.data.message);
+        retorno = true;
+      })
+      .catch((error: AxiosError) => {
+        toast.error(error.response?.data.message);
+      });
+    return retorno;
+  }
+
+  async function setServices(
+    name: string,
+    preco: string,
+    hours: Array<string>,
+    est: object
+  ) {
+    let returned = false;
+    const idToast = toast.loading(
+      "Processando seu pedido, por favor aguarde..."
+    );
+    await api
+      .setServices(name, preco, hours, est)
       .then((response) => {
         toast.update(idToast, {
           render: response.data.message,
@@ -235,28 +253,63 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
           isLoading: false,
           autoClose: 5000,
         });
+        returned = true;
       })
       .catch((error: AxiosError) => {
-        toast.update(id, {
+        toast.update(idToast, {
           render: error.response?.data.message,
           type: "error",
           isLoading: false,
           autoClose: 5000,
         });
       });
+    return returned;
   }
 
-  async function getServices(id: string){
+  async function getService(id: string) {
+    const idToast = toast.loading(
+      "Processando seu pedido, por favor aguarde..."
+    );
+    let retorned = false;
+    await api
+      .getService(id)
+      .then((response) => {
+        toast.update(idToast, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        setService(response.data.service);
+        retorned = true;
+      })
+      .catch((error: AxiosError) =>
+        toast.update(idToast, {
+          render: error.response?.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        })
+      );
+    return retorned;
+  }
+
+  async function getServices(id: string) {
     const response = await api.getServices(id);
     return response.data;
   }
 
-  async function openOrCloseEstablishment(id: string, open: boolean){
-    const idToast = toast.loading("Carregando, por favor aguarde...")
+  async function getAppointments(id: string){
+    const response = await api.getAppointments(id);
+    return response.data;
+  }
+
+  async function openOrCloseEstablishment(id: string, open: boolean) {
+    const idToast = toast.loading("Carregando, por favor aguarde...");
     await api
       .openOrCloseEstablishment(id, open)
       .then((response) => {
-        setText(response.data.text)
+        setText(response.data.text);
         toast.update(idToast, {
           render: response.data.message,
           type: "success",
@@ -289,7 +342,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         getEstablishment,
         getCategory,
         verifyEmail,
-        setEstablishment,
         getOneEstablishment,
         establishment,
         setEst,
@@ -297,11 +349,15 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         reConfirmCode,
         confirmCodeReset,
         resetPassword,
-        setImages,
         openOrCloseEstablishment,
         text,
         setText,
-        getServices
+        getServices,
+        getService,
+        setServices,
+        service,
+        deletedService,
+        getAppointments
       }}
     >
       {children}

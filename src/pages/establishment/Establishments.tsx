@@ -17,11 +17,12 @@ type MeusDados = {
   img: string;
   address: string;
   open: boolean;
-};
+  establishment: Array<object>
+}; 
 
 export const Establishments = () => {
-  const [showAlert, setShowAlert] = useState(true);
-  const [establishment, setEstablishment] = useState<object | void>();
+  const [showAlert, setShowAlert] = useState(false);
+  const [establishment, setEstablishment] = useState<Array<object> | void>();
   const auth = useContext(AuthContext);
   const handleClick = () => {
     setShowAlert(false);
@@ -34,10 +35,9 @@ export const Establishments = () => {
         setEstablishment(response);
       }
     };
-    auth.setText(auth.establishment?.open);
     getEstablishment();
-  }, [auth]);
-  console.log(establishment);
+    console.log("Mudou")
+  }, [auth.establishment?.open]);
 
   return (
     <>
@@ -48,7 +48,7 @@ export const Establishments = () => {
           <h1 className="establishment-title">
             Nº total de estabelecimentos:
             <small className="establishment-sub">
-              {establishment && Object(establishment).length}
+              {establishment && establishment.length}
             </small>
           </h1>
 
@@ -74,19 +74,20 @@ export const Establishments = () => {
           </Link>
 
           <div className="row">
-            {establishment &&
-              Object(establishment).map((datas: MeusDados) => (
-                <div className="col-lg-4 col-sm-6">
-                  <EstablishmentList
-                    _id={datas._id}
-                    name={datas.name}
-                    nif={datas.nif}
-                    img={`${dev.API_URL}/` + datas.img}
-                    address={datas.address}
-                    key={datas._id}
-                  />
-                </div>
-              ))}
+            {Object(establishment).map((datas: MeusDados) => (
+              <div className="col-lg-4 col-sm-6">
+              <EstablishmentList
+                _id={datas._id}
+                name={datas.name}
+                nif={datas.nif}
+                img={`${dev.API_URL}/` + datas.img}
+                address={datas.address}
+                open={datas.open}
+                establishment={datas.establishment}
+                key={datas._id}
+              />
+            </div>
+            ))}
           </div>
         </section>
       )}

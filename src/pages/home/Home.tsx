@@ -18,15 +18,15 @@ export default function Home() {
         <Routes>
           <Route index element={<Establishments />} />
           <Route path="new" element={<NewEstablishment />} />
-          <Route path="user/setting" element={<Setting />} /> 
-          <Route path="user/account" element={<Account />} />
-          <Route path="establishment/:id" element={<EstablishmentDetails />} />
-          <Route path="establishment/:id/services" element={<Service />} />
+          <Route path="establishment/:estId" element={<EstablishmentDetails />} />
+          <Route path="establishment/:estId/edit" element={<Edit />} />
+          <Route path="establishment/:estId/services" element={<Service />} />
           <Route
-            path="establishment/service/:id/:schedulesId/schedules"
+            path="establishment/:estId/services/:serviceId/schedules"
             element={<Schedules />}
           />
-          <Route path="establishment/:id/edit" element={<Edit />} />
+          <Route path="user/setting" element={<Setting />} />
+          <Route path="user/account" element={<Account />} />
         </Routes>
       </main>
     </>

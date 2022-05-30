@@ -1,95 +1,71 @@
 import {
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TableCell,
-  TableBody,
   Input,
   Button,
-  ButtonGroup
+  ButtonGroup,
 } from "@material-ui/core";
 import { SearchOutlined } from "@material-ui/icons";
-import React, { useState } from "react";
-import { schedules } from "../../data";
+import React, { useState, useEffect, useContext } from "react";
+import "./style.scss";
+import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useParams } from "react-router-dom";
 
-
-function createClientData(
-  name: string,
-  service: string,
-  date: string,
-  schedule: string,
-  op: JSX.Element
-) {
-  return { name, service, date, schedule, op };
+interface appointmentsType {
+  _id: string;
+  name: string;
+  client: {
+    name: string;
+    email: string;
+  };
+  service: {
+    id: string;
+    name: string;
+    preco: string;
+  };
+  date: Date;
 }
-
-
-
-const f = schedules.map((d) => (
-  createClientData(d.clientName, d.service, d.date, d.schedule,
-    <ButtonGroup>
-      <Button>Cancelar</Button>
-      <Button>Aprovar</Button>
-    </ButtonGroup>)
-))
-
-
 
 export const Schedules = () => {
   const [searchValue, setSearchValue] = useState("");
-  
-  function setValueOnSearchValue(event: React.ChangeEvent<HTMLInputElement>){
-    setSearchValue(event.currentTarget.value.trim());
-  }
-
+  const [data, setData] = useState<Array<object>>([]);
+  const auth = useContext(AuthContext);
+  const { serviceId } = useParams();
 
   return (
-    <section>
+    <section className="schedule">
       <div>
-      <Input type="search" value={searchValue} onChange={setValueOnSearchValue}/>
-      <SearchOutlined />
+        <Input type="search" value={searchValue} />
+        <SearchOutlined />
       </div>
-      <TableContainer component={Paper}>
-        <Table aria-label="Tabela customizada">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nome</TableCell>
-              <TableCell>Serviço</TableCell>
-              <TableCell>Dia</TableCell>
-              <TableCell>Horário</TableCell>   
-              <TableCell>Opções</TableCell>   
-            </TableRow>
-          </TableHead>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Serviço</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Status</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
 
-          <TableBody>
-            { f.map((row) => (
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.service}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.date}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.schedule}
-                </TableCell>
-
-                <TableCell align="center">
-                  {row.op}
-                </TableCell>
-              </TableRow>
-            )) }
-          </TableBody>
-        </Table>
-      </TableContainer>
+        <tbody>
+          <tr>
+            <td>Aristides</td>
+            <td>aristidiscosta200@gmail.com</td>
+            <td>Troca de óleo</td>
+            <td>2022-05-31</td>
+            <td>12:30</td>
+            <td>Pending</td>
+            <td>
+              <ButtonGroup>
+                <Button>Cancelar</Button>
+                <Button>Aprovar</Button>
+              </ButtonGroup>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
   );
 };

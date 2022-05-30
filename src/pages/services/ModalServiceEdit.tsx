@@ -26,13 +26,13 @@ const myYupResolver = yup
   .required();
 
 type propsType = {
-  handleOpenModalCreate: () => void;
-  setOpenModalCreate: React.Dispatch<React.SetStateAction<boolean>>;
-  openModalCreate: boolean;
+  handleOpenModalEdit: () => void;
+  setOpenModalEdit: React.Dispatch<React.SetStateAction<boolean>>;
+  openModalEdit: boolean;
 };
 
-export const ModalService = (props: propsType) => {
-  const handleCloseModalCreate = () => props.setOpenModalCreate(false);
+export const ModalServiceEdit = (props: propsType) => {
+  const handleCloseModalEdit = () => props.setOpenModalEdit(false);
   const [timeValue, setTimeValue] = useState("");
   const [times, setTimes] = useState<Array<string>>([]);
   const inputEl = useRef<HTMLInputElement>(null);
@@ -48,7 +48,6 @@ export const ModalService = (props: propsType) => {
       name: auth.establishment?.name,
       id: auth.establishment?._id,
     };
-    
     const response = await auth.setServices(
       data.serviceName,
       data.servicePreco,
@@ -75,12 +74,12 @@ export const ModalService = (props: propsType) => {
     if (inputEl && inputEl.current) inputEl.current.focus();
     console.log(times);
   };
- 
+
   return (
     <Modal
       id="modal-create"
-      open={props.openModalCreate}
-      onClose={handleCloseModalCreate}
+      open={props.openModalEdit}
+      onClose={handleCloseModalEdit}
       aria-labelledby="modal-create-title"
       aria-describedby="modal-modal-description"
     >
@@ -90,7 +89,8 @@ export const ModalService = (props: propsType) => {
             <TextField
               {...register("serviceName")}
               id="standard-basic"
-              label="Nome do serviço"
+              label="Novo nome do serviço"
+              defaultValue={auth.service?.name}
             />
             {errors.serviceName?.message && (
               <InputError type={errors.serviceName.type} field="serviceName" />
@@ -101,6 +101,7 @@ export const ModalService = (props: propsType) => {
               {...register("servicePreco")}
               id="standard-basic"
               label="Preço do produto"
+              defaultValue={auth.service?.preco}
             />
             {errors.servicePreco?.message && (
               <InputError
@@ -133,7 +134,11 @@ export const ModalService = (props: propsType) => {
             </div>
           </div>
           <div className="col-md-6">
-            <textarea value={times} {...register("containerHours")}></textarea>
+            <textarea
+              value={times}
+              defaultValue={auth.service?.hours}
+              {...register("containerHours")}
+            ></textarea>
             {errors.containerHours?.message && (
               <InputError
                 type={errors.containerHours.type}
@@ -143,13 +148,13 @@ export const ModalService = (props: propsType) => {
           </div>
           <div className="col-md-6">
             <Button type="submit" variant="outlined" color="primary">
-              Criar
+              Editar
             </Button>
           </div>
 
           <div className="col-md-6">
             <Button
-              onClick={handleCloseModalCreate}
+              onClick={handleCloseModalEdit}
               variant="outlined"
               color="secondary"
             >

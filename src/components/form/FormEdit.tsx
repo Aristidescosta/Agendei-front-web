@@ -4,7 +4,7 @@ import "./formStyle.scss";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { List } from "react-content-loader";
- 
+
 /* Material UI */
 import {
   Input,
@@ -78,88 +78,47 @@ interface openType {
   open: string;
   close: string;
 }
+
+type establishmentType = {
+  _id: string;
+  categoryId: string;
+  name: string;
+  nif: number;
+  img: string;
+  address: string;
+  open: boolean;
+};
 export const FormEdit = () => {
   const auth = useContext(AuthContext);
-  const { id } = useParams();
+  const { estId } = useParams();
   const navigate = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [establishment, setEstablishment] = useState<object | void>();
 
   const [itemData, setItemData] = useState<Array<imageType>>([]);
 
-  const [picture, setPicture] = useState(
-    `${dev.API_URL}/` + auth.establishment?.img
-  );
   const [picture2, setPicture2] = useState<File>();
   const [picture3, setPicture3] = useState<Array<imageTypeFile>>([]);
   const [data, setData] = useState<[]>([]);
   const validOpen_to: Array<openType> = [];
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    console.log(picture3);
-    let idToast = toast.loading("Carregando...!");
-    handleTime();
-    let formData = new FormData();
-    let formData1 = new FormData();
-    formData.append("name", data.name);
-    formData.append("address", data.address);
-    formData.append("number1", data.number1.toString());
-    formData.append("number2", data.number2.toString());
-    formData.append("nif", data.nif.toString());
-    formData.append("categoryid", categoryId);
-    formData.append("categoryname", categoryName);
-    formData.append("description", data.description);
-    formData.append("open_to", JSON.stringify(validOpen_to));
-    formData.append("imagesCount", JSON.stringify(picture3.length));
-    console.log(picture3)
-    if (picture3.length > 0) {
-      for (var i = 0; i < picture3.length; i++) {
-        formData.append("files", picture3[i].img);
-      }
-    }
-    console.log(picture2)
-    if (picture2) formData1.append("file", picture2);
-    formData1.append("texto", "Aristides");
 
-    try {
-      const request = await fetch(`${dev.API_URL}/est/update/${id}`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-          undefined: "multipart/form-data",
-        },
-      });
-      await request.json();
-    } catch (error: any) {
-      toast.error(error.message);
-    }
-    try {
-      const request = await fetch(`${dev.API_URL}/est/uploadimage/${id}`, {
-        method: "POST",
-        body: formData1,
-        headers: {
-          Accept: "application/json",
-          undefined: "multipart/form-data",
-        },
-      });
-      await request.json().then((response) => {
-        toast.update(idToast, {
-          render: response.data.message,
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      });
-    } catch (error: any) {
-      toast.update(idToast, {
-        render: error,
-        type: "error",
-        isLoading: false,
-        autoClose: 5000,
-      });
-    }
-    // navigate("/");
-  };
+  useEffect(() => {
+    const getCategory = async () => {
+      const response = await auth.getCategory();
+      setData(response);
+    };
+    const getEstablishment = async () => {
+      if (estId) {
+        const response = await auth.getOneEstablishment(estId);
+        setEstablishment(response);
+      }
+    };
+    getEstablishment();
+    getCategory();
+  }, []);
+  console.log(auth.establishment)
+  const [picture, setPicture] = useState(`${dev.API_URL}/${auth.establishment?.img}`);
 
   const open_to = [
     {
@@ -230,16 +189,14 @@ export const FormEdit = () => {
         open_to[i].close !== "" &&
         open_to[i].open !== ""
       ) {
-        console.log("Teste");
         validOpen_to.push(open_to[i]);
       }
     }
-    console.log(validOpen_to);
   }
 
   function handleChecked(event: ChangeEvent<HTMLInputElement>) {
     let id = Number(event.currentTarget.getAttribute("id"));
-    console.log(id, event.currentTarget.checked);
+
     if (event.currentTarget.checked) {
       open_to[id].checked = event.currentTarget.checked;
     }
@@ -257,7 +214,6 @@ export const FormEdit = () => {
       let url = URL.createObjectURL(event.currentTarget.files[0]);
       setPicture(url);
     }
-    console.log(picture2);
   };
 
   const list = data.map((category: I) => (
@@ -294,12 +250,14 @@ export const FormEdit = () => {
   );
 
   function addNewPhoto(event: ChangeEvent<HTMLInputElement>) {
-    if (event.currentTarget.files && auth.establishment) {
+    console.log("Teste")
+    if (event.currentTarget.files && establishment) {
       let url = URL.createObjectURL(event.currentTarget.files[0]);
       const newItemData = {
         id: itemData.length,
         img: url,
       };
+      console.log(newItemData);
 
       const newItemDataFile = {
         id: itemData.length,
@@ -312,8 +270,11 @@ export const FormEdit = () => {
   }
 
   function deletePhoto(id: number) {
-    /* const remainingPhoto = itemData.filter((item: imageType) => id !== item.id); */
-    /* setItemData(remainingPhoto); */
+    const remainingPhoto = itemData.filter((item: imageType) => id !== item.id);
+    setItemData(remainingPhoto);
+
+    const remainingPhotoFile = picture3.filter((item: imageTypeFile) => id !== item.id);
+    setPicture3(remainingPhotoFile);
   }
 
   const classes = useStyles();
@@ -323,19 +284,72 @@ export const FormEdit = () => {
     setCategoryId(event.target.value);
   }
 
-  useEffect(() => {
-    const getCategory = async () => {
-      const response = await auth.getCategory();
-      console.log(response);
-      setData(response);
-    };
-    const getEstablishment = async () => {
-      if (typeof id !== "undefined") await auth.getOneEstablishment(id);
-    };
-    if (auth.establishment) setItemData(auth.establishment?.images);
-    getEstablishment();
-    getCategory();
-  }, []);
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    let idToast = toast.loading("Carregando...!");
+    handleTime();
+    let formData = new FormData();
+    let formData1 = new FormData();
+    formData.append("name", data.name);
+    formData.append("address", data.address);
+    formData.append("number1", data.number1.toString());
+    formData.append("number2", data.number2.toString());
+    formData.append("nif", data.nif.toString());
+    formData.append("categoryid", categoryId);
+    formData.append("categoryname", categoryName);
+    formData.append("description", data.description);
+    formData.append("open_to", JSON.stringify(validOpen_to));
+    formData.append("imagesCount", JSON.stringify(picture3.length));
+
+    if (picture3.length > 0) {
+      for (var i = 0; i < picture3.length; i++) {
+        formData.append("files", picture3[i].img);
+      }
+    }
+
+    if (picture2) formData1.append("file", picture2);
+  
+    try {
+      const request = await fetch(`${dev.API_URL}/est/update/${estId}`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+          undefined: "multipart/form-data",
+        },
+      });
+      await request.json();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+
+    try {
+      const request = await fetch(`${dev.API_URL}/est/uploadimage/${estId}`, {
+        method: "POST",
+        body: formData1,
+        headers: {
+          Accept: "application/json",
+          undefined: "multipart/form-data",
+        },
+      });
+      await request.json().then((response) => {
+        toast.update(idToast, {
+          render: response.data.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      });
+    } catch (error: any) {
+      toast.update(idToast, {
+        render: error,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+      });
+    } 
+    // navigate("/");
+  };
 
   return (
     <>
@@ -352,7 +366,7 @@ export const FormEdit = () => {
       />
       {/* Same as */}
       <ToastContainer />
-      {!data ? (
+      {!auth.establishment ? (
         <List />
       ) : (
         <>
@@ -386,7 +400,7 @@ export const FormEdit = () => {
                 <Link to="/">Home</Link>
               </li>
               <li className="breadcrumb-item active">
-                {auth.establishment?.name}
+                {auth.establishment.name}
               </li>
               <li className="breadcrumb-item active">Editar</li>
             </ol>
@@ -396,7 +410,7 @@ export const FormEdit = () => {
                   <div className="col-md-6">
                     <Input
                       {...register("name")}
-                      defaultValue={auth.establishment?.name}
+                      defaultValue={auth.establishment.name}
                       placeholder="Nome"
                       type="text"
                     />
@@ -409,7 +423,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("nif")}
                       placeholder="Número de nif"
-                      defaultValue={auth.establishment?.nif}
+                      defaultValue={auth.establishment.nif}
                       type="number"
                     />
                     {errors.nif?.message && (
@@ -423,7 +437,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("number1")}
                       placeholder="Primeiro número"
-                      defaultValue={auth.establishment?.phones_number[0]}
+                      defaultValue={auth.establishment.phones_number[0]}
                       type="number"
                     />
                     {errors.number1?.message && (
@@ -435,7 +449,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("number2")}
                       placeholder="Segundo número"
-                      defaultValue={auth.establishment?.phones_number[1]}
+                      defaultValue={auth.establishment.phones_number[1]}
                       type="number"
                     />
                     {errors.number2?.message && (
@@ -449,7 +463,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("address")}
                       placeholder="Localização"
-                      defaultValue={auth.establishment?.address}
+                      defaultValue={auth.establishment.address}
                       type="text"
                     />
                     {errors.address?.message && (
@@ -463,9 +477,12 @@ export const FormEdit = () => {
                         id="id"
                         className="MuiInputBase-input MuiInput-input"
                         onChange={handle}
+                        defaultValue={auth.establishment.category._id}
                       >
                         {list}
-                        <option value="others">Outros</option>
+                        <option value={auth.establishment.category._id}>
+                          {auth.establishment.category.name}
+                        </option>
                       </select>
                     </div>
                   </div>
@@ -476,7 +493,7 @@ export const FormEdit = () => {
                     <label>Faça uma descrição</label>
                     <textarea
                       {...register("description")}
-                      defaultValue={auth.establishment?.description}
+                      defaultValue={auth.establishment.description}
                     ></textarea>
                     {errors.description?.message && (
                       <InputError

@@ -78,9 +78,8 @@ export const FormNewsEstablishment = () => {
   }
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    let idToast = toast.loading("Carregando, por favor aguarde...!");
     let formData = new FormData();
-
-    
     formData.append("name", data.name);
     formData.append("address", data.address);
     formData.append("number1", data.number1.toString());
@@ -91,50 +90,80 @@ export const FormNewsEstablishment = () => {
     if (auth.user) formData.append("userid", auth.user._id);
     if (auth.user) formData.append("username", auth.user.username);
     formData.append("description", data.description);
-    if (picture2) formData.append("file", picture2);
-
-    let idToast = toast.loading("Carregando...!");
-    try {
-      const request = await fetch(`${dev.API_URL}/est/post`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Accept: "application/json",
-          undefined: "multipart/form-data",
-        },
-      });
-      await request
-        .json()
-        .then((response) =>
-          toast.update(idToast, {
-            render: response.message,
-            type: "success",
-            isLoading: false,
-            autoClose: 5000,
-          })
-        )
-        .catch((error) =>
-          toast.update(idToast, {
-            render: error.message,
-            type: "error",
-            isLoading: false,
-            autoClose: 5000,
-          })
-        );
-    } catch (error: any) {
-      toast.update(idToast, {
-        render: error.message,
+    if (picture2) {
+      formData.append("file", picture2);
+      console.log(data, categoryId);
+      try {
+        const request = await fetch(`${dev.API_URL}/est/post`, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+            undefined: "multipart/form-data",
+          },
+        });
+        await request
+          .json()
+          .then((response) =>
+            toast.update(idToast, {
+              render: "Estabelecimento criado com sucesso",
+              type: "success",
+              isLoading: false,
+              autoClose: 3000,
+            })
+          )
+          .catch((error) =>
+            toast.update(idToast, {
+              render: error.message,
+              type: "error",
+              isLoading: false,
+              autoClose: 3000,
+            })
+          );
+      } catch (error: any) {
+        toast.update(idToast, {
+          render: error.message,
           type: "error",
           isLoading: false,
-          autoClose: 5000,
-      })
+          autoClose: 3000,
+        });
+      }
+    } else {
+      toast.update(idToast, {
+        render: "Imagem não defenida",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     }
+    /* let idToast = toast.loading("Carregando...!");
+     */
     /* toast.success("Estabelecimento criado com sucesso!");
     navigate("/"); */
+    function goToHome(){
+      console.log("Estou indo na rota principal")
+      navigate("/")
+    }
+    setTimeout(goToHome, 3000);
   };
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        limit={2}
+      />
+      {/* Same as */}
+      <ToastContainer />
+
       <div className="separator">
         <div className="add-est">
           <Avatar src={picture}>
@@ -159,30 +188,15 @@ export const FormNewsEstablishment = () => {
         </div>
       </div>
 
-      <div>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          limit={2}
-        />
-        {/* Same as */}
-        <ToastContainer />
-      </div>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
             <Link to="/">Home</Link>
           </li>
+          <li className="breadcrumb-item">Estabelecimento</li>
           <li className="breadcrumb-item active">Novo</li>
         </ol>
+
         <div className="row">
           <div className="col-md-6">
             <Input {...register("name")} placeholder="Nome" type="text" />
@@ -242,12 +256,15 @@ export const FormNewsEstablishment = () => {
           <div className="col-md-6">
             <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
               <select
-                id="id"
+                id="select"
                 className="MuiInputBase-input MuiInput-input"
                 onChange={handle}
+                defaultValue=""
               >
+                <option value="" disabled selected hidden>
+                  Selecione uma categoria
+                </option>
                 {list}
-                <option value="others">Outros</option>
               </select>
             </div>
           </div>

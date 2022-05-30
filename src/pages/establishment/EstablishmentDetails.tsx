@@ -1,5 +1,5 @@
 import { LocationOnOutlined, StarBorderOutlined } from "@material-ui/icons";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect} from "react";
 import { List } from "react-content-loader";
 import { Link, useParams } from "react-router-dom";
 import { dev } from "../../config/config";
@@ -37,13 +37,17 @@ interface imageType {
 }
 
 export const EstablishmentDetails = () => {
-  const { id } = useParams();
+  const { estId } = useParams();
   const auth = useContext(AuthContext);
   const classes = useStyles();
-
+  
   useEffect(() => {
-    auth.setEst(undefined);
-    if (id) auth.getOneEstablishment(id);
+    const getEstablishment = async () => {
+      if (estId) {
+        await auth.getOneEstablishment(estId);
+      }
+    };
+    getEstablishment();
   }, []);
   return (
     <>

@@ -15,12 +15,10 @@ type propsType = {
 const ModalDeleted = (props: propsType) => {
   const auth = useContext(AuthContext);
   const handleCloseModalDelete = () => props.setOpenModalDelete(false);
-  const { estId } = useParams();
   const deleteEstablishment = async () => {
-    console.log("teste",estId)
+    console.log(props.idDelete);
     if (props.idDelete) {
-      const response = await auth.deleteEstablishment(props.idDelete);
-      
+      const response = await auth.deletedService(props.idDelete);
       if (response) {
         window.location.reload();
       }

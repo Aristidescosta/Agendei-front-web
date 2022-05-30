@@ -1,3 +1,46 @@
+#modal-create {
+  padding: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    background: #fff;
+    padding: 0.75rem;
+
+    .col-md-6,
+    .col-md-12 {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+
+
+      button {
+        width: 100%;
+      }
+
+      textarea {
+        width: 100%;
+        border: 0;
+        padding: 16px;
+        background: #fefefe;
+        box-shadow: -1px 3px 14px 3px #a5a5a5de;
+        resize: none;
+        min-height: 20px;
+        outline: none;
+        border-radius: 5px;
+      }
+    }
+
+    .col-md-6:last-child{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+}
+
 .card {
   position: relative;
   border-radius: 25px;
@@ -223,44 +266,6 @@
 
     .card-price {
       top: 18%;
-    }
-  }
-
-  #modal-create {
-    width: 100vw;
-    height: 100vh;
-    padding: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    form {
-      background: #fff;
-      padding: 0.75rem;
-
-      .col-md-6,
-      .col-md-12 {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
-
-
-        button {
-          width: 70%;
-        }
-
-        textarea {
-          width: 100%;
-          border: 0;
-          padding: 16px;
-          background: #fefefe;
-          box-shadow: -1px 3px 14px 3px #a5a5a5de;
-          resize: none;
-          min-height: 20px;
-          outline: none;
-          border-radius: 5px;
-        }
-      }
     }
   }
 }

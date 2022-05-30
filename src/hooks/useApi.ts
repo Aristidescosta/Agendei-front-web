@@ -34,10 +34,6 @@ export const useApi = () => ({
     return await api.post("users/verifyEmail", { email });
   },
 
-  setImages: async (images: Array<object>, id: string) => {
-    return await api.post(`est/uploadimage/${id}`, { images });
-  },
-
   login: async (email: string, password: string) => {
     return await api.post("/users/login", { email, password });
   },
@@ -47,11 +43,11 @@ export const useApi = () => ({
   },
 
   getEstablishment: async (userId: string) => {
-    return await api.get(`/users/establishment/${userId}`);
+    return await api.get(`/est/estsuser/${userId}`);
   },
 
   getOneEstablishment: async (id: string) => {
-    return await api.post("/est/get", { id });
+    return await api.get(`/est/getEst/${id}`);
   },
 
   getCategory: async () => {
@@ -67,7 +63,7 @@ export const useApi = () => ({
   },
 
   deleteEstablishment: async (id: string) => {
-    return await api.post("/est/delete", { id });
+    return await api.get(`/est/delete/${id}`);
   },
 
   openOrCloseEstablishment: async (id: string, open: boolean) => {
@@ -75,6 +71,22 @@ export const useApi = () => ({
   },
 
   getServices: async (id: string) => {
-    return await api.get(`services/serv/${id}`);
+    return await api.get(`/services/services/${id}`);
   },
+
+  getService: async (id: string) => {
+    return await api.post(`/services/service`, { id });
+  },
+
+  setServices: async (name: string, preco: string, hours: Array<string>, est: object) => {
+    return await api.post(`/services/post`, { name, preco, est, hours });
+  },
+
+  deletedService: async (id: string) =>{
+    return await api.delete(`/services/delete/${id}`);
+  },
+  
+  getAppointments: async(id: string) => {
+    return await api.get(`services/service/${id}/appointments`);
+  }
 });

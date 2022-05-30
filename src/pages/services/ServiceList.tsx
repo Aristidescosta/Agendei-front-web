@@ -2,11 +2,10 @@ import { useState } from "react";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { Schedule } from "@material-ui/icons";
+import { Edit, Event } from "@material-ui/icons";
 import "./service.scss";
-import { ModalService } from "./ModalService";
-import ModalDeleted from "../../components/modal/ModalDeleted";
+import ModalDeleted from "./ModalDeleted";
+import { ModalServiceEdit } from "./ModalServiceEdit";
 
 type PropsType = {
   id: string;
@@ -15,16 +14,12 @@ type PropsType = {
   preco: number;
 };
 
-type precoType = {
-  horario: string;
-};
-
 export const ServiceList = (props: PropsType) => {
-  const [openModalCreate, setOpenModalCreate] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const handleOpenModalDelete = () => setOpenModalDelete(true);
-
-  const handleOpenModalCreate = () => setOpenModalCreate(true);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const handleOpenModalEdit = () => setOpenModalEdit(true);
+  console.log(props.id)
 
   return (
     <>
@@ -33,6 +28,13 @@ export const ServiceList = (props: PropsType) => {
         handleOpenModalDelete={handleOpenModalDelete}
         openModalDelete={openModalDelete}
         setOpenModalDelete={setOpenModalDelete}
+        idDelete={props.id}
+      />
+
+      <ModalServiceEdit
+        handleOpenModalEdit={handleOpenModalEdit}
+        openModalEdit={openModalEdit}
+        setOpenModalEdit={setOpenModalEdit}
       />
 
       <div className="card">
@@ -73,9 +75,9 @@ export const ServiceList = (props: PropsType) => {
                 type="button"
                 variant="outlined"
                 color="primary"
-                startIcon={<Schedule />}
+                startIcon={<Event />}
               >
-                Eliminar
+                Ver agendamentos
               </Button>
             </Link>
 
@@ -83,9 +85,10 @@ export const ServiceList = (props: PropsType) => {
               type="button"
               variant="outlined"
               color="primary"
-              startIcon={<Schedule />}
+              onClick={handleOpenModalEdit}
+              startIcon={<Edit />}
             >
-              Atualizar
+              Editar serviço
             </Button>
           </div>
         </div>
