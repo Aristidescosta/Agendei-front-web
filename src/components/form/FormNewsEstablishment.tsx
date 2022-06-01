@@ -104,7 +104,7 @@ export const FormNewsEstablishment = () => {
             undefined: "multipart/form-data",
           },
         });
-        await request 
+        await request
           .json()
           .then((response) => {
             toast.update(idToast, {
@@ -148,146 +148,151 @@ export const FormNewsEstablishment = () => {
 
   return (
     <>
-    { !auth.establishment ?(<Preloader />) : (
-      <>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        limit={2}
-      />
-      {/* Same as */}
-      <ToastContainer />
+      {auth.establishment ? (
+        <Preloader />
+      ) : (
+        <>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            limit={2}
+          />
+          {/* Same as */}
+          <ToastContainer />
 
-      <div className="separator">
-        <div className="add-est">
-          <Avatar src={picture}>
-            <HouseRounded />
-          </Avatar>
+          <div className="separator">
+            <div className="add-est">
+              <Avatar src={picture}>
+                <HouseRounded />
+              </Avatar>
 
-          <label htmlFor="icon-button-file" className="s">
-            <input
-              accept="image/*"
-              id="icon-button-file"
-              type="file"
-              onChange={handleSetImage}
-            />
-            <IconButton
-              color="primary"
-              aria-label="Atualizar a fotografia"
-              component="span"
-            >
-              <AddAPhotoOutlined />
-            </IconButton>
-          </label>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="breadcrumb-item">Estabelecimento</li>
-          <li className="breadcrumb-item active">Novo</li>
-        </ol>
-
-        <div className="row">
-          <div className="col-md-6">
-            <Input {...register("name")} placeholder="Nome" type="text" />
-            {errors.name?.message && (
-              <InputError type={errors.name.type} field="name" />
-            )}
-          </div>
-
-          <div className="col-md-6">
-            <Input
-              {...register("nif")}
-              placeholder="Número de nif"
-              type="number"
-            />
-            {errors.nif?.message && (
-              <InputError type={errors.nif.type} field="nif" />
-            )}
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6">
-            <Input
-              {...register("number1")}
-              placeholder="Primeiro número"
-              type="number"
-            />
-            {errors.number1?.message && (
-              <InputError type={errors.number1.type} field="number1" />
-            )}
-          </div>
-
-          <div className="col-md-6">
-            <Input
-              {...register("number2")}
-              placeholder="Segundo número"
-              type="number"
-            />
-            {errors.number2?.message && (
-              <InputError type={errors.number2.type} field="number2" />
-            )}
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6">
-            <Input
-              {...register("address")}
-              placeholder="Localização"
-              type="text"
-            />
-            {errors.address?.message && (
-              <InputError type={errors.address.type} field="address" />
-            )}
-          </div>
-
-          <div className="col-md-6">
-            <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
-              <select
-                id="select"
-                className="MuiInputBase-input MuiInput-input"
-                onChange={handle}
-                defaultValue=""
-              >
-                <option value="" disabled selected hidden>
-                  Selecione uma categoria
-                </option>
-                {list}
-              </select>
+              <label htmlFor="icon-button-file" className="s">
+                <input
+                  accept="image/*"
+                  id="icon-button-file"
+                  type="file"
+                  onChange={handleSetImage}
+                />
+                <IconButton
+                  color="primary"
+                  aria-label="Atualizar a fotografia"
+                  component="span"
+                >
+                  <AddAPhotoOutlined />
+                </IconButton>
+              </label>
             </div>
           </div>
 
-          <div className="describe .col-sm-12 .col-md-12">
-            <label>Faça uma descrição</label>
-            <textarea {...register("description")}></textarea>
-            {errors.description?.message && (
-              <InputError type={errors.description.type} field="description" />
-            )}
-          </div>
-        </div>
-        <Button
-          variant="contained"
-          className="btn"
-          type="submit"
-          endIcon={<Send />}
-        >
-          Atualizar
-        </Button>
-      </form>
-      </>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <Link to="/">Home</Link>
+              </li>
+              <li className="breadcrumb-item">Estabelecimento</li>
+              <li className="breadcrumb-item active">Novo</li>
+            </ol>
+
+            <div className="row">
+              <div className="col-md-6">
+                <Input {...register("name")} placeholder="Nome" type="text" />
+                {errors.name?.message && (
+                  <InputError type={errors.name.type} field="name" />
+                )}
+              </div>
+
+              <div className="col-md-6">
+                <Input
+                  {...register("nif")}
+                  placeholder="Número de nif"
+                  type="number"
+                />
+                {errors.nif?.message && (
+                  <InputError type={errors.nif.type} field="nif" />
+                )}
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">
+                <Input
+                  {...register("number1")}
+                  placeholder="Primeiro número"
+                  type="number"
+                />
+                {errors.number1?.message && (
+                  <InputError type={errors.number1.type} field="number1" />
+                )}
+              </div>
+
+              <div className="col-md-6">
+                <Input
+                  {...register("number2")}
+                  placeholder="Segundo número"
+                  type="number"
+                />
+                {errors.number2?.message && (
+                  <InputError type={errors.number2.type} field="number2" />
+                )}
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">
+                <Input
+                  {...register("address")}
+                  placeholder="Localização"
+                  type="text"
+                />
+                {errors.address?.message && (
+                  <InputError type={errors.address.type} field="address" />
+                )}
+              </div>
+
+              <div className="col-md-6">
+                <div className="MuiInputBase-root MuiInput-root MuiInput-underline">
+                  <select
+                    id="select"
+                    className="MuiInputBase-input MuiInput-input"
+                    onChange={handle}
+                    defaultValue=""
+                  >
+                    <option value="" disabled selected hidden>
+                      Selecione uma categoria
+                    </option>
+                    {list}
+                  </select>
+                </div>
+              </div>
+
+              <div className="describe .col-sm-12 .col-md-12">
+                <label>Faça uma descrição</label>
+                <textarea {...register("description")}></textarea>
+                {errors.description?.message && (
+                  <InputError
+                    type={errors.description.type}
+                    field="description"
+                  />
+                )}
+              </div>
+            </div>
+            <Button
+              variant="contained"
+              className="btn"
+              type="submit"
+              endIcon={<Send />}
+            >
+              Atualizar
+            </Button>
+          </form>
+        </>
       )}
     </>
   );
