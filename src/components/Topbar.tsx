@@ -45,12 +45,12 @@ export const Topbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem>
+          {/* <MenuItem>
             <AccountBox />
             <Link onClick={handleClose} to="/user/account">
               Minha conta
             </Link>
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem>
             <Settings />

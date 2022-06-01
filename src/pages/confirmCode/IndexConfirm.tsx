@@ -79,7 +79,7 @@ export const ConfirmCodeReset = () => {
 
       <div className="confirm-container">
         <form className="changePassword" onSubmit={handleSubmit}>
-          <h1>Inserir código de segurança 1</h1>
+          <h1>Inserir código de segurança</h1>
           <p>
             Procura no teu e-mail uma mensagem com o teu código. Este deve ter 4
             dígitos.

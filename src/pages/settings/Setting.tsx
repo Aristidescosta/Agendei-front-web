@@ -1,11 +1,4 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Tab,
-  Tabs,
-} from "@material-ui/core";
+import { AppBar, Avatar, Box, Button, Tab, Tabs } from "@material-ui/core";
 import {
   Autorenew,
   Delete,
@@ -21,11 +14,45 @@ import "./setting.scss";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { dev } from "../../config/config";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { userEmail, userPassword } from "../../utils/validations";
+import { InputError } from "../../components/InputErrors";
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: any;
   value: any;
 }
+
+interface IFormInput {
+  currentPassword: string;
+  newPassword: string;
+  resetNewPassword: string;
+  password: string;
+}
+
+const myYupResolver = yup
+  .object({
+    currentPassword: yup
+      .string()
+      .required()
+      .min(8)
+      .max(20)
+      .matches(userPassword),
+    newPassword: yup.string().required().min(8).max(20).matches(userPassword),
+    resetNewPassword: yup
+      .string()
+      .required()
+      .min(8)
+      .max(20)
+      .matches(userPassword),
+    password: yup.string().required().min(8).max(20).matches(userPassword),
+  })
+  .required();
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -50,12 +77,6 @@ function a11yProps(index: any) {
   };
 }
 
-interface IFormInputs {
-  password: string;
-  newPassword: string;
-  resetNewPassword: string;
-}
-
 function Setting() {
   const [value, setValue] = useState(1);
   const [picture, setPicture] = useState("");
@@ -66,7 +87,7 @@ function Setting() {
   const [type2, setType2] = useState(false);
   const [type3, setType3] = useState(false);
 
-  console.log(picture);
+  
   const handleViewPassword = () => {
     setViewPassword(!viewPassword);
     setType(!type);
@@ -84,12 +105,17 @@ function Setting() {
 
   const {
     register,
-    formState: { errors },
     handleSubmit,
-  } = useForm<IFormInputs>();
+    formState: { errors },
+  } = useForm<IFormInput>({ resolver: yupResolver(myYupResolver) });
 
-  const onSubmit: SubmitHandler<IFormInputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    let id = toast.loading("Salvando alterações");
+    console.log(data)
+  };
+
+  const handleSubmitValues: SubmitHandler<IFormInput> = () => {
+    console.log("data")
   };
 
   const onChangePicture = (event: any) => {
@@ -108,6 +134,21 @@ function Setting() {
   const auth = useContext(AuthContext);
   return (
     <section className="setting">
+      
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        {/* Same as */}
+        <ToastContainer />
+
       <ol className="breadcrumb">
         <li className="breadcrumb-item">
           <Link to="/">Home</Link>
@@ -192,41 +233,64 @@ function Setting() {
         </aside>
 
         <section>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleSubmitValues)}>
             <h1>Alterar a palavra passe</h1>
-            <div>
-              <Input
-                type={type ? "text" : "password"}
-                {...register("password")}
-                placeholder="Palavra passe atual"
-              />
-              <span onClick={handleViewPassword}>
-                {viewPassword ? <Visibility /> : <VisibilityOff />}
-              </span>
+            <div className="erros-flex">
+              <div className="t">
+                <Input
+                  type={type ? "text" : "password"}
+                  {...register("currentPassword")}
+                  placeholder="Palavra passe atual"
+                />
+                <span onClick={handleViewPassword}>
+                  {viewPassword ? <Visibility /> : <VisibilityOff />}
+                </span>
+              </div>
+              {errors.currentPassword?.message && (
+                <InputError
+                  type={errors.currentPassword.type}
+                  field="password2"
+                />
+              )}
             </div>
 
-            <div>
-              <Input
-                type={type2 ? "text" : "password"}
-                {...register("newPassword")}
-                placeholder="Palavra passe atual"
-              />
-              <span onClick={handleViewPassword2}>
-                {viewPassword2 ? <Visibility /> : <VisibilityOff />}
-              </span>
+            <div className="erros-flex">
+              <div className="t">
+                <Input
+                  type={type2 ? "text" : "password"}
+                  {...register("newPassword")}
+                  placeholder="Palavra passe atual"
+                />
+                <span onClick={handleViewPassword2}>
+                  {viewPassword2 ? <Visibility /> : <VisibilityOff />}
+                </span>
+              </div>
+              {errors.newPassword?.message && (
+                <InputError type={errors.newPassword.type} field="password" />
+              )}
             </div>
-            <div>
-              <Input
-                type={type3 ? "text" : "password"}
-                {...register("resetNewPassword")}
-                placeholder="Palavra passe atual"
-              />
-              <span onClick={handleViewPassword3}>
-                {viewPassword3 ? <Visibility /> : <VisibilityOff />}
-              </span>
+
+            <div className="erros-flex">
+              <div className="t">
+                <Input
+                  type={type3 ? "text" : "password"}
+                  {...register("resetNewPassword")}
+                  placeholder="Palavra passe atual"
+                />
+                <span onClick={handleViewPassword3}>
+                  {viewPassword3 ? <Visibility /> : <VisibilityOff />}
+                </span>
+              </div>
+              {errors.resetNewPassword?.message && (
+                <InputError
+                  type={errors.resetNewPassword.type}
+                  field="password"
+                />
+              )}
             </div>
 
             <Button
+              type="submit"
               variant="contained"
               size="large"
               color="default"

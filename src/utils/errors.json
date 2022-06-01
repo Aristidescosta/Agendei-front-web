@@ -7,8 +7,8 @@
 
   "nif": {
     "required": "Nif é um campo obrigatório",
-    "min":"Nome do usuário muito curto",
-    "max":"Nome do usuário muito longo"
+    "min":"Número de nif inválido",
+    "max":"Número de nif inválido(max: 10)"
   },
 
   "description": {
@@ -26,13 +26,15 @@
   "number1": {
     "required": "Numero de telefone é um campo obrigatório",
     "min":"Nome do usuário muito curto",
-    "max":"Nome do usuário muito longo"
+    "max":"Nome do usuário muito longo",
+    "matches": "Digite um número de angolano válido"
   },
 
   "number2": {
     "required": "Numero de telefone é um campo obrigatório",
     "min":"Nome do usuário muito curto",
-    "max":"Nome do usuário muito longo"
+    "max":"Nome do usuário muito longo",
+    "matches": "Digite um número de angolano válido"
   },
 
   "email":{

@@ -6,7 +6,7 @@ import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import birdInfo from "../../components/assets/img/bird-info.svg";
-import { List } from "react-content-loader";
+import { Preloader } from "../../components/preloader/Index";
 import { dev } from "../../config/config";
 
 type MeusDados = {
@@ -21,11 +21,10 @@ type MeusDados = {
 }; 
 
 export const Establishments = () => {
-  const [showAlert, setShowAlert] = useState(false);
   const [establishment, setEstablishment] = useState<Array<object> | void>();
   const auth = useContext(AuthContext);
   const handleClick = () => {
-    setShowAlert(false);
+    auth.setShowAlert(false);
   };
 
   useEffect(() => {
@@ -42,7 +41,7 @@ export const Establishments = () => {
   return (
     <>
       {!establishment ? (
-        <List />
+        <Preloader />
       ) : (
         <section className="container establishment">
           <h1 className="establishment-title">
@@ -52,7 +51,7 @@ export const Establishments = () => {
             </small>
           </h1>
 
-          <div className={showAlert ? "alert-info show" : "alert-info hidden"}>
+          <div className={auth.showAlert ? "alert-info show" : "alert-info hidden"}>
             <button onClick={handleClick}>
               <Close />
             </button>

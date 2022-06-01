@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useContext, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button, Modal, TextField } from "@material-ui/core";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userHourType } from "../../utils/validations";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { dev } from "../../config/config";
 
 interface hourTypeProps {
   serviceName: string;
@@ -15,6 +22,16 @@ interface hourTypeProps {
   containerHours: string;
 }
 
+interface serviceType {
+  est: {
+    address: string;
+    id: string;
+    name: string;
+  }
+  horarios: Array<string>;
+  preco: string;
+  _id: string;
+}
 /* Yup register */
 const myYupResolver = yup
   .object({
@@ -29,12 +46,14 @@ type propsType = {
   handleOpenModalEdit: () => void;
   setOpenModalEdit: React.Dispatch<React.SetStateAction<boolean>>;
   openModalEdit: boolean;
+  idService: string;
 };
 
 export const ModalServiceEdit = (props: propsType) => {
   const handleCloseModalEdit = () => props.setOpenModalEdit(false);
   const [timeValue, setTimeValue] = useState("");
   const [times, setTimes] = useState<Array<string>>([]);
+  const [service, setService] = useState<object | undefined>();
   const inputEl = useRef<HTMLInputElement>(null);
   const auth = useContext(AuthContext);
   const {
@@ -72,8 +91,8 @@ export const ModalServiceEdit = (props: propsType) => {
       setTimeValue("");
     }
     if (inputEl && inputEl.current) inputEl.current.focus();
-    console.log(times);
   };
+  console.log(auth.service);
 
   return (
     <Modal
@@ -137,6 +156,7 @@ export const ModalServiceEdit = (props: propsType) => {
             <textarea
               value={times}
               defaultValue={auth.service?.hours}
+              disabled
               {...register("containerHours")}
             ></textarea>
             {errors.containerHours?.message && (

@@ -1,5 +1,4 @@
 .setting {
-  
   margin-top: 120px;
   .buttons {
     display: flex;
@@ -44,39 +43,46 @@
   }
 
   form {
-    div {
-      position: relative;
+    .erros-flex {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: 8px;
       width: 320px;
+      div {
+        width: 100%;
+      }
+    }
+
+    .t {
+      position: relative;
 
       span {
         position: absolute;
         right: 0;
+        top: 12px;
         cursor: pointer;
       }
     }
   }
 
-  #scrollable-auto-tabpanel-1{
-    .MuiBox-root{
+  #scrollable-auto-tabpanel-1 {
+    .MuiBox-root {
       display: flex;
       align-items: flex-end;
       gap: 50px;
 
-
-      .MuiButton-sizeLarge{
+      .MuiButton-sizeLarge {
         width: 100%;
         margin-top: 10px;
       }
 
-      section{
-        form{
-          h1{
+      section {
+        form {
+          h1 {
             text-align: center;
           }
-          div{
-            margin-top: 20px;
+          div {
+            margin-top: 4px;
           }
         }
       }

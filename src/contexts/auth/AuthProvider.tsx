@@ -9,8 +9,10 @@ import { Service } from "../../types/Service";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [establishment, setEst] = useState<Array<Establishment> | any>();
+  const [appointment, setAppointment] = useState<Array<Establishment> | any>();
   const [service, setService] = useState<Service | any>();
   const [user, setUser] = useState<User | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const [text, setText] = useState<boolean | undefined>();
 
   const api = useApi();
@@ -267,31 +269,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }
 
   async function getService(id: string) {
-    const idToast = toast.loading(
-      "Processando seu pedido, por favor aguarde..."
-    );
-    let retorned = false;
-    await api
-      .getService(id)
-      .then((response) => {
-        toast.update(idToast, {
-          render: response.data.message,
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-        setService(response.data.service);
-        retorned = true;
-      })
-      .catch((error: AxiosError) =>
-        toast.update(idToast, {
-          render: error.response?.data.message,
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        })
-      );
-    return retorned;
+    const response = await api.getService(id)
+    return response.data;
   }
 
   async function getServices(id: string) {
@@ -357,7 +336,10 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
         setServices,
         service,
         deletedService,
-        getAppointments
+        getAppointments,
+        appointment,
+        setShowAlert,
+        showAlert
       }}
     >
       {children}

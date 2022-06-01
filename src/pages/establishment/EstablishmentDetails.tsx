@@ -1,6 +1,6 @@
 import { LocationOnOutlined, StarBorderOutlined } from "@material-ui/icons";
 import React, { useContext, useEffect} from "react";
-import { List } from "react-content-loader";
+import { Preloader } from "../../components/preloader/Index";
 import { Link, useParams } from "react-router-dom";
 import { dev } from "../../config/config";
 import {
@@ -52,7 +52,7 @@ export const EstablishmentDetails = () => {
   return (
     <>
       {!auth.establishment ? (
-        <List />
+        <Preloader />
       ) : (
         <section className="establishmentDetails">
           <ol className="breadcrumb">

@@ -10,6 +10,8 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { Input, IconButton, Avatar, Button } from "@material-ui/core";
 import { AddAPhotoOutlined, HouseRounded, Send } from "@material-ui/icons";
 import { useNavigate, Link } from "react-router-dom";
+import { userPhoneNumber } from "../../utils/validations";
+import { Preloader } from "../preloader/Index";
 
 interface I {
   _id: string;
@@ -28,11 +30,11 @@ interface IFormInput {
 const myYupResolver = yup
   .object({
     name: yup.string().required(),
-    nif: yup.string().required(),
+    nif: yup.string().required().min(10).max(10),
     description: yup.string().required(),
     address: yup.string().required(),
-    number1: yup.string().required(),
-    number2: yup.string().required(),
+    number1: yup.string().required().matches(userPhoneNumber),
+    number2: yup.string().required().matches(userPhoneNumber),
   })
   .required();
 
@@ -78,7 +80,7 @@ export const FormNewsEstablishment = () => {
   }
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    let idToast = toast.loading("Carregando, por favor aguarde...!");
+    let idToast = toast.loading("Carregando, por favor aguarde...");
     let formData = new FormData();
     formData.append("name", data.name);
     formData.append("address", data.address);
@@ -102,16 +104,22 @@ export const FormNewsEstablishment = () => {
             undefined: "multipart/form-data",
           },
         });
-        await request
+        await request 
           .json()
-          .then((response) =>
+          .then((response) => {
             toast.update(idToast, {
               render: "Estabelecimento criado com sucesso",
               type: "success",
               isLoading: false,
               autoClose: 3000,
-            })
-          )
+            });
+            auth.setShowAlert(true);
+            function goToHome() {
+              console.log("Estou indo na rota principal");
+              navigate("/");
+            }
+            setTimeout(goToHome, 3000);
+          })
           .catch((error) =>
             toast.update(idToast, {
               render: error.message,
@@ -136,19 +144,12 @@ export const FormNewsEstablishment = () => {
         autoClose: 3000,
       });
     }
-    /* let idToast = toast.loading("Carregando...!");
-     */
-    /* toast.success("Estabelecimento criado com sucesso!");
-    navigate("/"); */
-    function goToHome(){
-      console.log("Estou indo na rota principal")
-      navigate("/")
-    }
-    setTimeout(goToHome, 3000);
   };
 
   return (
     <>
+    { !auth.establishment ?(<Preloader />) : (
+      <>
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -283,9 +284,11 @@ export const FormNewsEstablishment = () => {
           type="submit"
           endIcon={<Send />}
         >
-          Enviar
+          Atualizar
         </Button>
       </form>
+      </>
+      )}
     </>
   );
 };

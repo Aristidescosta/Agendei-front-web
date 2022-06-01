@@ -3,7 +3,7 @@ import "./formStyle.scss";
 /* Hook Form e Hooks */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { List } from "react-content-loader";
+
 
 /* Material UI */
 import {
@@ -22,19 +22,18 @@ import {
   AddAPhotoOutlined,
   HouseRounded,
   Send,
-  PhotoCamera,
 } from "@material-ui/icons";
 /* Yup */
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState, ChangeEvent } from "react";
-
+import { userPhoneNumber } from "../../utils/validations";
 import { AuthContext } from "../../contexts/auth/AuthContext";
 import { InputError } from "../InputErrors";
 import "./formStyle.scss";
 import { dev } from "../../config/config";
 import { ToastContainer, toast } from "react-toastify";
-import { AxiosError } from "axios";
+import { Preloader } from "../preloader/Index";
 
 /* Types */
 interface I {
@@ -58,8 +57,8 @@ const myYupResolver = yup
     nif: yup.string().required(),
     description: yup.string().required(),
     address: yup.string().required(),
-    number1: yup.string().required(),
-    number2: yup.string().required(),
+    number1: yup.string().required().matches(userPhoneNumber),
+    number2: yup.string().required().matches(userPhoneNumber),
   })
   .required();
 
@@ -79,23 +78,13 @@ interface openType {
   close: string;
 }
 
-type establishmentType = {
-  _id: string;
-  categoryId: string;
-  name: string;
-  nif: number;
-  img: string;
-  address: string;
-  open: boolean;
-};
 export const FormEdit = () => {
   const auth = useContext(AuthContext);
   const { estId } = useParams();
   const navigate = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [establishment, setEstablishment] = useState<object | void>();
-
+  
   const [itemData, setItemData] = useState<Array<imageType>>([]);
 
   const [picture2, setPicture2] = useState<File>();
@@ -110,15 +99,15 @@ export const FormEdit = () => {
     };
     const getEstablishment = async () => {
       if (estId) {
-        const response = await auth.getOneEstablishment(estId);
-        setEstablishment(response);
+        await auth.getOneEstablishment(estId);
       }
     };
     getEstablishment();
     getCategory();
   }, []);
-  console.log(auth.establishment)
-  const [picture, setPicture] = useState(`${dev.API_URL}/${auth.establishment?.img}`);
+  const [picture, setPicture] = useState(
+    `${dev.API_URL}/${auth.establishment?.img}`
+  );
 
   const open_to = [
     {
@@ -250,8 +239,7 @@ export const FormEdit = () => {
   );
 
   function addNewPhoto(event: ChangeEvent<HTMLInputElement>) {
-    console.log("Teste")
-    if (event.currentTarget.files && establishment) {
+    if (event.currentTarget.files && auth.establishment) {
       let url = URL.createObjectURL(event.currentTarget.files[0]);
       const newItemData = {
         id: itemData.length,
@@ -273,7 +261,9 @@ export const FormEdit = () => {
     const remainingPhoto = itemData.filter((item: imageType) => id !== item.id);
     setItemData(remainingPhoto);
 
-    const remainingPhotoFile = picture3.filter((item: imageTypeFile) => id !== item.id);
+    const remainingPhotoFile = picture3.filter(
+      (item: imageTypeFile) => id !== item.id
+    );
     setPicture3(remainingPhotoFile);
   }
 
@@ -283,7 +273,6 @@ export const FormEdit = () => {
     setCategoryName(event.target.selectedOptions[0].text);
     setCategoryId(event.target.value);
   }
-
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     let idToast = toast.loading("Carregando...!");
@@ -308,7 +297,6 @@ export const FormEdit = () => {
     }
 
     if (picture2) formData1.append("file", picture2);
-  
     try {
       const request = await fetch(`${dev.API_URL}/est/update/${estId}`, {
         method: "POST",
@@ -318,7 +306,24 @@ export const FormEdit = () => {
           undefined: "multipart/form-data",
         },
       });
-      await request.json();
+      await request
+        .json()
+        .then((response) =>
+          toast.update(idToast, {
+            render: "Estabelecimento editado com sucesso",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+          })
+        )
+        .catch((error) =>
+          toast.update(idToast, {
+            render: error.message,
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          })
+        );
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -332,23 +337,21 @@ export const FormEdit = () => {
           undefined: "multipart/form-data",
         },
       });
-      await request.json().then((response) => {
-        toast.update(idToast, {
-          render: response.data.message,
-          type: "success",
-          isLoading: false,
-          autoClose: 5000,
-        });
-      });
+      await request.json();
     } catch (error: any) {
       toast.update(idToast, {
-        render: error,
+        render: error.message,
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: 3000,
       });
-    } 
-    // navigate("/");
+    }
+
+    function goToHome() {
+      console.log("Estou indo na rota principal");
+      navigate("/");
+    }
+    setTimeout(goToHome, 3000);
   };
 
   return (
@@ -367,7 +370,7 @@ export const FormEdit = () => {
       {/* Same as */}
       <ToastContainer />
       {!auth.establishment ? (
-        <List />
+        <Preloader />
       ) : (
         <>
           <div className="separator">
@@ -436,7 +439,7 @@ export const FormEdit = () => {
                   <div className="col-md-6">
                     <Input
                       {...register("number1")}
-                      placeholder="Primeiro número"
+                      placeholder="Número de telefone"
                       defaultValue={auth.establishment.phones_number[0]}
                       type="number"
                     />
@@ -448,7 +451,7 @@ export const FormEdit = () => {
                   <div className="col-md-6">
                     <Input
                       {...register("number2")}
-                      placeholder="Segundo número"
+                      placeholder="Número de telefone"
                       defaultValue={auth.establishment.phones_number[1]}
                       type="number"
                     />
@@ -582,7 +585,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Segunda-Feira</span>
+                            <span>Domingo</span>
                           </div>
                         </td>
                         <td>
@@ -611,7 +614,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Terça-Feira</span>
+                            <span>Segunda-Feira</span>
                           </div>
                         </td>
                         <td>
@@ -640,7 +643,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Quarta-Feira</span>
+                            <span>Terça-Feira</span>
                           </div>
                         </td>
                         <td>
@@ -669,7 +672,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Quinta-Feira</span>
+                            <span>Quarta-Feira</span>
                           </div>
                         </td>
                         <td>
@@ -698,7 +701,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Sexta-Feira</span>
+                            <span>Quinta-Feira</span>
                           </div>
                         </td>
                         <td>
@@ -727,7 +730,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Sábado</span>
+                            <span>Sexta-Feira</span>
                           </div>
                         </td>
                         <td>
@@ -756,7 +759,7 @@ export const FormEdit = () => {
                               type="checkbox"
                               onChange={handleChecked}
                             />
-                            <span>Domingo</span>
+                            <span>Sábado</span>
                           </div>
                         </td>
                         <td>

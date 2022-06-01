@@ -47,6 +47,7 @@ export const ModalService = (props: propsType) => {
     const est = {
       name: auth.establishment?.name,
       id: auth.establishment?._id,
+      address: auth.establishment?.address
     };
     
     const response = await auth.setServices(

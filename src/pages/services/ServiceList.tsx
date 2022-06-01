@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Edit, Event } from "@material-ui/icons";
+import { Edit, Event, Timer } from "@material-ui/icons";
 import "./service.scss";
 import ModalDeleted from "./ModalDeleted";
 import { ModalServiceEdit } from "./ModalServiceEdit";
+import symbol from "../../components/assets/img/icone-moeda.jpg";
+import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type PropsType = {
   id: string;
@@ -16,11 +18,11 @@ type PropsType = {
 
 export const ServiceList = (props: PropsType) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
+  const auth = useContext(AuthContext);
   const handleOpenModalDelete = () => setOpenModalDelete(true);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
   console.log(props.id)
-
   return (
     <>
       {/* Modal de confirmação para eliminar algo */}
@@ -35,62 +37,63 @@ export const ServiceList = (props: PropsType) => {
         handleOpenModalEdit={handleOpenModalEdit}
         openModalEdit={openModalEdit}
         setOpenModalEdit={setOpenModalEdit}
+        idService={props.id}
       />
 
-      <div className="card">
-        <div className="card-content">
-          <div className="card-title">
-            <h1>{props.name}</h1>
-            <p>&#9733; &#9733; &#9733; &#9733; &#9733;</p>
-          </div>
-          <div className="card-price">
-            <h1>{props.preco}kzs</h1>
-          </div>
-          <div className="card-hour">
-            <h4>Horários</h4>
-            <ul>
+      <div className="card container">
+        <div className="card-container">
+          <article className="card-content">
+            <div className="card-price">
+              <div className="card-price-number">
+                {props.preco}
+                <span className="card-price-symbol">kzs</span>
+              </div>
+            </div>
+            <header className="card-header">
+              <h1 className="card-header-title">{props.name}</h1>
+            </header>
+            <ul className="card-list">
               {props.horarios.map((value) => (
-                <li>
-                  <div>
-                    <span>{value}</span>
-                  </div>
+                <li className="card-list-item">
+                  <Timer className="card-list-icon" />
+                  <p className="card-list-description">{value}</p>
                 </li>
               ))}
             </ul>
-          </div>
 
-          <div className="card-buttons">
-            <Button
-              type="button"
-              variant="outlined"
-              color="secondary"
-              onClick={handleOpenModalDelete}
-              startIcon={<DeleteIcon />}
-            >
-              Eliminar
-            </Button>
+            <div className="card-buttons">
+              <Button
+                type="button"
+                variant="outlined"
+                color="secondary"
+                onClick={handleOpenModalDelete}
+                startIcon={<DeleteIcon />}
+              >
+                Eliminar
+              </Button>
 
-            <Link to={`${props.id}/schedules`}>
+              {/* <Link to={`${props.id}/schedules`}>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<Event />}
+                >
+                  Ver agendamentos
+                </Button>
+              </Link> */}
+
               <Button
                 type="button"
                 variant="outlined"
                 color="primary"
-                startIcon={<Event />}
+                onClick={handleOpenModalEdit}
+                startIcon={<Edit />}
               >
-                Ver agendamentos
+                Editar serviço
               </Button>
-            </Link>
-
-            <Button
-              type="button"
-              variant="outlined"
-              color="primary"
-              onClick={handleOpenModalEdit}
-              startIcon={<Edit />}
-            >
-              Editar serviço
-            </Button>
-          </div>
+            </div>
+          </article>
         </div>
       </div>
     </>

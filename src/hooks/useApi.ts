@@ -75,18 +75,23 @@ export const useApi = () => ({
   },
 
   getService: async (id: string) => {
-    return await api.post(`/services/service`, { id });
+    return await api.get(`/services/service/${id}`);
   },
 
-  setServices: async (name: string, preco: string, hours: Array<string>, est: object) => {
+  setServices: async (
+    name: string,
+    preco: string,
+    hours: Array<string>,
+    est: object
+  ) => {
     return await api.post(`/services/post`, { name, preco, est, hours });
   },
 
-  deletedService: async (id: string) =>{
+  deletedService: async (id: string) => {
     return await api.delete(`/services/delete/${id}`);
   },
-  
-  getAppointments: async(id: string) => {
+
+  getAppointments: async (id: string) => {
     return await api.get(`services/service/${id}/appointments`);
-  }
+  },
 });
