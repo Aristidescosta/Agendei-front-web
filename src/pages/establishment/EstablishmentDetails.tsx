@@ -1,5 +1,5 @@
 import { LocationOnOutlined, StarBorderOutlined } from "@material-ui/icons";
-import React, { useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import { Preloader } from "../../components/preloader/Index";
 import { Link, useParams } from "react-router-dom";
 import { dev } from "../../config/config";
@@ -40,7 +40,7 @@ export const EstablishmentDetails = () => {
   const { estId } = useParams();
   const auth = useContext(AuthContext);
   const classes = useStyles();
-  
+
   useEffect(() => {
     const getEstablishment = async () => {
       if (estId) {
@@ -59,7 +59,9 @@ export const EstablishmentDetails = () => {
             <li className="breadcrumb-item">
               <Link to="/">Home</Link>
             </li>
-            <li className="breadcrumb-item active">{ auth.establishment.name }</li>
+            <li className="breadcrumb-item active">
+              {auth.establishment.name}
+            </li>
             <li className="breadcrumb-item active">Detalhes</li>
           </ol>
           <div className="row">
@@ -137,7 +139,9 @@ export const EstablishmentDetails = () => {
 
               <div>
                 <Link to={`services`}>
-                  <Button>Ver serviços</Button>
+                  <Button variant="outlined" color="primary">
+                    Ver serviços
+                  </Button>
                 </Link>
               </div>
             </div>

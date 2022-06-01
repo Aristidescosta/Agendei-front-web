@@ -35,7 +35,6 @@ export const Establishments = () => {
       }
     };
     getEstablishment();
-    console.log("Mudou")
   }, [auth.establishment?.open]);
 
   return (

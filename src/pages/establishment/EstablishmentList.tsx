@@ -29,10 +29,11 @@ type PropsType = {
 export const EstablishmentList = (props: PropsType) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [test, setTest] = useState(false);
+  const [test, setTest] = useState(props.open);
   const auth = useContext(AuthContext)
   const handleTest = async() => {
-    await auth.openOrCloseEstablishment(props._id, props.open)
+    console.log(props.open);
+    await auth.openOrCloseEstablishment(props._id, test)
     setTest(!test);
     // editOpen(props._id, test);
   };
