@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useRef, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { Button, Modal, TextField } from "@material-ui/core";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userHourType } from "../../utils/validations";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/auth/AuthContext";
+import { useParams } from "react-router-dom";
 
 interface hourTypeProps {
   serviceName: string;
@@ -25,6 +26,12 @@ const myYupResolver = yup
   })
   .required();
 
+  interface establishmentType {
+    _id: string;
+    address: string;
+    name: string;
+  }
+
 type propsType = {
   handleOpenModalCreate: () => void;
   setOpenModalCreate: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,6 +43,8 @@ export const ModalService = (props: propsType) => {
   const [timeValue, setTimeValue] = useState("");
   const [times, setTimes] = useState<Array<string>>([]);
   const inputEl = useRef<HTMLInputElement>(null);
+  const [establishment, setEst] = useState<Array<establishmentType> | any>();
+  const {estId} = useParams();
   const auth = useContext(AuthContext);
   const {
     register,
@@ -47,12 +56,23 @@ export const ModalService = (props: propsType) => {
     window.history.back();
   }
 
+  useEffect(() => {
+    const getEstablishment = async () => {
+      if (estId) {
+        const response = await auth.getOneEstablishment(estId);
+        setEst(response);
+      }
+    };
+    
+    getEstablishment();
+  }, [auth]);
+
   const onSubmit: SubmitHandler<hourTypeProps> = async (data) => {
-    if (auth.establishment) {
+    if (establishment) {
       const est = {
-        name: auth.establishment?.name,
-        id: auth.establishment?._id,
-        address: auth.establishment?.address,
+        name: establishment.name,
+        id: establishment._id,
+        address: establishment.address,
       };
       const response = await auth.setServices(
         data.serviceName,
@@ -82,7 +102,6 @@ export const ModalService = (props: propsType) => {
       setTimeValue("");
     }
     if (inputEl && inputEl.current) inputEl.current.focus();
-    console.log(times);
   };
 
   return (

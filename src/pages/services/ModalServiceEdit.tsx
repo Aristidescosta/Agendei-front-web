@@ -1,7 +1,6 @@
 import React, {
   ChangeEvent,
   useContext,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -13,7 +12,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userHourType } from "../../utils/validations";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/auth/AuthContext";
-import { dev } from "../../config/config";
 
 interface hourTypeProps {
   serviceName: string;
@@ -22,16 +20,6 @@ interface hourTypeProps {
   containerHours: string;
 }
 
-interface serviceType {
-  est: {
-    address: string;
-    id: string;
-    name: string;
-  }
-  horarios: Array<string>;
-  preco: string;
-  _id: string;
-}
 /* Yup register */
 const myYupResolver = yup
   .object({
@@ -53,7 +41,6 @@ export const ModalServiceEdit = (props: propsType) => {
   const handleCloseModalEdit = () => props.setOpenModalEdit(false);
   const [timeValue, setTimeValue] = useState("");
   const [times, setTimes] = useState<Array<string>>([]);
-  const [service, setService] = useState<object | undefined>();
   const inputEl = useRef<HTMLInputElement>(null);
   const auth = useContext(AuthContext);
   const {
@@ -92,7 +79,6 @@ export const ModalServiceEdit = (props: propsType) => {
     }
     if (inputEl && inputEl.current) inputEl.current.focus();
   };
-  console.log(auth.service);
 
   return (
     <Modal

@@ -1,13 +1,10 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Edit, Event, Timer } from "@material-ui/icons";
+import { Edit, Timer } from "@material-ui/icons";
 import "./service.scss";
 import ModalDeleted from "./ModalDeleted";
 import { ModalServiceEdit } from "./ModalServiceEdit";
-import symbol from "../../components/assets/img/icone-moeda.jpg";
-import { AuthContext } from "../../contexts/auth/AuthContext";
 
 type PropsType = {
   id: string;
@@ -18,11 +15,9 @@ type PropsType = {
 
 export const ServiceList = (props: PropsType) => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const auth = useContext(AuthContext);
   const handleOpenModalDelete = () => setOpenModalDelete(true);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const handleOpenModalEdit = () => setOpenModalEdit(true);
-  console.log(props.id)
   return (
     <>
       {/* Modal de confirmação para eliminar algo */}

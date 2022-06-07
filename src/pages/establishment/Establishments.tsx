@@ -36,6 +36,7 @@ export const Establishments = () => {
     };
     getEstablishment();
   }, [auth.establishment?.open]);
+  console.log(auth.establishment)
 
   return (
     <>

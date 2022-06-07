@@ -1,7 +1,7 @@
 import "../establishment/establishment.scss";
 import { AddShoppingCart, Close, InfoSharp } from "@material-ui/icons";
 import { useState, useContext, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ServiceList } from "./ServiceList";
 import { Button } from "@material-ui/core";
 import { ToastContainer } from "react-toastify";
@@ -32,8 +32,7 @@ export const Service = () => {
       }
     };
     getServices();
-  }, [auth]);
-  console.log(services);
+  }, []); 
 
   const handleClick = () => {
     setShowAlert(false);
@@ -65,7 +64,7 @@ export const Service = () => {
           />
 
           <h1 className="establishment-title">
-            Nº de :
+            Nº de serviços :
             <small className="establishment-sub">
               {services && Object(services).length}
             </small>

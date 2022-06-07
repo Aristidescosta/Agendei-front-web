@@ -34,6 +34,7 @@ import "./formStyle.scss";
 import { dev } from "../../config/config";
 import { ToastContainer, toast } from "react-toastify";
 import { Preloader } from "../preloader/Index";
+import { Establishment } from "../../types/Establishment";
 
 /* Types */
 interface I {
@@ -78,36 +79,57 @@ interface openType {
   close: string;
 }
 
+interface establishmentType {
+  _id: string;
+  address: string;
+  open: boolean;
+  img: string;
+  name: string;
+  nif: string;
+  phones_number: Array<string>;
+  description: string;
+  category: {
+    _id: string;
+    name: string;
+  }
+  createdAt: Date;
+  updatedAt: Date;
+  services: Array<object>;
+  images: Array<imageType>;
+  ratingmedia: string;
+}
+
 export const FormEdit = () => {
   const auth = useContext(AuthContext);
   const { estId } = useParams();
   const navigate = useNavigate();
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  
+  const [establishment, setEst] = useState<Array<Establishment> | any>();
   const [itemData, setItemData] = useState<Array<imageType>>([]);
 
   const [picture2, setPicture2] = useState<File>();
   const [picture3, setPicture3] = useState<Array<imageTypeFile>>([]);
   const [data, setData] = useState<[]>([]);
   const validOpen_to: Array<openType> = [];
+  const [picture, setPicture] = useState("");
 
   useEffect(() => {
+    auth.setEst(undefined);
     const getCategory = async () => {
       const response = await auth.getCategory();
       setData(response);
     };
     const getEstablishment = async () => {
       if (estId) {
-        await auth.getOneEstablishment(estId);
+        const response = await auth.getOneEstablishment(estId);
+        setEst(response);
       }
     };
+    
     getEstablishment();
     getCategory();
   }, []);
-  const [picture, setPicture] = useState(
-    `${dev.API_URL}/${auth.establishment?.img}`
-  );
 
   const open_to = [
     {
@@ -245,7 +267,6 @@ export const FormEdit = () => {
         id: itemData.length,
         img: url,
       };
-      console.log(newItemData);
 
       const newItemDataFile = {
         id: itemData.length,
@@ -348,7 +369,6 @@ export const FormEdit = () => {
     }
 
     function goToHome() {
-      console.log("Estou indo na rota principal");
       navigate("/");
     }
     setTimeout(goToHome, 3000);
@@ -369,13 +389,13 @@ export const FormEdit = () => {
       />
       {/* Same as */}
       <ToastContainer />
-      {!auth.establishment ? (
+      {!establishment ? (
         <Preloader />
       ) : (
         <>
           <div className="separator">
             <div className="add-est">
-              <Avatar src={picture}>
+              <Avatar src={picture ? picture : `${dev.API_URL}/${establishment.img}` }>
                 <HouseRounded />
               </Avatar>
 
@@ -403,7 +423,7 @@ export const FormEdit = () => {
                 <Link to="/">Home</Link>
               </li>
               <li className="breadcrumb-item active">
-                {auth.establishment.name}
+                {establishment.name}
               </li>
               <li className="breadcrumb-item active">Editar</li>
             </ol>
@@ -413,7 +433,7 @@ export const FormEdit = () => {
                   <div className="col-md-6">
                     <Input
                       {...register("name")}
-                      defaultValue={auth.establishment.name}
+                      defaultValue={establishment.name}
                       placeholder="Nome"
                       type="text"
                     />
@@ -426,7 +446,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("nif")}
                       placeholder="Número de nif"
-                      defaultValue={auth.establishment.nif}
+                      defaultValue={establishment.nif}
                       type="number"
                     />
                     {errors.nif?.message && (
@@ -440,7 +460,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("number1")}
                       placeholder="Número de telefone"
-                      defaultValue={auth.establishment.phones_number[0]}
+                      defaultValue={establishment.phones_number[0]}
                       type="number"
                     />
                     {errors.number1?.message && (
@@ -452,7 +472,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("number2")}
                       placeholder="Número de telefone"
-                      defaultValue={auth.establishment.phones_number[1]}
+                      defaultValue={establishment.phones_number[1]}
                       type="number"
                     />
                     {errors.number2?.message && (
@@ -466,7 +486,7 @@ export const FormEdit = () => {
                     <Input
                       {...register("address")}
                       placeholder="Localização"
-                      defaultValue={auth.establishment.address}
+                      defaultValue={establishment.address}
                       type="text"
                     />
                     {errors.address?.message && (
@@ -480,11 +500,11 @@ export const FormEdit = () => {
                         id="id"
                         className="MuiInputBase-input MuiInput-input"
                         onChange={handle}
-                        defaultValue={auth.establishment.category._id}
+                        defaultValue={establishment.category._id}
                       >
                         {list}
-                        <option value={auth.establishment.category._id}>
-                          {auth.establishment.category.name}
+                        <option value={establishment.category._id}>
+                          {establishment.category.name}
                         </option>
                       </select>
                     </div>
@@ -496,7 +516,7 @@ export const FormEdit = () => {
                     <label>Faça uma descrição</label>
                     <textarea
                       {...register("description")}
-                      defaultValue={auth.establishment.description}
+                      defaultValue={establishment.description}
                     ></textarea>
                     {errors.description?.message && (
                       <InputError

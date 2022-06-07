@@ -148,7 +148,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
     await api
       .resetPassword(email, newPassword)
       .then((response) => {
-        console.log(response.data.token);
         setUser(response.data.user);
         setToken(response.data.token);
         window.location.href = "/";
@@ -206,8 +205,10 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   }
 
   async function getOneEstablishment(id: string) {
+    setEst(""); 
     const response = await api.getOneEstablishment(id);
     setEst(response.data);
+    return response.data;
   }
 
   async function deleteEstablishment(id: string) {
