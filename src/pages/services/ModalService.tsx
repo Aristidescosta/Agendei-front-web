@@ -65,7 +65,7 @@ export const ModalService = (props: propsType) => {
     };
     
     getEstablishment();
-  }, [auth]);
+  }, []);
 
   const onSubmit: SubmitHandler<hourTypeProps> = async (data) => {
     if (establishment) {
