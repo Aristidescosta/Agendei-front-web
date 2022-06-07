@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { Establishment } from "../../types/Establishment";
 import { Service } from "../../types/Service";
+import { SignPreloader } from "../../components/preloader/SignPreloader";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [establishment, setEst] = useState<Array<Establishment> | any>();
@@ -20,7 +21,8 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const validateToken = async () => {
       const storageData = localStorage.getItem("agendeiToken");
-      if (storageData) {
+      if (storageData) { 
+        <SignPreloader/>
         const response = await api.validateToken(storageData);
         if (response.data.user) setUser(response.data.user);
       }

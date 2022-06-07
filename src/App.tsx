@@ -6,6 +6,7 @@ import { ChangePassword } from "./pages/changePassword/Index";
 import Home from "./pages/home/Home";
 import { Signup } from "./pages/login/Signup";
 import { VerifyEmail } from "./pages/verifyEmail/Index";
+import { SignPreloader } from "./components/preloader/SignPreloader";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/verifyEmail" element={<VerifyEmail />} />
       <Route path="/resetPassword" element={<ConfirmCodeReset />} />
       <Route path="/changePassword" element={<ChangePassword />} />
+      <Route path="/preloader" element={<SignPreloader />} />
     </Routes>
   );
 }

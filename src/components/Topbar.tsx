@@ -4,7 +4,7 @@ import { Avatar, Button, Menu, MenuItem } from "@material-ui/core";
 import logo from "./assets/img/logo.png";
 import "../styles/topbar.scss";
 import { Link } from "react-router-dom";
-import { AccountBox, ExitToApp, Settings } from "@material-ui/icons";
+import { ExitToApp, Settings } from "@material-ui/icons";
 
 export const Topbar = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -19,7 +19,7 @@ export const Topbar = () => {
 
   const logout = () =>{
     localStorage.clear();
-    window.location.reload();
+    window.location.href = "/";
   }
 
   return (

@@ -1,3 +1,3 @@
 export const dev={
-  API_URL: "http://10.254.124.89:3005"
+  API_URL: "http://192.168.1.10:3005"
 }

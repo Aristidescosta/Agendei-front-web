@@ -43,20 +43,28 @@ export const ModalService = (props: propsType) => {
     formState: { errors },
   } = useForm<hourTypeProps>({ resolver: yupResolver(myYupResolver) });
 
+  function goBack(){
+    window.history.back();
+  }
+
   const onSubmit: SubmitHandler<hourTypeProps> = async (data) => {
-    const est = {
-      name: auth.establishment?.name,
-      id: auth.establishment?._id,
-      address: auth.establishment?.address
-    };
-    
-    const response = await auth.setServices(
-      data.serviceName,
-      data.servicePreco,
-      times,
-      est
-    );
-    if (response) window.location.reload();
+    if (auth.establishment) {
+      const est = {
+        name: auth.establishment?.name,
+        id: auth.establishment?._id,
+        address: auth.establishment?.address,
+      };
+      const response = await auth.setServices(
+        data.serviceName,
+        data.servicePreco,
+        times,
+        est
+      );
+      if (response) window.location.reload();
+    } else {
+      toast.error("Falha ao atualizar");
+      setTimeout(goBack, 3000)
+    }
   };
 
   const onChangeTime = (event: ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +84,7 @@ export const ModalService = (props: propsType) => {
     if (inputEl && inputEl.current) inputEl.current.focus();
     console.log(times);
   };
- 
+
   return (
     <Modal
       id="modal-create"
